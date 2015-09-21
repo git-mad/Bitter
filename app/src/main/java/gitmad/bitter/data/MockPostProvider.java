@@ -7,7 +7,7 @@ import gitmad.bitter.R;
 /**
  * Created by brian on 8/27/15.
  */
-public class MockPostProvider implements PostProviderable {
+public class MockPostProvider implements PostProvider {
 
     private Context context;
 

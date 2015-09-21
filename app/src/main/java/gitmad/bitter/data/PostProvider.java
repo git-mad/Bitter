@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by brian on 8/27/15.
  */
-public interface PostProviderable {
+public interface PostProvider {
     /**
      * @return all of the posts available to this PostProvider
      */
