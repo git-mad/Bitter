@@ -4,16 +4,20 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import gitmad.bitter.R;
 
 
 public class FeedActivity extends ActionBarActivity {
 
+    private ListView postListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+        postListView = (ListView) findViewById(R.id.postListView);
     }
 
     @Override
