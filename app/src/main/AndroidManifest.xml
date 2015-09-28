@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.ViewPostActivity"
+            android:label="@string/title_activity_view_post"
+            android:parentActivityName=".activity.FeedActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="gitmad.bitter.activity.FeedActivity" />
+        </activity>
     </application>
 
 </manifest>
