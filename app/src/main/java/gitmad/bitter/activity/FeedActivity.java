@@ -2,22 +2,39 @@ package gitmad.bitter.activity;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import gitmad.bitter.R;
+import gitmad.bitter.model.Post;
+import gitmad.bitter.model.User;
+import gitmad.bitter.ui.PostAdapter;
 
 
 public class FeedActivity extends ActionBarActivity {
 
-    private ListView postListView;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-        postListView = (ListView) findViewById(R.id.postListView);
+
+        recyclerView = (RecyclerView) findViewById(R.id.feed_recycler_view);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // specify an adapter (see also next example)
+
+        Post[] posts = getMockPosts();
+
+        adapter = new PostAdapter(posts);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -40,5 +57,18 @@ public class FeedActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private Post[] getMockPosts() {
+        String[] postsText = getResources().getStringArray(R.array.mock_posts);
+        User user = new User();
+        user.setName("NOTgBurdell");
+        Post[] posts = new Post[postsText.length];
+        for (int i = 0; i < postsText.length; i++) {
+            posts[i] = new Post();
+            posts[i].setText(postsText[i]);
+            posts[i].setUser(user);
+        }
+        return posts;
     }
 }
