@@ -33,7 +33,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.postText.setText(posts[i].getText());
         viewHolder.userText.setText(posts[i].getUser().getName());
-        viewHolder.downvoteText.setText(posts[i].getDownvotes());
+        viewHolder.downvoteText.setText(Integer.toString(posts[i].getDownvotes()));
     }
 
     @Override
