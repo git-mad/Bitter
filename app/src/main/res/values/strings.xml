@@ -20,4 +20,7 @@
         <item>When people tweet dependent clauses.</item>
         <item>I hate how twitter only does C syntax highlighting for preprocessor instructions.</item>
     </array>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
