@@ -21,7 +21,7 @@ public class ViewPostActivity extends ActionBarActivity {
         String userName = intent.getStringExtra("userName");
 
         TextView postBody = (TextView) findViewById(R.id.postContent);
-        TextView user = (TextView) findViewById(R.id.user_text);
+        TextView user = (TextView) findViewById(R.id.posterUsername);
 
         postBody.setText(postContent);
         user.setText(userName);
