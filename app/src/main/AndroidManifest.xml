@@ -25,5 +25,4 @@
                 android:value="gitmad.bitter.activity.FeedActivity" />
         </activity>
     </application>
-
 </manifest>
