@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import gitmad.bitter.R;
 import gitmad.bitter.model.Post;
 
@@ -31,6 +33,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.postText.setText(posts[i].getText());
         viewHolder.userText.setText(posts[i].getUser().getName());
+        viewHolder.downvoteText.setText(posts[i].getDownvotes());
     }
 
     @Override
@@ -42,11 +45,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         public TextView userText;
         public TextView postText;
+        public TextView timeText;
+        public TextView repliesText;
+        public TextView downvoteText;
 
         public ViewHolder(View postLayout) {
             super(postLayout);
             userText = (TextView) postLayout.findViewById(R.id.user_text);
             postText = (TextView) postLayout.findViewById(R.id.post_text);
+            timeText = (TextView) postLayout.findViewById(R.id.time_posted);
+            repliesText = (TextView) postLayout.findViewById(R.id.post_replies);
+            downvoteText = (TextView) postLayout.findViewById(R.id.downvote_button);
         }
     }
 }
