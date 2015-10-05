@@ -1,5 +1,6 @@
 package gitmad.bitter.ui;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
+import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.model.Post;
 
 /**
@@ -28,9 +30,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         viewHolder.postText.setText(posts[i].getText());
         viewHolder.userText.setText(posts[i].getUser().getName());
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ViewPostActivity.class);
+                intent.putExtra("postContent", posts[i].getText());
+                intent.putExtra("userName", posts[i].getUser().getName());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

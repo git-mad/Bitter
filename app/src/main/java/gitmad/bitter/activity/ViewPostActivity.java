@@ -1,9 +1,11 @@
 package gitmad.bitter.activity;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import gitmad.bitter.R;
 
@@ -13,6 +15,16 @@ public class ViewPostActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_post);
+
+        Intent intent = getIntent();
+        String postContent = intent.getStringExtra("postContent");
+        String userName = intent.getStringExtra("userName");
+
+        TextView postBody = (TextView) findViewById(R.id.postContent);
+        TextView user = (TextView) findViewById(R.id.user_text);
+
+        postBody.setText(postContent);
+        user.setText(userName);
     }
 
     @Override
