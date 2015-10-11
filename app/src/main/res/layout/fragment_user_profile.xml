@@ -14,5 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:paddingTop="50dp"
         android:paddingBottom="20dp"
-        android:layout_weight="0.20" />
+        android:layout_weight="0.20"
+        android:src="@android:drawable/sym_def_app_icon"/>
+        <!-- Note that the picture is changed in the Java file and will be circular -->
 </LinearLayout>

@@ -107,8 +107,8 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
         ImageView pic = (ImageView) view.findViewById(R.id.user_profile_pic);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        Bitmap conv_bm = getRoundedRectBitmap(bm, 100);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.tejunareddy);
+        Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
         /*
