@@ -16,10 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.TextView;
 
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.dummy.DummyContent;
@@ -38,11 +36,6 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
-    /**
-     * The fragment's ListView/GridView.
-     */
-    private AbsListView mListView;
 
     /**
      * The Adapter which will be used to populate the ListView/GridView with
@@ -77,7 +70,6 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
                 sbmp.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
 
-        final int color = 0xffa19774;
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, sbmp.getWidth(), sbmp.getHeight());
 
@@ -103,9 +95,11 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // TODO: Change Adapter to display your content
+        /*
+        // TODO: Change Adapter to display your content -- How?
         mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+                */
     }
 
     @Override
@@ -114,15 +108,18 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
 
         ImageView pic = (ImageView) view.findViewById(R.id.user_profile_pic);
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        Bitmap conv_bm = getRoundedRectBitmap(bm, 10);
+        Bitmap conv_bm = getRoundedRectBitmap(bm, 100);
         pic.setImageBitmap(conv_bm);
 
+        /*
         // Set the adapter
+        // TODO figure out how to do this
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+        */
 
         return view;
     }
@@ -159,11 +156,12 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
      * to supply the text it should use.
      */
     public void setEmptyText(CharSequence emptyText) {
+        /*
         View emptyView = mListView.getEmptyView();
 
         if (emptyView instanceof TextView) {
             ((TextView) emptyView).setText(emptyText);
-        }
+        } */
     }
 
     /**
@@ -171,7 +169,7 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

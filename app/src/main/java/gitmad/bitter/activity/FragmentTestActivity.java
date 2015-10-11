@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 import gitmad.bitter.R;
+import gitmad.bitter.fragment.UserProfileFragment;
 
-public class FragmentTestActivity extends ActionBarActivity {
+public class FragmentTestActivity extends ActionBarActivity implements UserProfileFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,4 +14,8 @@ public class FragmentTestActivity extends ActionBarActivity {
         setContentView(R.layout.activity_fragment_test);
     }
 
+    @Override
+    public void onFragmentInteraction(String id) {
+
+    }
 }
