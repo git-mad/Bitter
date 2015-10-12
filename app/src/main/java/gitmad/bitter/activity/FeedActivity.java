@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
@@ -20,6 +21,8 @@ public class FeedActivity extends ActionBarActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    private MockPostProvider postProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +31,8 @@ public class FeedActivity extends ActionBarActivity {
         recyclerView = (RecyclerView) findViewById(R.id.feed_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+        postProvider = new MockPostProvider(this);
 
         // specify an adapter (see also next example)
 
