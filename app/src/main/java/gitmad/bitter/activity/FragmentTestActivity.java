@@ -1,12 +1,12 @@
 package gitmad.bitter.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.UserProfileFragment;
 
-public class FragmentTestActivity extends ActionBarActivity implements UserProfileFragment.OnFragmentInteractionListener {
+public class FragmentTestActivity extends Activity implements UserProfileFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
