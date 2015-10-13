@@ -27,7 +27,7 @@
                 android:id="@+id/user_text"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/post_text"
-                android:textColor="@android:color/holo_orange_dark"
+                android:textColor="@color/accent_color"
                 android:text="notGBurdell"
                 />
 
