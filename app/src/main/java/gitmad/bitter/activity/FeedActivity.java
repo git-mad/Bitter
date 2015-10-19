@@ -35,6 +35,7 @@ public class FeedActivity extends ActionBarActivity {
 
         adapter = new PostAdapter(posts);
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
