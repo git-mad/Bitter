@@ -1,13 +1,18 @@
 package gitmad.bitter.activity;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
+import gitmad.bitter.model.Comment;
+import gitmad.bitter.model.User;
+import gitmad.bitter.ui.CommentAdapter;
 
 public class ViewPostActivity extends ActionBarActivity {
 
@@ -25,6 +30,16 @@ public class ViewPostActivity extends ActionBarActivity {
 
         postBody.setText(postContent);
         user.setText(userName);
+
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comments_recycler_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        Comment[] comments = getMockComments();
+
+        RecyclerView.Adapter adapter = new CommentAdapter(comments);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -47,5 +62,18 @@ public class ViewPostActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private Comment[] getMockComments() {
+        String[] commentsText = getResources().getStringArray(R.array.mock_comments);
+        User user = new User();
+        user.setName("NOTgBurdell");
+        Comment[] comments = new Comment[commentsText.length];
+        for (int i = 0; i < commentsText.length; i++) {
+            comments[i] = new Comment();
+            comments[i].setText(commentsText[i]);
+            comments[i].setUser(user);
+        }
+        return comments;
     }
 }

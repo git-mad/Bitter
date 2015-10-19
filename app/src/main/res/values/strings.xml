@@ -20,5 +20,14 @@
         <item>When people tweet dependent clauses.</item>
         <item>I hate how twitter only does C syntax highlighting for preprocessor instructions.</item>
     </array>
+
+    <array name="mock_comments">
+        <item>This makes me really angry!</item>
+        <item>Grrr!!! I know exactly what you mean!</item>
+        <item>I am really bitter!</item>
+        <item>This isn\'t that bad...</item>
+        <item>THIS.</item>
+        <item>Literally same</item>
+    </array>
     <string name="title_activity_view_post">ViewPostActivity</string>
 </resources>
