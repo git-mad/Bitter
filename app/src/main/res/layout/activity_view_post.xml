@@ -46,8 +46,9 @@
                 android:layout_below="@+id/posterUsername"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:padding="7dp"
+                android:layout_toLeftOf="@+id/imageButton"
+                android:layout_toStartOf="@+id/imageButton" />
 
             <ImageButton
                 android:layout_width="wrap_content"
