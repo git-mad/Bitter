@@ -13,6 +13,7 @@ import gitmad.bitter.R;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.CommentAdapter;
+import gitmad.bitter.ui.DividerItemDecoration;
 
 public class ViewPostActivity extends ActionBarActivity {
 
@@ -35,6 +36,7 @@ public class ViewPostActivity extends ActionBarActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comments_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext()));
 
         Comment[] comments = getMockComments();
 
