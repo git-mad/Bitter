@@ -13,7 +13,10 @@
         </activity>
         <activity
             android:name=".activity.FragmentTestActivity"
-            android:label="@string/title_activity_fragment_test" >
+            android:label="@string/title_activity_fragment_test" ></activity>
+        <activity
+            android:name=".activity.TabbedUserActivity"
+            android:label="@string/title_activity_test">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
