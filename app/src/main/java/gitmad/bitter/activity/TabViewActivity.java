@@ -3,12 +3,14 @@ package gitmad.bitter.activity;
 /**
  * Created by Clayton on 10/7/2015.
  */
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.app.FragmentManager;
 
 
 import gitmad.bitter.fragment.UserProfileFragment;
@@ -59,7 +61,7 @@ public class TabViewActivity extends AppCompatActivity implements UserProfileFra
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onFragmentInteraction(String uri) {
+        int d = 0;
     }
 }

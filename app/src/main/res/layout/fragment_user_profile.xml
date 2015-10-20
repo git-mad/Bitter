@@ -4,15 +4,17 @@
     android:layout_height="match_parent"
     tools:context="gitmad.bitter.fragment.UserProfileFragment"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:id="@+id/user_profile_fragment">
 
     <ImageView
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:id="@+id/imageView"
+        android:id="@+id/user_profile_pic"
         android:layout_gravity="center_horizontal"
         android:paddingTop="50dp"
         android:paddingBottom="20dp"
-        android:src="@drawable/img"
-        android:layout_weight="0.20" />
+        android:layout_weight="0.20"
+        android:src="@android:drawable/sym_def_app_icon"/>
+        <!-- Note that the picture is changed in the Java file and will be circular -->
 </LinearLayout>

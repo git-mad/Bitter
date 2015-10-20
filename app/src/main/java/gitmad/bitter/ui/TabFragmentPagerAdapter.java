@@ -15,8 +15,7 @@ import gitmad.bitter.fragment.UserProfileFragment;
 /**
  * Created by Clayton on 10/7/15.
  */
-public class TabFragmentPagerAdapter extends android.support.v4.app.FragmentStatePagerAdapter
-            implements UserProfileFragment.OnFragmentInteractionListener{
+public class TabFragmentPagerAdapter extends android.support.v4.app.FragmentStatePagerAdapter {
 
     protected static String tabTitles[] = new String[]{"My Profile", "Recent Post", "Favorite Posts", "Top Posts"};
     private Context context;
@@ -52,8 +51,5 @@ public class TabFragmentPagerAdapter extends android.support.v4.app.FragmentStat
         return tabTitles[position];
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 }
