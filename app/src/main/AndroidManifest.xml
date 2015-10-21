@@ -12,10 +12,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.FragmentTestActivity"
-            android:label="@string/title_activity_fragment_test" ></activity>
-        <activity
-            android:name=".activity.TabbedUserActivity"
+            android:name=".activity.UserActivity"
             android:label="@string/title_activity_test">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
