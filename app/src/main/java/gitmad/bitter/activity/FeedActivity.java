@@ -65,15 +65,6 @@ public class FeedActivity extends ActionBarActivity {
     }
 
     private Post[] getMockPosts() {
-        String[] postsText = getResources().getStringArray(R.array.mock_posts);
-        User user = new User();
-        user.setName("NOTgBurdell");
-        Post[] posts = new Post[postsText.length];
-        for (int i = 0; i < postsText.length; i++) {
-            posts[i] = new Post();
-            posts[i].setText(postsText[i]);
-            posts[i].setUser(user);
-        }
-        return posts;
+        return postProvider.getPosts();
     }
 }
