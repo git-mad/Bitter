@@ -1,6 +1,6 @@
 package gitmad.bitter.activity;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +15,7 @@ import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
 
 
-public class FeedActivity extends ActionBarActivity {
+public class FeedActivity extends Activity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -40,6 +40,7 @@ public class FeedActivity extends ActionBarActivity {
 
         adapter = new PostAdapter(posts);
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -65,15 +66,6 @@ public class FeedActivity extends ActionBarActivity {
     }
 
     private Post[] getMockPosts() {
-        String[] postsText = getResources().getStringArray(R.array.mock_posts);
-        User user = new User();
-        user.setName("NOTgBurdell");
-        Post[] posts = new Post[postsText.length];
-        for (int i = 0; i < postsText.length; i++) {
-            posts[i] = new Post();
-            posts[i].setText(postsText[i]);
-            posts[i].setUser(user);
-        }
-        return posts;
+        return postProvider.getPosts();
     }
 }

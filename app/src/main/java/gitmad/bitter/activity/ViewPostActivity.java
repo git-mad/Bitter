@@ -8,6 +8,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.MockPostProvider;
+import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.model.Post;
 
 public class ViewPostActivity extends ActionBarActivity {
 
@@ -17,14 +20,16 @@ public class ViewPostActivity extends ActionBarActivity {
         setContentView(R.layout.activity_view_post);
 
         Intent intent = getIntent();
-        String postContent = intent.getStringExtra("postContent");
-        String userName = intent.getStringExtra("userName");
+        String id = intent.getStringExtra("POST_ID");
+
+        PostProvider postProvider = new MockPostProvider(this);
+        Post post = postProvider.getPost(Integer.parseInt(id));
 
         TextView postBody = (TextView) findViewById(R.id.postContent);
         TextView user = (TextView) findViewById(R.id.posterUsername);
 
-        postBody.setText(postContent);
-        user.setText(userName);
+        postBody.setText(post.getText());
+        user.setText(post.getUser().getName());
     }
 
     @Override

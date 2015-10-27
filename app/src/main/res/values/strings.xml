@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Bitter</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
@@ -20,5 +19,9 @@
         <item>When people tweet dependent clauses.</item>
         <item>I hate how twitter only does C syntax highlighting for preprocessor instructions.</item>
     </array>
+    
     <string name="title_activity_view_post">ViewPostActivity</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="title_activity_fragment_test">FragmentTestActivity</string>
+    <string name="title_activity_test">User Information</string>
 </resources>
