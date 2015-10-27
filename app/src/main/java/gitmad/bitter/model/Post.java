@@ -6,7 +6,7 @@ package gitmad.bitter.model;
 public class Post {
     private User user;
     private String text;
-    private int downvotes = (int) (Math.random() * 20);
+    private int downvotes = 0;
 
     public User getUser() {
         return user;
