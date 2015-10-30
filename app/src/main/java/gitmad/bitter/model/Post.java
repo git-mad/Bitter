@@ -6,6 +6,8 @@ package gitmad.bitter.model;
 public class Post {
     private User user;
     private String text;
+    private int downvotes = 0;
+    private int id;
 
     public User getUser() {
         return user;
@@ -21,5 +23,19 @@ public class Post {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public int getDownvotes() {
+        return downvotes;
+    }
+
+    public void setDownvotes(int downvotes) {
+        this.downvotes = downvotes;
+    }
+
+    public void setId(int id) { this.id = id; }
+
+    public int getId() {
+        return id;
     }
 }
