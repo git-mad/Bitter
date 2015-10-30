@@ -6,16 +6,26 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/MaterialLightTheme" >
         <activity
             android:name=".activity.FeedActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activity.UserActivity"
+            android:label="@string/title_activity_test">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.ViewPostActivity"
+            android:label="@string/title_activity_view_post"
+            android:parentActivityName=".activity.FeedActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="gitmad.bitter.activity.FeedActivity" />
+        </activity>
     </application>
-
 </manifest>

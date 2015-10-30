@@ -1,7 +1,8 @@
 package gitmad.bitter.activity;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
+import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
@@ -21,6 +23,8 @@ public class FeedActivity extends ActionBarActivity implements AuthorPostDialogF
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    private MockPostProvider postProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +34,15 @@ public class FeedActivity extends ActionBarActivity implements AuthorPostDialogF
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        postProvider = new MockPostProvider(this);
+
         // specify an adapter (see also next example)
 
         Post[] posts = getMockPosts();
 
         adapter = new PostAdapter(posts);
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -61,16 +68,7 @@ public class FeedActivity extends ActionBarActivity implements AuthorPostDialogF
     }
 
     private Post[] getMockPosts() {
-        String[] postsText = getResources().getStringArray(R.array.mock_posts);
-        User user = new User();
-        user.setName("NOTgBurdell");
-        Post[] posts = new Post[postsText.length];
-        for (int i = 0; i < postsText.length; i++) {
-            posts[i] = new Post();
-            posts[i].setText(postsText[i]);
-            posts[i].setUser(user);
-        }
-        return posts;
+        return postProvider.getPosts();
     }
 
     @Override

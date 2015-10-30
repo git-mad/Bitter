@@ -8,6 +8,7 @@ public class Post {
     private User user;
     private String text;
     private long timestamp;
+    private int downvotes = 0;
 
     public User getUser() {
         return user;
@@ -39,5 +40,13 @@ public class Post {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public int getDownvotes() {
+        return downvotes;
+    }
+
+    public void setDownvotes(int downvotes) {
+        this.downvotes = downvotes;
     }
 }
