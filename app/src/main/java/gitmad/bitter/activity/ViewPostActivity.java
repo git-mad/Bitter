@@ -1,7 +1,7 @@
 package gitmad.bitter.activity;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +12,7 @@ import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.model.Post;
 
-public class ViewPostActivity extends ActionBarActivity {
+public class ViewPostActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

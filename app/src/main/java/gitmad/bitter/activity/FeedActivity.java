@@ -2,7 +2,9 @@ package gitmad.bitter.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -17,7 +19,7 @@ import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
 
 
-public class FeedActivity extends ActionBarActivity implements AuthorPostDialogFragment.OnPostCreatedListener {
+public class FeedActivity extends Activity implements AuthorPostDialogFragment.OnPostCreatedListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
