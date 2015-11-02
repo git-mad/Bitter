@@ -2,6 +2,7 @@ package gitmad.bitter.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -9,16 +10,20 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import gitmad.bitter.R;
+import gitmad.bitter.fragment.AuthorPostDialogFragment;
+import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
 
 
-public class FeedActivity extends Activity {
+public class FeedActivity extends ActionBarActivity implements AuthorPostDialogFragment.OnPostCreatedListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    private MockPostProvider postProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,8 @@ public class FeedActivity extends Activity {
         recyclerView = (RecyclerView) findViewById(R.id.feed_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+        postProvider = new MockPostProvider(this);
 
         // specify an adapter (see also next example)
 
@@ -52,8 +59,8 @@ public class FeedActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_bitch) {
+            new AuthorPostDialogFragment().show(getFragmentManager(), "AuthorBitch");
             return true;
         }
 
@@ -61,15 +68,13 @@ public class FeedActivity extends Activity {
     }
 
     private Post[] getMockPosts() {
-        String[] postsText = getResources().getStringArray(R.array.mock_posts);
-        User user = new User();
-        user.setName("NOTgBurdell");
-        Post[] posts = new Post[postsText.length];
-        for (int i = 0; i < postsText.length; i++) {
-            posts[i] = new Post();
-            posts[i].setText(postsText[i]);
-            posts[i].setUser(user);
-        }
-        return posts;
+        return postProvider.getPosts();
+    }
+
+    @Override
+    public void onPostCreated(Post post) {
+        //TODO assign user, add to user
+        //TODO save in post database
+        //TODO add post to RecyclerView adapter and refresh
     }
 }

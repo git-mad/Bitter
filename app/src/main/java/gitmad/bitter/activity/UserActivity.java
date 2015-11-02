@@ -16,7 +16,8 @@ import gitmad.bitter.fragment.RecentPostFragment;
 import gitmad.bitter.fragment.TopPostFragment;
 import gitmad.bitter.fragment.UserProfileFragment;
 
-public class UserActivity extends FragmentActivity implements ActionBar.TabListener {
+public class UserActivity extends FragmentActivity implements ActionBar.TabListener,
+        UserProfileFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -84,6 +85,11 @@ public class UserActivity extends FragmentActivity implements ActionBar.TabListe
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+
     }
 
     /**
