@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.model.Post;
@@ -71,6 +72,7 @@ public class FeedActivity extends Activity implements AuthorPostDialogFragment.O
     @Override
     public void onPostCreated(Post post) {
         //TODO assign user, add to user
+        postProvider.addPost(post);
         //TODO save in post database
         //TODO add post to RecyclerView adapter and refresh
     }
