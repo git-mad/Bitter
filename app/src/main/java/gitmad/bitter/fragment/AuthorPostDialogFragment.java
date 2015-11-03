@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import gitmad.bitter.R;
 import gitmad.bitter.model.Post;
+import gitmad.bitter.model.User;
 
 public class AuthorPostDialogFragment extends DialogFragment {
 
@@ -41,6 +43,15 @@ public class AuthorPostDialogFragment extends DialogFragment {
                 Post post = new Post();
                 post.setText(bitchEditText.getText().toString());
                 post.setTimestamp(new Date().getTime());
+                User temp = new User();
+
+                //temporary//
+                temp.setName("me");
+                ArrayList<Post> posts = new ArrayList<>();
+                posts.add(post);
+                temp.setPosts(posts);
+                post.setUser(temp);
+
                 mListener.onPostCreated(post);
                 AuthorPostDialogFragment.this.dismiss();
             }

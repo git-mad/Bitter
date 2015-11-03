@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.model.Post;
@@ -17,11 +19,15 @@ import gitmad.bitter.model.Post;
  */
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    private Post[] posts;
+    private List<Post> posts;
     private int oddEven = 0;
 
-    public PostAdapter(Post[] posts) {
+    public PostAdapter(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public void add(Post p) {
+        posts.add(0, p);
     }
 
     @Override
@@ -34,13 +40,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-        viewHolder.postText.setText(posts[i].getText());
-        viewHolder.userText.setText(posts[i].getUser().getName());
+        viewHolder.postText.setText(posts.get(i).getText());
+        viewHolder.userText.setText(posts.get(i).getUser().getName());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ViewPostActivity.class);
-                intent.putExtra("POST_ID", "" + posts[i].getId());
+                intent.putExtra("POST_ID", "" + posts.get(i).getId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -50,13 +56,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 if (oddEven % 2 == 0) {
-                    posts[i].setDownvotes(posts[i].getDownvotes() - 1);
-                    viewHolder.downvoteText.setText(Integer.toString(posts[i].getDownvotes()));
+                    posts.get(i).setDownvotes(posts.get(i).getDownvotes() - 1);
+                    viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
                     oddEven++;
 
                 } else if (oddEven % 2 != 0) {
-                    posts[i].setDownvotes(posts[i].getDownvotes() + 1);
-                    viewHolder.downvoteText.setText(Integer.toString(posts[i].getDownvotes()));
+                    posts.get(i).setDownvotes(posts.get(i).getDownvotes() + 1);
+                    viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
                     oddEven++;
                 }
             }
@@ -66,7 +72,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return posts.length;
+        return posts.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
