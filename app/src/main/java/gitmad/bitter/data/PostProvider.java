@@ -17,4 +17,9 @@ public interface PostProvider {
      * @throws IllegalArgumentException if a post with the id specified is not found.
      */
     public Post getPost(int id) throws IllegalArgumentException;
+
+    /**
+     * @Param post the Post we are adding
+     */
+    public void addPost(Post post);
 }
