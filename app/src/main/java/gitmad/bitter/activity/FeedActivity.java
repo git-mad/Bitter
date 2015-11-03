@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.data.MockPostProvider;
@@ -37,7 +39,13 @@ public class FeedActivity extends Activity implements AuthorPostDialogFragment.O
 
         Post[] posts = getMockPosts();
 
-        adapter = new PostAdapter(posts);
+        ArrayList<Post> postList = new ArrayList<>(posts.length);
+
+        for (Post p : posts) {
+            postList.add(p);
+        }
+
+        adapter = new PostAdapter(postList);
         recyclerView.setAdapter(adapter);
 
     }
@@ -70,8 +78,9 @@ public class FeedActivity extends Activity implements AuthorPostDialogFragment.O
 
     @Override
     public void onPostCreated(Post post) {
-        //TODO assign user, add to user
-        //TODO save in post database
-        //TODO add post to RecyclerView adapter and refresh
+        //TODO
+
+        ((PostAdapter) adapter).add(post);
+        recyclerView.swapAdapter(adapter, false);
     }
 }
