@@ -17,7 +17,7 @@ import gitmad.bitter.fragment.TopPostFragment;
 import gitmad.bitter.fragment.UserProfileFragment;
 
 public class UserActivity extends FragmentActivity implements ActionBar.TabListener,
-        UserProfileFragment.OnFragmentInteractionListener {
+        UserProfileFragment.OnFragmentInteractionListener, RecentPostFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
