@@ -41,6 +41,9 @@ public class MockPostProvider implements PostProvider {
     public Post getPost(int id) throws IllegalArgumentException {
         User user = new User();
         user.setName("NOTgBurdell");
+        if(posts == null){
+            getPosts();
+        }
         if (posts[id]==null) {
             throw new IllegalArgumentException("could not find post with id " + id);
         }
