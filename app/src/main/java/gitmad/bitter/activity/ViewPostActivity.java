@@ -3,17 +3,15 @@ package gitmad.bitter.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.CommentAdapter;
-import gitmad.bitter.ui.DividerItemDecoration;
 
 public class ViewPostActivity extends ActionBarActivity {
 
@@ -32,16 +30,11 @@ public class ViewPostActivity extends ActionBarActivity {
         postBody.setText(postContent);
         user.setText(userName);
 
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comments_recycler_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext()));
-
         Comment[] comments = getMockComments();
 
-        RecyclerView.Adapter adapter = new CommentAdapter(comments);
-        recyclerView.setAdapter(adapter);
+        CommentAdapter adapter = new CommentAdapter(this, comments);
+        ListView listView = (ListView) findViewById(R.id.comments_list_view);
+        listView.setAdapter(adapter);
     }
 
     @Override
