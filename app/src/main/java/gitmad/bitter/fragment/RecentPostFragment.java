@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 
+import java.util.ArrayList;
+
 import gitmad.bitter.R;
 import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.fragment.dummy.DummyContent;
@@ -61,7 +63,13 @@ public class RecentPostFragment extends Fragment implements AbsListView.OnItemCl
 
         Post[] posts = getMockPosts();
 
-        adapter = new PostAdapter(posts);
+        ArrayList<Post> postList = new ArrayList<>(posts.length);
+
+        for (Post p : posts) {
+            postList.add(p);
+        }
+
+        adapter = new PostAdapter(postList);
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -102,7 +110,7 @@ public class RecentPostFragment extends Fragment implements AbsListView.OnItemCl
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

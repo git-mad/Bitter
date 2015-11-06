@@ -6,17 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-<<<<<<< HEAD
-
-import gitmad.bitter.R;
-=======
 
 import java.util.ArrayList;
 
 import gitmad.bitter.R;
-import gitmad.bitter.data.PostProvider;
-import gitmad.bitter.fragment.AuthorPostDialogFragment;
->>>>>>> refs/remotes/origin/master
 import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.model.Post;
