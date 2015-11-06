@@ -19,9 +19,6 @@ import gitmad.bitter.fragment.dummy.DummyContent;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
-/**
- * Created by Clayton on 10/7/2015.
- */
 public class RecentPostFragment extends Fragment implements AbsListView.OnItemClickListener {
     private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
