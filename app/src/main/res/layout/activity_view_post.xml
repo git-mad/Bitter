@@ -67,6 +67,7 @@
         android:id="@+id/comments_list_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout"
         android:layout_below="@+id/textView" />
 
     <TextView
@@ -78,5 +79,42 @@
         android:layout_below="@+id/view"
         android:text="Comments"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="63dp"
+        android:layout_alignParentBottom="true">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/comment_text_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/submit_comment"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/submit_comment">
+
+            <EditText
+                android:id="@+id/new_comment_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Bitch about it!"
+                android:inputType="text"
+                android:textColorHint="@color/primary_material_dark" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/submit_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Submit" />
+    </RelativeLayout>
 
 </RelativeLayout>

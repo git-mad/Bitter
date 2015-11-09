@@ -2,6 +2,7 @@ package gitmad.bitter.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,9 @@ public class ViewPostActivity extends ActionBarActivity {
         CommentAdapter adapter = new CommentAdapter(this, comments);
         ListView listView = (ListView) findViewById(R.id.comments_list_view);
         listView.setAdapter(adapter);
+
+        final TextInputLayout commentWrapper = (TextInputLayout) findViewById(R.id.comment_text_wrapper);
+        commentWrapper.setHint("Bitch about it!");
     }
 
     @Override
