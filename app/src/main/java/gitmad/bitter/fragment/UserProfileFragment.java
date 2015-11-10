@@ -22,10 +22,13 @@ import android.widget.TextView;
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.dummy.DummyContent;
 
+// TODO Bio
+// TODO Edit stuff
+// TODO scrollable
+
 /**
  * A placeholder fragment containing a simple view.
  */
-
 public class UserProfileFragment extends Fragment implements AbsListView.OnItemClickListener {
     private OnFragmentInteractionListener mListener;
 
@@ -84,7 +87,7 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
         pic.setImageBitmap(conv_bm);
 
         TextView userName = (TextView) view.findViewById(R.id.user_profile_user_name);  //FIXME get from class
-        userName.setText("Teju Nareddy");
+        userName.setText("Username: To Set");
 
         return view;
     }

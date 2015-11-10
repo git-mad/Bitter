@@ -1,91 +1,148 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/user_profile_fragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="1"
-    tools:context="gitmad.bitter.fragment.UserProfileFragment">
-
-    <ImageView
-        android:id="@+id/user_profile_pic"
-        android:layout_width="fill_parent"
-        android:layout_height="250dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="50dp"
-        android:src="@android:drawable/sym_def_app_icon" />
-    <!-- Note that the picture is changed in the Java file and will be circular -->
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/textView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_profile_pic"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="5dp">
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/user_profile_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="1">
+            android:weightSum="1"
+            tools:context="gitmad.bitter.fragment.UserProfileFragment">
 
-            <TextView
-                android:id="@+id/user_profile_user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/user_profile_pic"
+                android:layout_width="fill_parent"
+                android:layout_height="250dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:paddingBottom="10dp"
-                android:paddingTop="20dp"
-                android:text="User Name"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:paddingBottom="20dp"
+                android:paddingTop="50dp"
+                android:src="@android:drawable/sym_def_app_icon" />
+            <!-- Note that the picture is changed in the Java file and will be circular -->
 
-            <View
-                android:id="@+id/user_profile_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignBottom="@id/user_profile_user_name"
-                android:background="@color/accent_color" />
-
-            <TextView
-                android:id="@+id/user_profile_salt"
-                android:layout_width="wrap_content"
+            <android.support.v7.widget.CardView
+                android:id="@+id/user_profile_basic_info_card"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/user_profile_divider"
+                android:layout_below="@id/user_profile_pic"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="Salt: To Set"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="5dp">
 
-            <TextView
-                android:id="@+id/user_profile_date"
-                android:layout_width="wrap_content"
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/user_profile_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="User Name"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <View
+                        android:id="@+id/user_profile_divider1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignBottom="@id/user_profile_user_name"
+                        android:background="@color/accent_color" />
+
+                    <TextView
+                        android:id="@+id/user_profile_salt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_profile_divider1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Salt: To Set"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/user_profile_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/user_profile_salt"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="User Since: To Set"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/user_profile_bio_card"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/user_profile_salt"
+                android:layout_below="@id/user_profile_basic_info_card"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="User Since: To Set"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="5dp">
 
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/user_profile_bio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Bio"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <View
+                        android:id="@+id/user_profile_divider2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignBottom="@id/user_profile_bio"
+                        android:background="@color/accent_color" />
+
+                    <TextView
+                        android:id="@+id/user_profile_custom_bio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_profile_divider2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Custom Bio: To Set"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-</RelativeLayout>
+</ScrollView>

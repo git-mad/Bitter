@@ -16,6 +16,8 @@ import gitmad.bitter.fragment.RecentPostFragment;
 import gitmad.bitter.fragment.TopPostFragment;
 import gitmad.bitter.fragment.UserProfileFragment;
 
+// ActionBad --> Toolbar for hiding on scroll
+
 public class UserActivity extends FragmentActivity implements ActionBar.TabListener,
         UserProfileFragment.OnFragmentInteractionListener,
         RecentPostFragment.OnFragmentInteractionListener,
@@ -130,13 +132,13 @@ public class UserActivity extends FragmentActivity implements ActionBar.TabListe
         public String getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "User Profile";
+                    return "Profile";
                 case 1:
-                    return "Recent Posts";
+                    return "Recent";
                 case 2:
-                    return "Top Posts";
+                    return "Top";
                 case 3:
-                    return "Favorite Posts";
+                    return "Favorite";
             }
             return null;
         }
