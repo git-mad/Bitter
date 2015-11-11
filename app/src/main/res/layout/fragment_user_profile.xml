@@ -47,7 +47,7 @@
                     android:weightSum="1">
 
                     <TextView
-                        android:id="@+id/user_profile_user_name"
+                        android:id="@+id/user_profile_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -62,7 +62,7 @@
                         android:id="@+id/user_profile_divider1"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_alignBottom="@id/user_profile_user_name"
+                        android:layout_alignBottom="@id/user_profile_username"
                         android:background="@color/accent_color" />
 
                     <TextView
@@ -78,7 +78,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView
-                        android:id="@+id/user_profile_date"
+                        android:id="@+id/user_profile_user_since"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_profile_salt"
@@ -92,7 +92,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/user_profile_bio_card"
+                android:id="@+id/user_profile_about_me_card"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/user_profile_basic_info_card"
@@ -113,7 +113,7 @@
                     android:weightSum="1">
 
                     <TextView
-                        android:id="@+id/user_profile_bio"
+                        android:id="@+id/user_profile_about_me_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -121,14 +121,14 @@
                         android:layout_gravity="center_horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
-                        android:text="Bio"
+                        android:text="About Me"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <View
                         android:id="@+id/user_profile_divider2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_alignBottom="@id/user_profile_bio"
+                        android:layout_alignBottom="@id/user_profile_about_me_label"
                         android:background="@color/accent_color" />
 
                     <TextView
@@ -138,9 +138,89 @@
                         android:layout_below="@id/user_profile_divider2"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center_horizontal"
+                        android:maxLines="4"
+                        android:minLines="1"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:text="Custom Bio: To Set"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/user_profile_stats_card"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_profile_about_me_card"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="5dp">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/user_profile_user_stats_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="User Statistics"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <View
+                        android:id="@+id/user_profile_divider3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignBottom="@id/user_profile_user_stats_label"
+                        android:background="@color/accent_color" />
+
+                    <TextView
+                        android:id="@+id/user_profile_posts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_profile_divider3"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Total Posts: To Set"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/user_profile_replies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_profile_posts"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Total Replies: To Set"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/user_profile_votes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_profile_replies"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Total Votes: To Set"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>

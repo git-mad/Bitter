@@ -86,7 +86,7 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
-        TextView userName = (TextView) view.findViewById(R.id.user_profile_user_name);  //FIXME get from class
+        TextView userName = (TextView) view.findViewById(R.id.user_profile_username);  //FIXME get from class
         userName.setText("Username: To Set");
 
         return view;
