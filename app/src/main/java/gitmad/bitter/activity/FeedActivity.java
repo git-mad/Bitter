@@ -2,6 +2,7 @@ package gitmad.bitter.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -17,7 +18,7 @@ import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
 
-public class FeedActivity extends Activity implements AuthorPostDialogFragment.OnPostCreatedListener {
+public class FeedActivity extends AppCompatActivity implements AuthorPostDialogFragment.OnPostCreatedListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -25,6 +26,8 @@ public class FeedActivity extends Activity implements AuthorPostDialogFragment.O
 
     private MockPostProvider postProvider;
 
+    //TODO: Add a way to get to UserActivity
+    //TODO: Change to AppCompact
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

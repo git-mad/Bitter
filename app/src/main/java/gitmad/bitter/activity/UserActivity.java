@@ -19,6 +19,9 @@ import gitmad.bitter.fragment.UserProfileFragment;
 public class UserActivity extends FragmentActivity implements ActionBar.TabListener,
         UserProfileFragment.OnFragmentInteractionListener {
 
+    //TODO: Change from Action Bar to Toolbar, Toolbar will be in main App
+    //TODO: Change to appCompact if need
+    //TODO: Change all fragments to AppCompact
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a

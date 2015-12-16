@@ -8,8 +8,10 @@ android {
 
     defaultConfig {
         applicationId "gitmad.bitter"
-        minSdkVersion 21
-        targetSdkVersion 23
+        //Note 19 = KitKat, 23 Marshmallow
+        minSdkVersion 19
+        maxSdkVersion 23
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
