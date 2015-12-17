@@ -2,27 +2,17 @@ package gitmad.bitter.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
-import android.support.v7.app.AppCompatActivity;
-=======
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBarActivity;
->>>>>>> refs/remotes/origin/view-post
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
-<<<<<<< HEAD
-import gitmad.bitter.data.MockPostProvider;
-import gitmad.bitter.data.PostProvider;
-import gitmad.bitter.model.Post;
-=======
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.CommentAdapter;
->>>>>>> refs/remotes/origin/view-post
 
 public class ViewPostActivity extends AppCompatActivity {
 
@@ -32,18 +22,12 @@ public class ViewPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_post);
 
         Intent intent = getIntent();
-        String id = intent.getStringExtra("POST_ID");
-
-        PostProvider postProvider = new MockPostProvider(this);
-        Post post = postProvider.getPost(Integer.parseInt(id));
+        String postContent = intent.getStringExtra("postContent");
+        String userName = intent.getStringExtra("userName");
 
         TextView postBody = (TextView) findViewById(R.id.postContent);
         TextView user = (TextView) findViewById(R.id.posterUsername);
 
-<<<<<<< HEAD
-        postBody.setText(post.getText());
-        user.setText(post.getUser().getName());
-=======
         postBody.setText(postContent);
         user.setText(userName);
 
@@ -55,7 +39,6 @@ public class ViewPostActivity extends AppCompatActivity {
 
         final TextInputLayout commentWrapper = (TextInputLayout) findViewById(R.id.comment_text_wrapper);
         commentWrapper.setHint("Bitch about it!");
->>>>>>> refs/remotes/origin/view-post
     }
 
     @Override

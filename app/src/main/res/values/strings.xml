@@ -19,9 +19,6 @@
         <item>When people tweet dependent clauses.</item>
         <item>I hate how twitter only does C syntax highlighting for preprocessor instructions.</item>
     </array>
-<<<<<<< HEAD
-    
-=======
 
     <array name="mock_comments">
         <item>This makes me really angry!</item>
@@ -31,9 +28,7 @@
         <item>THIS.</item>
         <item>Literally same</item>
     </array>
->>>>>>> refs/remotes/origin/view-post
-    <string name="title_activity_view_post">ViewPostActivity</string>
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="title_activity_fragment_test">FragmentTestActivity</string>
+
+    <string name="title_activity_view_post">View Post Activity</string>
     <string name="title_activity_test">User Information</string>
 </resources>
