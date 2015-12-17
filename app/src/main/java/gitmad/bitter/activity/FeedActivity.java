@@ -1,7 +1,9 @@
 package gitmad.bitter.activity;
 
-import android.app.Activity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -10,14 +12,13 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import gitmad.bitter.R;
-import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
 
-public class FeedActivity extends Activity implements AuthorPostDialogFragment.OnPostCreatedListener {
+public class FeedActivity extends AppCompatActivity implements AuthorPostDialogFragment.OnPostCreatedListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -25,6 +26,8 @@ public class FeedActivity extends Activity implements AuthorPostDialogFragment.O
 
     private MockPostProvider postProvider;
 
+    //TODO: Add a way to get to UserActivity
+    //TODO: Change to AppCompact
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,12 @@ public class FeedActivity extends Activity implements AuthorPostDialogFragment.O
         if (id == R.id.action_bitch) {
             new AuthorPostDialogFragment().show(getFragmentManager(), "AuthorBitch");
             return true;
+        }
+
+        if (id == R.id.start_User){
+            Intent intent = new Intent(this,UserActivity.class);
+            startActivity(intent);
+
         }
 
         return super.onOptionsItemSelected(item);
