@@ -2,15 +2,18 @@ package gitmad.bitter.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
-import gitmad.bitter.data.MockPostProvider;
-import gitmad.bitter.data.PostProvider;
-import gitmad.bitter.model.Post;
+import gitmad.bitter.model.Comment;
+import gitmad.bitter.model.User;
+import gitmad.bitter.ui.CommentAdapter;
 
 public class ViewPostActivity extends AppCompatActivity {
 
@@ -19,17 +22,27 @@ public class ViewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_post);
 
-        Intent intent = getIntent();
-        String id = intent.getStringExtra("POST_ID");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        PostProvider postProvider = new MockPostProvider(this);
-        Post post = postProvider.getPost(Integer.parseInt(id));
+        Intent intent = getIntent();
+        String postContent = intent.getStringExtra("postContent");
+        String userName = intent.getStringExtra("userName");
 
         TextView postBody = (TextView) findViewById(R.id.postContent);
         TextView user = (TextView) findViewById(R.id.posterUsername);
 
-        postBody.setText(post.getText());
-        user.setText(post.getUser().getName());
+        postBody.setText(postContent);
+        user.setText(userName);
+
+        Comment[] comments = getMockComments();
+
+        CommentAdapter adapter = new CommentAdapter(this, comments);
+        ListView listView = (ListView) findViewById(R.id.comments_list_view);
+        listView.setAdapter(adapter);
+
+        final TextInputLayout commentWrapper = (TextInputLayout) findViewById(R.id.comment_text_wrapper);
+        commentWrapper.setHint("Bitch about it!");
     }
 
     @Override
@@ -52,5 +65,18 @@ public class ViewPostActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private Comment[] getMockComments() {
+        String[] commentsText = getResources().getStringArray(R.array.mock_comments);
+        User user = new User();
+        user.setName("NOTgBurdell");
+        Comment[] comments = new Comment[commentsText.length];
+        for (int i = 0; i < commentsText.length; i++) {
+            comments[i] = new Comment();
+            comments[i].setText(commentsText[i]);
+            comments[i].setUser(user);
+        }
+        return comments;
     }
 }
