@@ -2,4 +2,5 @@
 <android.support.design.widget.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tabLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:theme="@style/MaterialTheme" />

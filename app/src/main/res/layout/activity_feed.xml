@@ -5,9 +5,9 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme">
+        android:theme="@style/MaterialTheme">
 
-        <include layout="@layout/toolbar" />
+        <include layout="@layout/material_toolbar" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
