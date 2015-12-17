@@ -6,14 +6,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 
 import gitmad.bitter.R;
-import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.data.MockPostProvider;
+import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
@@ -38,6 +39,9 @@ public class FeedActivity extends AppCompatActivity implements AuthorPostDialogF
         recyclerView.setLayoutManager(layoutManager);
 
         postProvider = new MockPostProvider(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // specify an adapter (see also next example)
 
