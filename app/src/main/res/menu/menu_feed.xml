@@ -3,4 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".FeedActivity">
     <item android:id="@+id/action_bitch" android:title="Send Bitch"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/start_User" android:title="Start User Activity"
+        app:showAsAction = "ifRoom" />
 </menu>

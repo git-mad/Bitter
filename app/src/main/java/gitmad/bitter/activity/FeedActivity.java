@@ -1,6 +1,7 @@
 package gitmad.bitter.activity;
 
-import android.app.Activity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,6 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import gitmad.bitter.R;
-import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.model.Post;
@@ -71,6 +71,12 @@ public class FeedActivity extends AppCompatActivity implements AuthorPostDialogF
         if (id == R.id.action_bitch) {
             new AuthorPostDialogFragment().show(getFragmentManager(), "AuthorBitch");
             return true;
+        }
+
+        if (id == R.id.start_User){
+            Intent intent = new Intent(this,UserActivity.class);
+            startActivity(intent);
+
         }
 
         return super.onOptionsItemSelected(item);
