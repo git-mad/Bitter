@@ -48,10 +48,10 @@ public class UserActivity extends AppCompatActivity implements
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-
         tabLayout.setupWithViewPager(mViewPager);
 
 
