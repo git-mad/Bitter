@@ -3,6 +3,7 @@
     android:layout_height="match_parent" tools:context=".FeedActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/feedActivityToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/MaterialTheme">
@@ -14,6 +15,7 @@
         android:id="@+id/feed_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/feedActivityToolbar"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:scrollbars="vertical" />
 </RelativeLayout>
