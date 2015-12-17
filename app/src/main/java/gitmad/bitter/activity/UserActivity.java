@@ -1,15 +1,13 @@
 package gitmad.bitter.activity;
 
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import gitmad.bitter.R;
@@ -18,7 +16,7 @@ import gitmad.bitter.fragment.RecentPostFragment;
 import gitmad.bitter.fragment.TopPostFragment;
 import gitmad.bitter.fragment.UserProfileFragment;
 
-public class UserActivity extends FragmentActivity implements ActionBar.TabListener,
+public class UserActivity extends AppCompatActivity implements
         UserProfileFragment.OnFragmentInteractionListener {
 
     //TODO: Change from Action Bar to Toolbar, Toolbar will be in main App
@@ -51,11 +49,11 @@ public class UserActivity extends FragmentActivity implements ActionBar.TabListe
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-        // Set up the action bar.
-//        final ActionBar actionBar = getActionBar();
-//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        tabLayout.setupWithViewPager(mViewPager);
+
 
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -78,21 +76,7 @@ public class UserActivity extends FragmentActivity implements ActionBar.TabListe
 
     }
 
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
+    //TODO: Give a purpose to this method
     @Override
     public void onFragmentInteraction(String id) {
 
