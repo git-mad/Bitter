@@ -22,7 +22,7 @@ public class MockPostProvider implements PostProvider {
 
     @Override
     public Post[] getPosts() {
-        if(posts == null){
+        if (posts == null) {
             String[] postsText = context.getResources().getStringArray(R.array.mock_posts);
             User user = new User();
             user.setName("NOTgBurdell");
@@ -41,10 +41,10 @@ public class MockPostProvider implements PostProvider {
     public Post getPost(int id) throws IllegalArgumentException {
         User user = new User();
         user.setName("NOTgBurdell");
-        if(posts == null){
+        if (posts == null) {
             getPosts();
         }
-        if (posts[id]==null) {
+        if (posts[id] == null) {
             throw new IllegalArgumentException("could not find post with id " + id);
         }
         return posts[id];
@@ -53,7 +53,7 @@ public class MockPostProvider implements PostProvider {
     //NOT stored in resources, just in memory.
     //Also
     @Override
-    public void addPost(Post post){
+    public void addPost(Post post) {
         posts = Arrays.copyOf(posts, posts.length + 1);
         post.setId(posts.length - 1);
         posts[posts.length - 1] = post;
