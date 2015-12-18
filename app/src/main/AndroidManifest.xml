@@ -20,7 +20,7 @@
             android:label="@string/title_activity_test">
         </activity>
         <activity
-            android:name=".activity.ViewPostActivity"
+            android:name=".fragment.ViewPostFragment"
             android:label="@string/title_activity_view_post"
             android:parentActivityName=".activity.FeedActivity" >
             <meta-data
