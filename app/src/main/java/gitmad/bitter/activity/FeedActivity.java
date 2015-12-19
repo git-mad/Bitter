@@ -78,7 +78,7 @@ public class FeedActivity extends AppCompatActivity implements AuthorPostDialogF
         }
 
         if (id == R.id.start_User){
-            Intent intent = new Intent(this,UserActivity.class);
+            Intent intent = new Intent(this, UserActivity.class);
             startActivity(intent);
 
         }
