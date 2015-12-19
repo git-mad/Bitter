@@ -13,13 +13,27 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import gitmad.bitter.R;
+import gitmad.bitter.fragment.FavoritePostFragment;
+import gitmad.bitter.fragment.FeedFragment;
+import gitmad.bitter.fragment.RecentPostFragment;
+import gitmad.bitter.fragment.TopPostFragment;
+import gitmad.bitter.fragment.UserFragment;
+import gitmad.bitter.fragment.UserProfileFragment;
 import gitmad.bitter.fragment.ViewPostFragment;
 
-public class NavigationActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ViewPostFragment.OnFragmentInteractionListener {
+public class NavigationActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        FeedFragment.OnFragmentInteractionListener,
+        UserFragment.OnFragmentInteractionListener,
+        ViewPostFragment.OnFragmentInteractionListener,
+        UserProfileFragment.OnFragmentInteractionListener,
+        RecentPostFragment.OnFragmentInteractionListener,
+        TopPostFragment.OnFragmentInteractionListener,
+        FavoritePostFragment.OnFragmentInteractionListener {
 
     private DrawerLayout drawer;
     private Toolbar toolbar;
+    private MenuItem previousMI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +50,10 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // FIXME doesn't highlight feed fragment menu item in nav drawer
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, FeedFragment.newInstance()).commit();
     }
 
     @Override
@@ -53,12 +71,11 @@ public class NavigationActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment fragment = null;
         Class fragmentClass = null;
         if (id == R.id.nav_feed) {
-
+            fragmentClass = FeedFragment.class;
         } else if (id == R.id.nav_user) {
-
+            fragmentClass = UserFragment.class;
         } else if (id == R.id.nav_view_post) {
             fragmentClass = ViewPostFragment.class;
         } else if (id == R.id.nav_create_post) {
@@ -67,6 +84,7 @@ public class NavigationActivity extends AppCompatActivity
 
         }
 
+        Fragment fragment;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
@@ -76,11 +94,16 @@ public class NavigationActivity extends AppCompatActivity
             return false;
         }
 
+        if (previousMI != null) {
+            previousMI.setChecked(false);
+        }
+        previousMI = item;
+
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, fragment).commit();
 
-        // Highlight the selected item, update the title, and close the drawer
+        // Update the title, and close the drawer
         item.setChecked(true);
         setTitle(item.getTitle());
         drawer.closeDrawers();
