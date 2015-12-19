@@ -16,18 +16,11 @@ import gitmad.bitter.fragment.RecentPostFragment;
 import gitmad.bitter.fragment.TopPostFragment;
 import gitmad.bitter.fragment.UserProfileFragment;
 
-<<<<<<< HEAD
 public class UserActivity extends AppCompatActivity implements
-        UserProfileFragment.OnFragmentInteractionListener {
-=======
-// ActionBad --> Toolbar for hiding on scroll
-
-public class UserActivity extends FragmentActivity implements ActionBar.TabListener,
         UserProfileFragment.OnFragmentInteractionListener,
         RecentPostFragment.OnFragmentInteractionListener,
         TopPostFragment.OnFragmentInteractionListener,
         FavoritePostFragment.OnFragmentInteractionListener {
->>>>>>> refs/remotes/origin/user-info
 
     //TODO: Change from Action Bar to Toolbar, Toolbar will be in main App
     //TODO: Change to appCompact if need

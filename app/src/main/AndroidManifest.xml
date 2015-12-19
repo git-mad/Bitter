@@ -9,16 +9,11 @@
         android:theme="@style/MaterialTheme">
         <activity
             android:name=".activity.FeedActivity"
-<<<<<<< HEAD
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-=======
-            android:label="@string/app_name"
-            android:theme="@style/MaterialLightTheme">
->>>>>>> refs/remotes/origin/user-info
         </activity>
         <activity
             android:name=".activity.UserActivity"
@@ -28,6 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- FIXME -->
         <activity
             android:name=".fragment.ViewPostFragment"
             android:label="@string/title_activity_view_post"

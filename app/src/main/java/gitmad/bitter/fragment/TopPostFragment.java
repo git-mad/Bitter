@@ -1,12 +1,8 @@
 package gitmad.bitter.fragment;
 
-<<<<<<< HEAD
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-=======
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,7 +26,6 @@ public class TopPostFragment extends Fragment implements AbsListView.OnItemClick
     private RecyclerView.LayoutManager layoutManager;
 
     private MockPostProvider postProvider;
->>>>>>> refs/remotes/origin/user-info
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
