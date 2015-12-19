@@ -19,8 +19,18 @@ public class AuthorPostDialogFragment extends DialogFragment {
 
     private OnPostCreatedListener mListener;
 
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
     public AuthorPostDialogFragment() {
-        // Required empty public constructor
+    }
+
+    public static AuthorPostDialogFragment newInstance() {
+        AuthorPostDialogFragment fragment = new AuthorPostDialogFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override

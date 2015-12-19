@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import gitmad.bitter.R;
+import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.fragment.FavoritePostFragment;
 import gitmad.bitter.fragment.FeedFragment;
 import gitmad.bitter.fragment.RecentPostFragment;
@@ -20,6 +21,7 @@ import gitmad.bitter.fragment.TopPostFragment;
 import gitmad.bitter.fragment.UserFragment;
 import gitmad.bitter.fragment.UserProfileFragment;
 import gitmad.bitter.fragment.ViewPostFragment;
+import gitmad.bitter.model.Post;
 
 public class NavigationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -29,7 +31,8 @@ public class NavigationActivity extends AppCompatActivity implements
         UserProfileFragment.OnFragmentInteractionListener,
         RecentPostFragment.OnFragmentInteractionListener,
         TopPostFragment.OnFragmentInteractionListener,
-        FavoritePostFragment.OnFragmentInteractionListener {
+        FavoritePostFragment.OnFragmentInteractionListener,
+        AuthorPostDialogFragment.OnPostCreatedListener {
 
     private DrawerLayout drawer;
     private Toolbar toolbar;
@@ -79,7 +82,7 @@ public class NavigationActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_view_post) {
             fragmentClass = ViewPostFragment.class;
         } else if (id == R.id.nav_create_post) {
-
+            fragmentClass = AuthorPostDialogFragment.class;
         } else if (id == R.id.nav_settings) {
 
         }
@@ -88,8 +91,8 @@ public class NavigationActivity extends AppCompatActivity implements
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
-            System.out.println("FRAGMENT NOT SET or DOES NOT EXIST YET");
-            Toast.makeText(this, "Fragment not set or does not exist yet", Toast.LENGTH_SHORT).show();
+            System.out.println("FRAGMENT NOT SET or NOT A PROPER FRAGMENT");
+            Toast.makeText(this, "Fragment not set or not a proper fragment", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
             return false;
         }
@@ -114,8 +117,15 @@ public class NavigationActivity extends AppCompatActivity implements
         return true;
     }
 
+    // TODO
     @Override
     public void onFragmentInteraction(String id) {
+
+    }
+
+    // TODO
+    @Override
+    public void onPostCreated(Post post) {
 
     }
 }
