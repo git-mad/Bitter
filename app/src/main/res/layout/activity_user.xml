@@ -13,7 +13,6 @@
         android:theme="@style/MaterialTheme">
 
         <include layout="@layout/material_toolbar" />
-
         <include layout="@layout/material_tab_layout" />
     </android.support.design.widget.AppBarLayout>
 
