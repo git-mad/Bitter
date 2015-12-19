@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import gitmad.bitter.R;
-import gitmad.bitter.activity.ViewPostActivity;
+import gitmad.bitter.fragment.ViewPostFragment;
 import gitmad.bitter.model.Post;
 
 /**
@@ -45,7 +45,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ViewPostActivity.class);
+                Intent intent = new Intent(v.getContext(), ViewPostFragment.class);
                 intent.putExtra("POST_ID", "" + posts.get(i).getId());
                 v.getContext().startActivity(intent);
             }
