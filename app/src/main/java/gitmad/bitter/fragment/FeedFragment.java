@@ -82,7 +82,9 @@ public class FeedFragment extends Fragment implements AbsListView.OnItemClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_feed, container, false);
+
+        // FIXME oops i changed the R.layout.id cause it was giving me an error
+        View view = inflater.inflate(R.layout.fragment_feed_grid, container, false);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);

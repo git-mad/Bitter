@@ -38,7 +38,7 @@
 
     <string name="title_activity_view_post">View Post Activity</string>
     <string name="title_activity_test">User Information</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_navigation">Bitter</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

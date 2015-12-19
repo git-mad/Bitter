@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="none"
+        android:title="Debug">
+
+        <item
+            android:id="@+id/nav_feed"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Feed Fragment" />
+        <item
+            android:id="@+id/nav_user"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="User Profile Fragment" />
+        <item
+            android:id="@+id/nav_view_post"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="View Post Fragment" />
+        <item
+            android:id="@+id/nav_create_post"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Create Post Fragment" />
+    </group>
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Settings Fragment" />
+        </menu>
+    </item>
+
+</menu>
