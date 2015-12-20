@@ -25,6 +25,8 @@ public class ViewPostActivity extends AppCompatActivity {
         PostProvider postProvider = new MockPostProvider(this);
         Post post = postProvider.getPost(Integer.parseInt(id));
 
+//        UserProvider userProvider = new
+
         TextView postBody = (TextView) findViewById(R.id.postContent);
         TextView user = (TextView) findViewById(R.id.posterUsername);
 

@@ -5,6 +5,10 @@ android {
 
     buildToolsVersion '23.0.1'
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 
     defaultConfig {
         applicationId "gitmad.bitter"
@@ -31,6 +35,5 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
     compile 'com.android.support:support-v13:23.1.0'
     compile 'com.android.support:support-v4:23.1.0'
-    compile 'com.firebase:firebase-client-android:2.5.0+'
-    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    compile 'com.firebase:firebase-client-android:2.5.0'
 }

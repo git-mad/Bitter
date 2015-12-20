@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 
@@ -38,17 +39,17 @@ public class AuthorPostDialogFragment extends DialogFragment {
         root.findViewById(R.id.bitch_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Post post = new Post();
-                post.setText(bitchEditText.getText().toString());
-                post.setTimestamp(new Date().getTime());
+                String postText = bitchEditText.getText().toString();
+
+                Post post = new MockPostProvider(getContext()).addPost(postText);
+
+
                 User temp = new User();
 
                 //temporary//
                 temp.setName("me");
                 ArrayList<Post> posts = new ArrayList<>();
                 posts.add(post);
-                temp.setPosts(posts);
-                post.setUser(temp);
 
                 mListener.onPostCreated(post);
                 AuthorPostDialogFragment.this.dismiss();

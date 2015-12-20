@@ -28,9 +28,8 @@ public class MockPostProvider implements PostProvider {
             user.setName("NOTgBurdell");
             posts = new Post[postsText.length];
             for (int i = 0; i < postsText.length; i++) {
-                posts[i] = new Post();
+                posts[i] = new Post(id, text, timestamp, downvotes, authorId);
                 posts[i].setText(postsText[i]);
-                posts[i].setUser(user);
                 posts[i].setId(i);
             }
         }
@@ -48,6 +47,16 @@ public class MockPostProvider implements PostProvider {
             throw new IllegalArgumentException("could not find post with id " + id);
         }
         return posts[id];
+    }
+
+    @Override
+    public Post addPost(String postText) {
+        return null;
+    }
+
+    @Override
+    public Post[] getPostsByUser(User user) {
+        return new Post[0];
     }
 
     //NOT stored in resources, just in memory.

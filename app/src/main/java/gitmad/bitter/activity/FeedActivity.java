@@ -27,7 +27,6 @@ public class FeedActivity extends AppCompatActivity implements AuthorPostDialogF
     private MockPostProvider postProvider;
 
     //TODO: Add a way to get to UserActivity
-    //TODO: Change to AppCompact
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
