@@ -43,7 +43,7 @@ public class NavigationActivity extends AppCompatActivity implements
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // FIXME doesn't highlight feed fragment menu item in nav drawer
+        // FIXME doesn't highlight feed fragment menu item in nav drawer on init
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, FeedFragment.newInstance()).commit();
     }
@@ -85,20 +85,19 @@ public class NavigationActivity extends AppCompatActivity implements
             return false;
         }
 
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, fragment).commit();
+
         if (previousMI != null) {
             previousMI.setChecked(false);
         }
         previousMI = item;
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, fragment).commit();
-
         // Update the title, and close the drawer
         item.setChecked(true);
         setTitle(item.getTitle());
         drawer.closeDrawers();
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
