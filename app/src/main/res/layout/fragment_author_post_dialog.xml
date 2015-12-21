@@ -2,7 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="gitmad.bitter.fragment.AuthorPostDialogFragment">
+    tools:context="gitmad.bitter.fragment.AuthorPostDialogFragment"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <EditText
         android:layout_width="wrap_content"
