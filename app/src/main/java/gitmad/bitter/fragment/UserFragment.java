@@ -1,7 +1,6 @@
 package gitmad.bitter.fragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,14 +13,9 @@ import android.view.ViewGroup;
 
 import gitmad.bitter.R;
 
-public class UserFragment extends Fragment implements
-        UserProfileFragment.OnFragmentInteractionListener,
-        RecentPostFragment.OnFragmentInteractionListener,
-        TopPostFragment.OnFragmentInteractionListener,
-        FavoritePostFragment.OnFragmentInteractionListener {
+public class UserFragment extends Fragment {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private OnFragmentInteractionListener mListener;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -62,44 +56,6 @@ public class UserFragment extends Fragment implements
         tabLayout.setupWithViewPager(mViewPager);
 
         return view;
-    }
-
-    @Override
-    public void onAttach(Context c) {
-        super.onAttach(c);
-        try {
-            mListener = (OnFragmentInteractionListener) c;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(c.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    //TODO: Give this method a purpose
-    @Override
-    public void onFragmentInteraction(String id) {
-
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String id);
     }
 
     /**

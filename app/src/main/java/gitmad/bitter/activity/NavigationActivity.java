@@ -9,29 +9,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
-import gitmad.bitter.fragment.FavoritePostFragment;
 import gitmad.bitter.fragment.FeedFragment;
-import gitmad.bitter.fragment.RecentPostFragment;
-import gitmad.bitter.fragment.TopPostFragment;
 import gitmad.bitter.fragment.UserFragment;
-import gitmad.bitter.fragment.UserProfileFragment;
-import gitmad.bitter.fragment.ViewPostFragment;
 import gitmad.bitter.model.Post;
 
 public class NavigationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        FeedFragment.OnFragmentInteractionListener,
-        UserFragment.OnFragmentInteractionListener,
-        ViewPostFragment.OnFragmentInteractionListener,
-        UserProfileFragment.OnFragmentInteractionListener,
-        RecentPostFragment.OnFragmentInteractionListener,
-        TopPostFragment.OnFragmentInteractionListener,
-        FavoritePostFragment.OnFragmentInteractionListener,
         AuthorPostDialogFragment.OnPostCreatedListener {
 
     private DrawerLayout drawer;
@@ -79,10 +68,9 @@ public class NavigationActivity extends AppCompatActivity implements
             fragmentClass = FeedFragment.class;
         } else if (id == R.id.nav_user) {
             fragmentClass = UserFragment.class;
-        } else if (id == R.id.nav_view_post) {
-            fragmentClass = ViewPostFragment.class;
         } else if (id == R.id.nav_create_post) {
-            fragmentClass = AuthorPostDialogFragment.class;
+            showCreatePostDialog();
+            return true;
         } else if (id == R.id.nav_settings) {
 
         }
@@ -119,13 +107,12 @@ public class NavigationActivity extends AppCompatActivity implements
 
     // TODO
     @Override
-    public void onFragmentInteraction(String id) {
-
+    public void onPostCreated(Post post) {
+        Log.d("Bitter", "NavigationView#onPostCreated(" + post.toString() + ")");
     }
 
-    // TODO
-    @Override
-    public void onPostCreated(Post post) {
-
+    private void showCreatePostDialog() {
+        AuthorPostDialogFragment authorPostDialogFragment = AuthorPostDialogFragment.newInstance();
+        authorPostDialogFragment.show(getSupportFragmentManager(), AuthorPostDialogFragment.AUTHOR_POST_DIALOG_FRAG_TAG);
     }
 }

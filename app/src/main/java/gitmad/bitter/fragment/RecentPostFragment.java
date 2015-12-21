@@ -1,6 +1,5 @@
 package gitmad.bitter.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,19 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import gitmad.bitter.R;
 import gitmad.bitter.data.MockPostProvider;
-import gitmad.bitter.fragment.dummy.DummyContent;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
-public class RecentPostFragment extends Fragment implements AbsListView.OnItemClickListener {
-    private OnFragmentInteractionListener mListener;
+public class RecentPostFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -62,9 +58,7 @@ public class RecentPostFragment extends Fragment implements AbsListView.OnItemCl
 
         ArrayList<Post> postList = new ArrayList<>(posts.length);
 
-        for (Post p : posts) {
-            postList.add(p);
-        }
+        Collections.addAll(postList, posts);
 
         adapter = new PostAdapter(postList);
         recyclerView.setAdapter(adapter);
@@ -74,46 +68,5 @@ public class RecentPostFragment extends Fragment implements AbsListView.OnItemCl
 
     private Post[] getMockPosts() {
         return postProvider.getPosts();
-    }
-
-    @Override
-    public void onAttach(Context c) {
-        super.onAttach(c);
-        try {
-            mListener = (OnFragmentInteractionListener) c;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(c.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-        }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String id);
     }
 }

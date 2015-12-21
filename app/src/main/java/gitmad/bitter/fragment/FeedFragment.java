@@ -1,7 +1,6 @@
 package gitmad.bitter.fragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,8 +24,6 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
     private RecyclerView.LayoutManager layoutManager;
 
     private MockPostProvider postProvider;
-
-    private OnFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -69,23 +66,6 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         return view;
     }
 
-    @Override
-    public void onAttach(Context c) {
-        super.onAttach(c);
-        try {
-            mListener = (OnFragmentInteractionListener) c;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(c.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     private Post[] getMockPosts() {
         return postProvider.getPosts();
     }
@@ -97,20 +77,5 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         postProvider.addPost(post);
         ((PostAdapter) adapter).add(post);
         recyclerView.swapAdapter(adapter, false);
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String id);
     }
 }

@@ -1,6 +1,5 @@
 package gitmad.bitter.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -11,12 +10,28 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.MockPostProvider;
+import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.model.Comment;
+import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.CommentAdapter;
 
 public class ViewPostFragment extends Fragment {
-    private OnFragmentInteractionListener mListener;
+
+    private static final String KEY_POST_ID = "postIdKey";
+
+    public static ViewPostFragment newInstance(int postId) {
+        Bundle args = new Bundle();
+        args.putInt(KEY_POST_ID, postId);
+        ViewPostFragment fragment = new ViewPostFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    private int postId;
+    private Post post;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -25,34 +40,27 @@ public class ViewPostFragment extends Fragment {
     public ViewPostFragment() {
     }
 
-    public static ViewPostFragment newInstance() {
-        ViewPostFragment fragment = new ViewPostFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments().containsKey(KEY_POST_ID)) {
+            int postId = getArguments().getInt(KEY_POST_ID);
+            post = getPostFromMockProvider(postId);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_post, container, false);
 
-        //FIXME intents don't work for fragments
-//        Intent intent = getIntent();
-//        String postContent = intent.getStringExtra("postContent");
-//        String userName = intent.getStringExtra("userName");
-        String postContent = "FIX ME";
-        String userName = "FIX ME";
-
         TextView postBody = (TextView) view.findViewById(R.id.postContent);
         TextView user = (TextView) view.findViewById(R.id.posterUsername);
 
-        postBody.setText(postContent);
-        user.setText(userName);
+        if (post != null) {
+            postBody.setText(post.getText());
+        }
+        user.setText("temp");
 
         Comment[] comments = getMockComments();
 
@@ -64,17 +72,6 @@ public class ViewPostFragment extends Fragment {
         commentWrapper.setHint("Bitch about it!");
 
         return view;
-    }
-
-    @Override
-    public void onAttach(Context c) {
-        super.onAttach(c);
-        try {
-            mListener = (OnFragmentInteractionListener) c;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(c.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     private Comment[] getMockComments() {
@@ -90,24 +87,8 @@ public class ViewPostFragment extends Fragment {
         return comments;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String id);
+    private Post getPostFromMockProvider(int postId) {
+        PostProvider postProvider = new MockPostProvider(getActivity());
+        return postProvider.getPost(postId);
     }
 }
