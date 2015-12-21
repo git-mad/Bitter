@@ -44,7 +44,7 @@ public class ViewPostFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(KEY_POST_ID)) {
+        if (getArguments() != null && getArguments().containsKey(KEY_POST_ID)) {
             int postId = getArguments().getInt(KEY_POST_ID);
             post = getPostFromMockProvider(postId);
         }
@@ -54,13 +54,13 @@ public class ViewPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_post, container, false);
 
-        TextView postBody = (TextView) view.findViewById(R.id.postContent);
-        TextView user = (TextView) view.findViewById(R.id.posterUsername);
+        TextView postBodyTextView = (TextView) view.findViewById(R.id.postContent);
+        TextView userTextView = (TextView) view.findViewById(R.id.posterUsername);
 
         if (post != null) {
-            postBody.setText(post.getText());
+            postBodyTextView.setText(post.getText());
         }
-        user.setText("temp");
+        userTextView.setText("temp");
 
         Comment[] comments = getMockComments();
 
