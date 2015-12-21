@@ -1,7 +1,7 @@
 package gitmad.bitter.model;
 
 /**
- * Created by brian on 12/18/15.
+ * Encapsulates info about a comment on a post
  */
 public class Comment {
     private int id;
@@ -26,6 +26,7 @@ public class Comment {
 
     public String getAuthorId() {
         return authorId;
+
     }
 
     public String getText() {

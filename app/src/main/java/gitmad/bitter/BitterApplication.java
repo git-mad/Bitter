@@ -54,8 +54,7 @@ public class BitterApplication extends Application {
     }
 
     private void storeInitialUserData(String userId) {
-        User me = new User();
-        me.setName(generateRandomUsername());
+        User me = new User(generateRandomUsername(), userId);
 
         Firebase userRef = new Firebase("https://bitter-gitmad.firebaseio.com/users/" + userId);
 

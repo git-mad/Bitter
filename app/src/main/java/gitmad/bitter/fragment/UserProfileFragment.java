@@ -1,6 +1,5 @@
 package gitmad.bitter.fragment;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,20 +13,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
-import gitmad.bitter.fragment.dummy.DummyContent;
+
+// TODO Bio
+// TODO Edit stuff
+// TODO scrollable
 
 /**
  * A placeholder fragment containing a simple view.
  */
-
-public class UserProfileFragment extends Fragment implements AbsListView.OnItemClickListener {
-    private OnFragmentInteractionListener mListener;
+public class UserProfileFragment extends Fragment {
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -83,50 +81,11 @@ public class UserProfileFragment extends Fragment implements AbsListView.OnItemC
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
-        TextView userName = (TextView) view.findViewById(R.id.user_profile_user_name);  //FIXME get from class
-        userName.setText("Teju Nareddy");
+        TextView userName = (TextView) view.findViewById(R.id.user_profile_username);  //FIXME get from class
+        userName.setText("Username: To Set");
 
         return view;
     }
 
-    @Override
-    public void onAttach(Context c) {
-        super.onAttach(c);
-        try {
-            mListener = (OnFragmentInteractionListener) c;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(c.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-        }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String id);
-    }
 }

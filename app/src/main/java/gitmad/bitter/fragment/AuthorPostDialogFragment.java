@@ -1,8 +1,8 @@
 package gitmad.bitter.fragment;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +18,22 @@ import gitmad.bitter.model.User;
 
 public class AuthorPostDialogFragment extends DialogFragment {
 
+    public static final String AUTHOR_POST_DIALOG_FRAG_TAG = "APDFT";
+
     private OnPostCreatedListener mListener;
 
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
     public AuthorPostDialogFragment() {
-        // Required empty public constructor
+    }
+
+    public static AuthorPostDialogFragment newInstance() {
+        AuthorPostDialogFragment fragment = new AuthorPostDialogFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -66,7 +78,7 @@ public class AuthorPostDialogFragment extends DialogFragment {
             mListener = (OnPostCreatedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnPostCreatedListener");
         }
     }
 
