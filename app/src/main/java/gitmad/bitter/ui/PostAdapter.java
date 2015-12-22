@@ -12,7 +12,6 @@ import java.util.List;
 
 import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
-import gitmad.bitter.fragment.ViewPostFragment;
 import gitmad.bitter.model.Post;
 
 /**
@@ -68,7 +67,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 }
             }
         });
-
     }
 
     @Override
