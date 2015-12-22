@@ -2,6 +2,7 @@ package gitmad.bitter.fragment;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,14 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
 
+        FloatingActionButton createPost = (FloatingActionButton) view.findViewById(R.id.create_post_button);
+        createPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCreatePostDialog();
+            }
+        });
+
         recyclerView = (RecyclerView) view.findViewById(R.id.feed_recycler_view);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -77,5 +86,10 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         postProvider.addPost(post);
         ((PostAdapter) adapter).add(post);
         recyclerView.swapAdapter(adapter, false);
+    }
+
+    private void showCreatePostDialog() {
+        AuthorPostDialogFragment authorPostDialogFragment = AuthorPostDialogFragment.newInstance();
+        authorPostDialogFragment.show(getActivity().getSupportFragmentManager(), AuthorPostDialogFragment.AUTHOR_POST_DIALOG_FRAG_TAG);
     }
 }
