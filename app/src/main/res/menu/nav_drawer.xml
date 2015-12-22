@@ -13,10 +13,6 @@
             android:id="@+id/nav_user"
             android:icon="@drawable/ic_menu_manage"
             android:title="User Profile" />
-        <item
-            android:id="@+id/nav_create_post"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Create Post" />
     </group>
 
     <item android:title="Other">
