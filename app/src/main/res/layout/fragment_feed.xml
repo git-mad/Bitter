@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,6 +8,7 @@
         android:id="@+id/feed_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:scrollbars="vertical" />
 
@@ -18,9 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_plus"
-        app:backgroundTint="#FF0000"
-        app:elevation="4dp" />
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_edit" />
 
 </RelativeLayout>
 
