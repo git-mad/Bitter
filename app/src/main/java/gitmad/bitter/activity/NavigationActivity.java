@@ -68,9 +68,6 @@ public class NavigationActivity extends AppCompatActivity implements
             fragmentClass = FeedFragment.class;
         } else if (id == R.id.nav_user) {
             fragmentClass = UserFragment.class;
-        } else if (id == R.id.nav_create_post) {
-            showCreatePostDialog();
-            return true;
         } else if (id == R.id.nav_settings) {
 
         }
@@ -108,10 +105,5 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onPostCreated(Post post) {
         Log.d("Bitter", "NavigationView#onPostCreated(" + post.toString() + ")");
-    }
-
-    private void showCreatePostDialog() {
-        AuthorPostDialogFragment authorPostDialogFragment = AuthorPostDialogFragment.newInstance();
-        authorPostDialogFragment.show(getSupportFragmentManager(), AuthorPostDialogFragment.AUTHOR_POST_DIALOG_FRAG_TAG);
     }
 }
