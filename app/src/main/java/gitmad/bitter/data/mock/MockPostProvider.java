@@ -60,10 +60,10 @@ public class MockPostProvider implements PostProvider {
     }
 
     @Override
-    public Post getPost(int id) throws IllegalArgumentException {
+    public Post getPost(String id) throws IllegalArgumentException {
         logMessageIfEnabled(String.format("MockPostProvider#getPost(%d)", id));
 
-        if (id >= posts.size()) {
+        if (Integer.parseInt(id) >= posts.size()) {
             throw new IllegalArgumentException("No post with Id specified");
         }
         return posts.get(id);
@@ -74,7 +74,7 @@ public class MockPostProvider implements PostProvider {
         logMessageIfEnabled(String.format("MockPostProvider#addPost(%s)", postText));
 
         int nextId = getNextId();
-        Post newPost = createPostWithText(postText, nextId, getMockLoggedInUserId());
+        Post newPost = createPostWithText(postText, Integer.toString(nextId), getMockLoggedInUserId());
         posts.put(nextId, newPost);
         return newPost;
     }
@@ -97,7 +97,7 @@ public class MockPostProvider implements PostProvider {
     }
 
     @Override
-    public Post downvotePost(int postId) {
+    public Post downvotePost(String postId) {
         logMessageIfEnabled(String.format("MockPostProvider#downvotePost(%d)", postId));
 
         Post p = getPost(postId);
@@ -105,13 +105,13 @@ public class MockPostProvider implements PostProvider {
         Post downvotedPost = new Post(p.getId(), p.getText(), p.getTimestamp(),
                 p.getDownvotes() - 1, p.getAuthorId());
 
-        posts.put(downvotedPost.getId(), downvotedPost);
+        posts.put(Integer.parseInt(downvotedPost.getId()), downvotedPost);
 
         return downvotedPost;
     }
 
     @Override
-    public Post deletePost(int postId) {
+    public Post deletePost(String postId) {
         logMessageIfEnabled(String.format("MockPostProvider#deletePost(%d)", postId));
 
         return posts.remove(postId);
@@ -135,7 +135,7 @@ public class MockPostProvider implements PostProvider {
             in the Map.
          */
         for (int i = 0; i < postsText.length; i++) {
-            posts.put(i, createRandomPostWithText(postsText[i], i));
+            posts.put(i, createRandomPostWithText(postsText[i], Integer.toString(i)));
         }
     }
 
@@ -143,14 +143,14 @@ public class MockPostProvider implements PostProvider {
         return context.getResources().getStringArray(arrayResource);
     }
 
-    private Post createRandomPostWithText(String text, int postId) {
+    private Post createRandomPostWithText(String text, String postId) {
         String randomAuthorId = UUID.randomUUID().toString();
         long postCreatedTimestamp = new Date().getTime();
 
         return new Post(postId, text, postCreatedTimestamp, getRandomDownvoteCount(), randomAuthorId);
     }
 
-    private Post createPostWithText(String text, int postId, String authorId) {
+    private Post createPostWithText(String text, String postId, String authorId) {
         long postCreatedTimestamp = new Date().getTime();
         final int zeroDownvotes = 0;
         return new Post(postId, text, postCreatedTimestamp, zeroDownvotes, authorId);

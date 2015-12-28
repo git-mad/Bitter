@@ -21,4 +21,20 @@ public class User {
     public String getId() {
         return id;
     }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User)) {
+            return false;
+        }
+
+        User other = (User) o;
+
+        return other.getId().equals(getId());
+    }
 }

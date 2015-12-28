@@ -107,8 +107,8 @@ public class NavigationActivity extends AppCompatActivity implements
 
     // TODO
     @Override
-    public void onPostCreated(Post post) {
-        Log.d("Bitter", "NavigationView#onPostCreated(" + post.toString() + ")");
+    public void onPostCreated(String postText) {
+        Log.d("Bitter", "NavigationView#onPostCreated(" + postText + ")");
     }
 
     private void showCreatePostDialog() {

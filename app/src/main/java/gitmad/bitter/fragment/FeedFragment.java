@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import gitmad.bitter.R;
-import gitmad.bitter.data.MockPostProvider;
+import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
@@ -60,22 +60,22 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         for (Post p : posts) {
             postList.add(p);
         }
-        adapter = new PostAdapter(postList);
+        adapter = new PostAdapter(postList, );
         recyclerView.setAdapter(adapter);
 
         return view;
     }
 
     private Post[] getMockPosts() {
-        return postProvider.getPosts();
+        return postProvider.getPosts(Integer.MAX_VALUE);
     }
 
     @Override
-    public void onPostCreated(Post post) {
+    public void onPostCreated(String postText) {
 
         //TODO re-read from provider
-        postProvider.addPost(post);
-        ((PostAdapter) adapter).add(post);
+        Post newPost = postProvider.addPost(postText);
+        ((PostAdapter) adapter).add(newPost);
         recyclerView.swapAdapter(adapter, false);
     }
 }

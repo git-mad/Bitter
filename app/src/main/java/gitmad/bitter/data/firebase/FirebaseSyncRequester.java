@@ -12,6 +12,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * Provides synchronous method calls for Firebase data being updated by asynchronous
+ * callbacks.
  *
  */
 public class FirebaseSyncRequester<T> {
@@ -23,22 +25,34 @@ public class FirebaseSyncRequester<T> {
 
     private CountDownLatch countDownLatch;
 
-    public FirebaseSyncRequester(String firebasePath) {
-        firebaseRef = new Firebase(firebasePath);
+
+    public FirebaseSyncRequester(Firebase pFirebaseRef) {
+        firebaseRef = pFirebaseRef;
+
+        currentDataSnapshot = new AtomicReference<>();
 
         initializeLatch();
 
         registerFirebaseCallback();
     }
 
+    /**
+     * Waits for firebase, and then returns whether the data at that URL exists or not.
+     * @return true if data exists at the URL, false otherwise.
+     */
     public boolean exists() {
-        throwExceptionIfNotReady();
+        whenReady();
 
         return currentDataSnapshot.get().exists();
     }
 
+    /**
+     * A synchronous get() for the firebase url contained by this FirebaseSyncRequester.
+     * Waits until data is present, and then returns
+     * @return the data contained by at the firebase url contained by this FirebaseSyncRequester
+     */
     public T get() {
-        throwExceptionIfNotReady();
+        whenReady();
 
         return currentDataSnapshot.get().getValue(new GenericTypeIndicator<T>() {});
     }
@@ -57,26 +71,24 @@ public class FirebaseSyncRequester<T> {
         return this;
     }
 
+    /**
+     * determines whether firebase has responded or not.
+     * @return true if data is ready for #get() and #exists(), false otherwise.
+     */
     public boolean isReady() {
         return countDownLatch.getCount() < 1;
     }
 
-    private void throwExceptionIfNotReady() {
-        if (!isReady()) {
-            throw new IllegalStateException("FirebaseSyncRequester has not yet received data from firebase.");
-        }
-    }
-
     private void registerFirebaseCallback() {
-        if (firebaseListener != null) {
-            throw new IllegalStateException("RequesterValueEventListener already registered.");
-        }
-
         firebaseListener = new RequesterValueEventListener();
 
         firebaseRef.addValueEventListener(firebaseListener);
     }
 
+    /**
+     * initialize the latch so that CountDownLatch#await() blocks until
+     * CountDownLatch#countDown() is called once.
+     */
     private void initializeLatch() {
         countDownLatch = new CountDownLatch(1);
     }

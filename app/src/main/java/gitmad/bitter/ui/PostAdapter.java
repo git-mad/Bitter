@@ -9,11 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Map;
 
 import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.fragment.ViewPostFragment;
 import gitmad.bitter.model.Post;
+import gitmad.bitter.model.User;
 
 /**
  * Adapter for displaying cardviews that present posts in a RecyclerView.
@@ -21,10 +23,12 @@ import gitmad.bitter.model.Post;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private List<Post> posts;
+    private Map<Post, User> postAuthors;
     private int oddEven = 0;
 
-    public PostAdapter(List<Post> posts) {
+    public PostAdapter(List<Post> posts, Map<Post, User> postAuthors) {
         this.posts = posts;
+        this.postAuthors = postAuthors;
     }
 
     public void add(Post p) {
@@ -42,7 +46,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         viewHolder.postText.setText(posts.get(i).getText());
-        viewHolder.userText.setText(posts.get(i).getUser().getName());
+        viewHolder.userText.setText(postAuthors.get(posts.get(i)).getName());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

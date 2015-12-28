@@ -1,7 +1,10 @@
 package gitmad.bitter.data.firebase;
 
+import gitmad.bitter.model.Post;
+
 /**
- * Created by brian on 12/26/15.
+ * Receives updates when the posts in the feed change.
  */
 public interface PostsChangedListener {
+    public void onPostsChanged(Post[] posts);
 }

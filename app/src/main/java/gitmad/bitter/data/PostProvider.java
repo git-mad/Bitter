@@ -18,7 +18,7 @@ public interface PostProvider {
      * @return the post with the specified id.
      * @throws IllegalArgumentException if a post with the id specified is not found.
      */
-    public Post getPost(int id) throws IllegalArgumentException;
+    public Post getPost(String id) throws IllegalArgumentException;
 
     /**
      * @Param post the Post we are adding
@@ -32,4 +32,18 @@ public interface PostProvider {
      * @throws IllegalArgumentException if the user does not exist
      */
     public Post[] getPostsByUser(String userId);
+
+    /**
+     * adds a downvote to a post
+     * @param postId the id of the post to be downvoted
+     * @return a new Post Object reflecting the new downvote count
+     */
+    public Post downvotePost(String postId);
+
+    /**
+     * removes a post from the database, if it is owned by the currently logged in user.
+     * @param postId the id of the post to be deleted
+     * @return a Post Object containing the Post's last state.
+     */
+    public Post deletePost(String postId);
 }

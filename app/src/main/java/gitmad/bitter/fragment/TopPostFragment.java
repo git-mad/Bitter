@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import gitmad.bitter.R;
-import gitmad.bitter.data.MockPostProvider;
+import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
@@ -68,6 +68,6 @@ public class TopPostFragment extends Fragment {
     }
 
     private Post[] getMockPosts() {
-        return postProvider.getPosts();
+        return postProvider.getPosts(Integer.MAX_VALUE);
     }
 }

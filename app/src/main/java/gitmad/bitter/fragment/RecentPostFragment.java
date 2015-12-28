@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import gitmad.bitter.R;
-import gitmad.bitter.data.MockPostProvider;
+import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
@@ -67,6 +67,6 @@ public class RecentPostFragment extends Fragment {
     }
 
     private Post[] getMockPosts() {
-        return postProvider.getPosts();
+        return postProvider.getPosts(Integer.MAX_VALUE);
     }
 }
