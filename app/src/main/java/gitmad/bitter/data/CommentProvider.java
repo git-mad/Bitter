@@ -7,7 +7,7 @@ import gitmad.bitter.model.User;
 /**
  * Created by brian on 12/18/15.
  */
-public interface CommentsProvider {
+public interface CommentProvider {
     /**
      * retrieves a comment by its id
      * @param id the id of the comment to retrieve

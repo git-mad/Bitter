@@ -1,5 +1,6 @@
-package gitmad.bitter.data;
+package gitmad.bitter.data.mock;
 
+import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
@@ -10,11 +11,14 @@ import gitmad.bitter.model.User;
  */
 public class MockUserProvider implements UserProvider {
 
+    private static final User locallyLoggedInUser = new User("me123", "asdlfkafd-adf");
+
     private static final User[] fakeUsers = {
             new User("NotGBurdell", "asdf"),
             new User("ASDF", "fdsa"),
             new User("George Washington", "fjdlwe-adf"),
-            new User("George Forman", "afdsksd-asdf")
+            new User("George Forman", "afdsksd-asdf"),
+            locallyLoggedInUser
     };
 
     @Override
@@ -30,6 +34,11 @@ public class MockUserProvider implements UserProvider {
     @Override
     public User getAuthorOfComment(Comment comment) {
         return fakeUsers[userIndexFromIdHash(comment.getAuthorId())];
+    }
+
+    @Override
+    public User getLoggedInUser() {
+        return locallyLoggedInUser;
     }
 
     /**
