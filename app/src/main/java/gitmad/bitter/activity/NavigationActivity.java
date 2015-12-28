@@ -23,6 +23,7 @@ public class NavigationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         AuthorPostDialogFragment.OnPostCreatedListener {
 
+    private NavigationView navigationView;
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private MenuItem previousMI;
@@ -40,10 +41,11 @@ public class NavigationActivity extends AppCompatActivity implements
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        previousMI = navigationView.getMenu().getItem(0);
+        previousMI.setChecked(true);
 
-        // FIXME doesn't highlight feed fragment menu item in nav drawer
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, FeedFragment.newInstance()).commit();
     }
@@ -69,7 +71,7 @@ public class NavigationActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_user) {
             fragmentClass = UserFragment.class;
         } else if (id == R.id.nav_settings) {
-
+            // TODO
         }
 
         Fragment fragment;
@@ -82,20 +84,17 @@ public class NavigationActivity extends AppCompatActivity implements
             return false;
         }
 
-        if (previousMI != null) {
-            previousMI.setChecked(false);
-        }
-        previousMI = item;
-
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, fragment).commit();
+
+        previousMI.setChecked(false);
+        previousMI = item;
 
         // Update the title, and close the drawer
         item.setChecked(true);
         setTitle(item.getTitle());
         drawer.closeDrawers();
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

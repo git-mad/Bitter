@@ -77,11 +77,11 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
         ImageView pic = (ImageView) view.findViewById(R.id.user_profile_pic);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.tejunareddy); //FIXME how do I get the image from a class?
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.tejunareddy); //FIXME how do I get the image from a variable id?
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
-        TextView userName = (TextView) view.findViewById(R.id.user_profile_username);  //FIXME get from class
+        TextView userName = (TextView) view.findViewById(R.id.user_profile_username);
         userName.setText("Username: To Set");
 
         return view;
