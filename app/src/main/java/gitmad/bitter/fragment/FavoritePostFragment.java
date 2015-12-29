@@ -1,5 +1,6 @@
 package gitmad.bitter.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gitmad.bitter.R;
+import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.data.PostProvider;
@@ -71,10 +73,26 @@ public class FavoritePostFragment extends Fragment {
 
         Map<Post, User> authorsOfPosts = getAuthorsOfPosts(postsArray);
 
-        adapter = new PostAdapter(postList, authorsOfPosts);
+        adapter = new PostAdapter(postList, authorsOfPosts, newFeedInteractionListener());
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    private PostAdapter.FeedInteractionListener newFeedInteractionListener() {
+        return new PostAdapter.FeedInteractionListener() {
+            @Override
+            public void onPostClicked(Post p, int index) {
+                Intent intent = new Intent(getActivity(), ViewPostActivity.class);
+                intent.putExtra(ViewPostActivity.KEY_POST_ID, p.getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onDownvoteClicked(Post p, int index) {
+                postProvider.downvotePost(p.getId());
+            }
+        };
     }
 
     private void initializeMockPostProviders() {

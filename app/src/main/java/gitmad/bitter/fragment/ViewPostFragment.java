@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Map;
+
 import gitmad.bitter.R;
 import gitmad.bitter.data.mock.MockCommentProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
@@ -24,9 +26,9 @@ public class ViewPostFragment extends Fragment {
 
     private static final String KEY_POST_ID = "postIdKey";
 
-    public static ViewPostFragment newInstance(int postId) {
+    public static ViewPostFragment newInstance(String postId) {
         Bundle args = new Bundle();
-        args.putInt(KEY_POST_ID, postId);
+        args.putString(KEY_POST_ID, postId);
         ViewPostFragment fragment = new ViewPostFragment();
         fragment.setArguments(args);
         return fragment;
@@ -47,7 +49,7 @@ public class ViewPostFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null && getArguments().containsKey(KEY_POST_ID)) {
-            int postId = getArguments().getInt(KEY_POST_ID);
+            String postId = getArguments().getString(KEY_POST_ID);
             post = getPostFromMockProvider(postId);
         }
     }
@@ -64,7 +66,9 @@ public class ViewPostFragment extends Fragment {
 
         Comment[] comments = new MockCommentProvider(getContext()).getCommentsOnPost(post.getId());
 
-        CommentAdapter adapter = new CommentAdapter(this.getActivity(), comments);
+        Map<Comment, User> authorsMap = new MockUserProvider().getAuthorsOfComments(comments);
+
+        CommentAdapter adapter = new CommentAdapter(this.getActivity(), comments, authorsMap);
         ListView listView = (ListView) view.findViewById(R.id.comments_list_view);
         listView.setAdapter(adapter);
 
@@ -74,7 +78,7 @@ public class ViewPostFragment extends Fragment {
         return view;
     }
 
-    private Post getPostFromMockProvider(int postId) {
+    private Post getPostFromMockProvider(String postId) {
         PostProvider postProvider = new MockPostProvider(getActivity());
         return postProvider.getPost(postId);
     }

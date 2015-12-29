@@ -13,6 +13,8 @@ import java.util.Map;
 
 import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
+import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.fragment.ViewPostFragment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
@@ -26,9 +28,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private Map<Post, User> postAuthors;
     private int oddEven = 0;
 
-    public PostAdapter(List<Post> posts, Map<Post, User> postAuthors) {
+    private FeedInteractionListener listener;
+
+    public PostAdapter(List<Post> posts, Map<Post, User> postAuthors, FeedInteractionListener pListener) {
         this.posts = posts;
         this.postAuthors = postAuthors;
+        listener = pListener;
     }
 
     public void add(Post p) {
@@ -50,9 +55,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ViewPostActivity.class);
-                intent.putExtra(ViewPostActivity.KEY_POST_ID, posts.get(i).getId());
-                v.getContext().startActivity(intent);
+                listener.onPostClicked(posts.get(i), i);
             }
         });
 
@@ -60,13 +63,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         viewHolder.downvoteImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                listener.onDownvoteClicked(posts.get(i), i);
                 if (oddEven % 2 == 0) {
-                    posts.get(i).setDownvotes(posts.get(i).getDownvotes() - 1);
                     viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
                     oddEven++;
 
                 } else if (oddEven % 2 != 0) {
-                    posts.get(i).setDownvotes(posts.get(i).getDownvotes() + 1);
                     viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
                     oddEven++;
                 }
@@ -99,5 +101,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             downvoteImage = (ImageView) postLayout.findViewById(R.id.downvote_button);
             downvoteText = (TextView) postLayout.findViewById(R.id.downvote_counter);
         }
+    }
+
+    public interface FeedInteractionListener {
+        public void onPostClicked(Post p, int index);
+        public void onDownvoteClicked(Post p, int index);
     }
 }

@@ -1,5 +1,8 @@
 package gitmad.bitter.data.mock;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.Post;
@@ -32,8 +35,30 @@ public class MockUserProvider implements UserProvider {
     }
 
     @Override
+    public Map<Post, User> getAuthorsOfPosts(Post... posts) {
+        Map<Post, User> authorsMap = new HashMap<>();
+
+        for (Post post : posts) {
+            authorsMap.put(post, getAuthorOfPost(post));
+        }
+
+        return authorsMap;
+    }
+
+    @Override
     public User getAuthorOfComment(Comment comment) {
         return fakeUsers[userIndexFromIdHash(comment.getAuthorId())];
+    }
+
+    @Override
+    public Map<Comment, User> getAuthorsOfComments(Comment... comments) {
+        Map<Comment, User> authorsMap = new HashMap<>();
+
+        for (Comment comment : comments) {
+            authorsMap.put(comment, getAuthorOfComment(comment));
+        }
+
+        return authorsMap;
     }
 
     @Override
@@ -48,6 +73,6 @@ public class MockUserProvider implements UserProvider {
      * @return the index of a user in the fakeUsers array.
      */
     private int userIndexFromIdHash(String userId) {
-        return userId.hashCode() % fakeUsers.length;
+        return Math.abs(userId.hashCode()) % fakeUsers.length;
     }
 }

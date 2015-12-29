@@ -25,7 +25,7 @@ import gitmad.bitter.model.Post;
 public class MockPostProvider implements PostProvider {
 
     private Context context;
-    private Map<Integer, Post> posts;
+    private Map<String, Post> posts;
 
     private boolean isLoggingEnabled;
 
@@ -53,7 +53,7 @@ public class MockPostProvider implements PostProvider {
         Post[] postArray = new Post[numPostsToReturn];
 
         for (int i = 0; i < numPostsToReturn; i++) {
-            postArray[i] = posts.get(i);
+            postArray[i] = posts.get(Integer.toString(i));
         }
 
         return postArray;
@@ -61,7 +61,7 @@ public class MockPostProvider implements PostProvider {
 
     @Override
     public Post getPost(String id) throws IllegalArgumentException {
-        logMessageIfEnabled(String.format("MockPostProvider#getPost(%d)", id));
+        logMessageIfEnabled(String.format("MockPostProvider#getPost(%s)", id));
 
         if (Integer.parseInt(id) >= posts.size()) {
             throw new IllegalArgumentException("No post with Id specified");
@@ -73,8 +73,8 @@ public class MockPostProvider implements PostProvider {
     public Post addPost(String postText) {
         logMessageIfEnabled(String.format("MockPostProvider#addPost(%s)", postText));
 
-        int nextId = getNextId();
-        Post newPost = createPostWithText(postText, Integer.toString(nextId), getMockLoggedInUserId());
+        String nextId = Integer.toString(getNextId());
+        Post newPost = createPostWithText(postText, nextId, getMockLoggedInUserId());
         posts.put(nextId, newPost);
         return newPost;
     }
@@ -85,7 +85,7 @@ public class MockPostProvider implements PostProvider {
 
         List<Post> postList = new LinkedList<>();
 
-        for (Integer key : posts.keySet()) {
+        for (String key : posts.keySet()) {
             Post post = posts.get(key);
 
             if (post.getAuthorId().equals(userId)) {
@@ -98,21 +98,21 @@ public class MockPostProvider implements PostProvider {
 
     @Override
     public Post downvotePost(String postId) {
-        logMessageIfEnabled(String.format("MockPostProvider#downvotePost(%d)", postId));
+        logMessageIfEnabled(String.format("MockPostProvider#downvotePost(%s)", postId));
 
         Post p = getPost(postId);
 
         Post downvotedPost = new Post(p.getId(), p.getText(), p.getTimestamp(),
                 p.getDownvotes() - 1, p.getAuthorId());
 
-        posts.put(Integer.parseInt(downvotedPost.getId()), downvotedPost);
+        posts.put(downvotedPost.getId(), downvotedPost);
 
         return downvotedPost;
     }
 
     @Override
     public Post deletePost(String postId) {
-        logMessageIfEnabled(String.format("MockPostProvider#deletePost(%d)", postId));
+        logMessageIfEnabled(String.format("MockPostProvider#deletePost(%s)", postId));
 
         return posts.remove(postId);
     }
@@ -135,7 +135,7 @@ public class MockPostProvider implements PostProvider {
             in the Map.
          */
         for (int i = 0; i < postsText.length; i++) {
-            posts.put(i, createRandomPostWithText(postsText[i], Integer.toString(i)));
+            posts.put(Integer.toString(i), createRandomPostWithText(postsText[i], Integer.toString(i)));
         }
     }
 

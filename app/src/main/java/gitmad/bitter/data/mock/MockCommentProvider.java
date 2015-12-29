@@ -14,7 +14,7 @@ import gitmad.bitter.model.Comment;
  */
 public class MockCommentProvider implements CommentProvider {
 
-    private static final int IMPOSSIBLE_POST_ID = -1;
+    private static final String IMPOSSIBLE_POST_ID = "-2";
     private static final String IMPOSSIBLE_USER_ID = "";
 
     private Context context;
@@ -27,8 +27,9 @@ public class MockCommentProvider implements CommentProvider {
     }
 
     @Override
-    public Comment getComment(int id) {
-        return createRandomCommentOnPost(commentsText[id], id, IMPOSSIBLE_POST_ID);
+    public Comment getComment(String commentId) {
+        int commentIndex = Integer.parseInt(commentId);
+        return createRandomCommentOnPost(commentsText[commentIndex], commentId, IMPOSSIBLE_POST_ID);
     }
 
     @Override
@@ -36,35 +37,35 @@ public class MockCommentProvider implements CommentProvider {
         Comment[] comments = new Comment[commentsText.length];
 
         for (int i = 0; i < commentsText.length; i++) {
-            comments[i] = createRandomCommentByUser(commentsText[i], i, userId);
+            comments[i] = createRandomCommentByUser(commentsText[i], Integer.toString(i), userId);
         }
 
         return comments;
     }
 
     @Override
-    public Comment[] getCommentsOnPost(int postId) {
+    public Comment[] getCommentsOnPost(String postId) {
         Comment[] comments = new Comment[commentsText.length];
 
         for (int i = 0; i < commentsText.length; i++) {
-            comments[i] = createRandomCommentOnPost(commentsText[i], i, postId);
+            comments[i] = createRandomCommentOnPost(commentsText[i], Integer.toString(i), postId);
         }
 
         return comments;
     }
 
     @Override
-    public Comment addComment(String commentText, int postId) {
+    public Comment addComment(String commentText, String postId) {
         throw new UnsupportedOperationException("Not implemented on mock data provider");
     }
 
     @Override
-    public Comment deleteComment(int commentId) {
+    public Comment deleteComment(String commentId) {
         throw new UnsupportedOperationException("Not implemented on mock data provider");
     }
 
     @Override
-    public Comment downvoteComment(int commentId) {
+    public Comment downvoteComment(String commentId) {
         throw new UnsupportedOperationException("Not implemented on mock data provider");
     }
 
@@ -72,14 +73,14 @@ public class MockCommentProvider implements CommentProvider {
         return context.getResources().getStringArray(arrayResource);
     }
 
-    private Comment createRandomCommentOnPost(String text, int commentId, int postId) {
+    private Comment createRandomCommentOnPost(String text, String commentId, String postId) {
         String randomAuthorId = UUID.randomUUID().toString();
         long commentCreatedTimestamp = new Date().getTime();
 
         return new Comment(commentId, postId, randomAuthorId, text, commentCreatedTimestamp, MockPostProvider.getRandomDownvoteCount());
     }
 
-    private Comment createRandomCommentByUser(String text, int commentId, String userId) {
+    private Comment createRandomCommentByUser(String text, String commentId, String userId) {
         long commentCreatedTimestamp = new Date().getTime();
 
         return new Comment(commentId, IMPOSSIBLE_POST_ID, userId, text, commentCreatedTimestamp, MockPostProvider.getRandomDownvoteCount());

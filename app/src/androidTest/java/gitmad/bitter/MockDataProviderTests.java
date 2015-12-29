@@ -58,7 +58,7 @@ public class MockDataProviderTests extends InstrumentationTestCase {
     public void testDownvote() {
         final int numPostsToRetrieve = 1;
         Post firstPostInFeed = postProvider.getPosts(numPostsToRetrieve)[0];
-        int postId = firstPostInFeed.getId();
+        String postId = firstPostInFeed.getId();
 
         Post downvotedPost = postProvider.downvotePost(postId);
 
@@ -105,7 +105,7 @@ public class MockDataProviderTests extends InstrumentationTestCase {
     }
 
     public void testGetCommentsOnPost() {
-        final int postId = 3; // random choice
+        final String postId = "3"; // random choice
 
         Comment[] comments = commentProvider.getCommentsOnPost(postId);
 
