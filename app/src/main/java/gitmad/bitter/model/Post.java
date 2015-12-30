@@ -52,4 +52,10 @@ public class Post {
         Post other = (Post) o;
         return other.getId().equals(getId());
     }
+
+    @Override
+    public String toString() {
+        return "id:" + getId() + " authorId:" + getAuthorId() + " text:" + getText()
+                + " timestamp:" + getTimestamp() + " downvotes:" + getDownvotes();
+    }
 }

@@ -4,7 +4,10 @@ import android.test.InstrumentationTestCase;
 
 import org.junit.Before;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import gitmad.bitter.data.CommentProvider;
@@ -28,8 +31,8 @@ public class MockDataProviderTests extends InstrumentationTestCase {
     @Before
     public void setUp() {
         userProvider = new MockUserProvider();
-        postProvider = new MockPostProvider(getInstrumentation().getContext());
-        commentProvider = new MockCommentProvider(getInstrumentation().getContext());
+        postProvider = new MockPostProvider(getInstrumentation().getTargetContext());
+        commentProvider = new MockCommentProvider(getInstrumentation().getTargetContext());
     }
 
     public void testGetPosts() {
@@ -70,12 +73,14 @@ public class MockDataProviderTests extends InstrumentationTestCase {
 
     public void testDeletePost() {
         final int numPostsToRetrieve = 5;
-        List<Post> postList = Arrays.asList(postProvider.getPosts(numPostsToRetrieve));
+        List<Post> postList = toArrayList(postProvider.getPosts(numPostsToRetrieve));
         Post firstPostInFeed = postList.get(0);
         Post secondPostInFeed = postList.get(1);
 
         postProvider.deletePost(secondPostInFeed.getId());
         postList.remove(1);
+
+        Post[] posts = postProvider.getPosts(numPostsToRetrieve - 1);
 
         assertTrue("Feed should have second post removed", Arrays.equals(
                 postList.toArray(new Post[postList.size()]), postProvider.getPosts(numPostsToRetrieve - 1)));
@@ -126,5 +131,13 @@ public class MockDataProviderTests extends InstrumentationTestCase {
         for (Comment comment : comments) {
             assertEquals("Comments should all have user Id requested", userId, comment.getAuthorId());
         }
+    }
+
+    private <T> List<T> toArrayList(T[] array) {
+        List<T> list = new ArrayList<>();
+
+        Collections.addAll(list, array);
+
+        return list;
     }
 }
