@@ -2,8 +2,12 @@ package gitmad.bitter.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
+import gitmad.bitter.R;
 import gitmad.bitter.fragment.ViewPostFragment;
 
 /**
@@ -16,18 +20,27 @@ public class ViewPostActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view_post);
 
         if (savedInstanceState == null) {
             addFragmentToContentView();
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.mipmap.ic_arrow_back_black_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void addFragmentToContentView() {
         ViewPostFragment viewPostFragment = ViewPostFragment.newInstance(getPostIdFromIntent());
-
-        getSupportFragmentManager().beginTransaction()
-                .add(android.R.id.content, viewPostFragment)
-                .commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.viewPostFrameLayout, viewPostFragment).commit();
     }
 
     private String getPostIdFromIntent() {

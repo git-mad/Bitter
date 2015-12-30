@@ -6,5 +6,5 @@ import gitmad.bitter.model.Post;
  * Receives updates when the posts in the feed change.
  */
 public interface PostsChangedListener {
-    public void onPostsChanged(Post[] posts);
+    void onPostsChanged(Post[] posts);
 }

@@ -7,7 +7,6 @@ import org.junit.Before;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import gitmad.bitter.data.CommentProvider;
@@ -24,9 +23,9 @@ import gitmad.bitter.model.User;
  * Testing the MockUserProvider, MockPostProvider, and MockCommentProvider.
  */
 public class MockDataProviderTests extends InstrumentationTestCase {
-    UserProvider userProvider;
-    PostProvider postProvider;
-    CommentProvider commentProvider;
+    private UserProvider userProvider;
+    private PostProvider postProvider;
+    private CommentProvider commentProvider;
 
     @Before
     public void setUp() {
@@ -79,8 +78,6 @@ public class MockDataProviderTests extends InstrumentationTestCase {
 
         postProvider.deletePost(secondPostInFeed.getId());
         postList.remove(1);
-
-        Post[] posts = postProvider.getPosts(numPostsToRetrieve - 1);
 
         assertTrue("Feed should have second post removed", Arrays.equals(
                 postList.toArray(new Post[postList.size()]), postProvider.getPosts(numPostsToRetrieve - 1)));

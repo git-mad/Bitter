@@ -1,6 +1,5 @@
 package gitmad.bitter.model;
 
-import java.util.Collection;
 
 /**
  * Models a user

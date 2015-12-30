@@ -6,7 +6,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/user_profile_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:weightSum="1"
             tools:context="gitmad.bitter.fragment.UserProfileFragment">

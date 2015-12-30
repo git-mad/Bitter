@@ -17,12 +17,12 @@ import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.fragment.FeedFragment;
 import gitmad.bitter.fragment.UserFragment;
-import gitmad.bitter.model.Post;
 
 public class NavigationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         AuthorPostDialogFragment.OnPostCreatedListener {
 
+    private NavigationView navigationView;
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private MenuItem previousMI;
@@ -40,10 +40,11 @@ public class NavigationActivity extends AppCompatActivity implements
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        previousMI = navigationView.getMenu().getItem(0);
+        previousMI.setChecked(true);
 
-        // FIXME doesn't highlight feed fragment menu item in nav drawer
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, FeedFragment.newInstance()).commit();
     }
@@ -68,11 +69,8 @@ public class NavigationActivity extends AppCompatActivity implements
             fragmentClass = FeedFragment.class;
         } else if (id == R.id.nav_user) {
             fragmentClass = UserFragment.class;
-        } else if (id == R.id.nav_create_post) {
-            showCreatePostDialog();
-            return true;
         } else if (id == R.id.nav_settings) {
-
+            // TODO
         }
 
         Fragment fragment;
@@ -85,20 +83,17 @@ public class NavigationActivity extends AppCompatActivity implements
             return false;
         }
 
-        if (previousMI != null) {
-            previousMI.setChecked(false);
-        }
-        previousMI = item;
-
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, fragment).commit();
+
+        previousMI.setChecked(false);
+        previousMI = item;
 
         // Update the title, and close the drawer
         item.setChecked(true);
         setTitle(item.getTitle());
         drawer.closeDrawers();
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -109,10 +104,5 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onPostCreated(String postText) {
         Log.d("Bitter", "NavigationView#onPostCreated(" + postText + ")");
-    }
-
-    private void showCreatePostDialog() {
-        AuthorPostDialogFragment authorPostDialogFragment = AuthorPostDialogFragment.newInstance();
-        authorPostDialogFragment.show(getSupportFragmentManager(), AuthorPostDialogFragment.AUTHOR_POST_DIALOG_FRAG_TAG);
     }
 }

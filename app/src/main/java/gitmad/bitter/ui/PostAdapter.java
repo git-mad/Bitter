@@ -1,6 +1,5 @@
 package gitmad.bitter.ui;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import gitmad.bitter.R;
-import gitmad.bitter.activity.ViewPostActivity;
-import gitmad.bitter.data.PostProvider;
-import gitmad.bitter.data.mock.MockPostProvider;
-import gitmad.bitter.fragment.ViewPostFragment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 
@@ -74,7 +69,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 }
             }
         });
-
     }
 
     @Override
@@ -104,7 +98,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public interface FeedInteractionListener {
-        public void onPostClicked(Post p, int index);
-        public void onDownvoteClicked(Post p, int index);
+        void onPostClicked(Post p, int index);
+        void onDownvoteClicked(Post p, int index);
     }
 }

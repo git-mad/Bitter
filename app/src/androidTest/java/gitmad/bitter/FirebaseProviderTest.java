@@ -1,7 +1,6 @@
 package gitmad.bitter;
 
 import android.support.annotation.NonNull;
-import android.test.InstrumentationTestCase;
 
 import com.firebase.client.Firebase;
 
