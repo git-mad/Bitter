@@ -43,6 +43,8 @@ public class FirebasePostProvider implements PostProvider {
 
         checkAuthentication();
 
+        postsChangedListeners = new LinkedList<>();
+
         setFirebaseListener();
     }
 
@@ -157,10 +159,14 @@ public class FirebasePostProvider implements PostProvider {
     private void setFirebaseListener() {
         Query postsQuery = firebasePostsRef.limitToFirst(numberOfPostsToRetrieve);
 
+        countDownLatch = new CountDownLatch(1);
+
         postsQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentPostsInFeed = parsePostsFromDataSnapshot(dataSnapshot);
+
+                countDownLatch.countDown();
 
                 invokePostChangedListeners();
             }
@@ -170,6 +176,8 @@ public class FirebasePostProvider implements PostProvider {
                 Log.e("Bitter", "Firebase could not connect");
             }
         });
+
+        waitForCallback();
     }
 
     private void invokePostChangedListeners() {

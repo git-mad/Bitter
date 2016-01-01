@@ -25,7 +25,7 @@ import static gitmad.bitter.data.firebase.FirebasePostProvider.getFirebaseUrlFor
  */
 public class FirebaseCommentProvider implements CommentProvider {
 
-    private static final String FIREBASE_COMMENTS_URL = "https://bitter-gitmad.firebaseio.com/users";
+    private static final String FIREBASE_COMMENTS_URL = "https://bitter-gitmad.firebaseio.com/comments";
 
     private CountDownLatch countDownLatch;
     private AtomicReference<DataSnapshot> dataFromCallbackAtomicRef;
@@ -135,7 +135,7 @@ public class FirebaseCommentProvider implements CommentProvider {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.e("Bitter", "Could not connect to firebase.");
+                Log.e("Bitter", "Comment Provider could not connect to firebase.");
             }
         };
     }

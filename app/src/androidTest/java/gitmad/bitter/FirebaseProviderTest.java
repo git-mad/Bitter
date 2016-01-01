@@ -1,12 +1,15 @@
 package gitmad.bitter;
 
+import android.app.Application;
 import android.support.annotation.NonNull;
+import android.test.ApplicationTestCase;
 
 import com.firebase.client.Firebase;
 
 import org.junit.After;
 import org.junit.Before;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -24,7 +27,7 @@ import gitmad.bitter.model.User;
 /**
  * Created by brian on 12/29/15.
  */
-public class FirebaseProviderTest extends ApplicationTest {
+public class FirebaseProviderTest extends ApplicationTestCase<Application> {
 
     private static final String[] FAKE_POSTS_TEXT = {
             "aasdff dsafasdf aij; jvodisja",
@@ -38,12 +41,27 @@ public class FirebaseProviderTest extends ApplicationTest {
     private CommentProvider commentProvider;
 
     public FirebaseProviderTest() {
-        Firebase.setAndroidContext(getApplication());
+        super(Application.class);
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        super.setUp();
+        createApplication();
+
+        Firebase.setAndroidContext(getApplication());
         initializeFirebaseProviders();
+    }
+
+    public void testGettingPosts() {
+        final int numPosts = 10;
+        Post[] posts = postProvider.getPosts(numPosts);
+
+        assertEquals("length should equal requested amount.", numPosts, posts.length);
+
+        for (int i = 0; i < posts.length; i++) {
+            assertNotNull(posts[i]);
+        }
     }
 
     public void testAddingAndGettingPosts() {
@@ -54,9 +72,10 @@ public class FirebaseProviderTest extends ApplicationTest {
         assertEquals("Problem getting posts; array from database has wrong size",
                 FAKE_POSTS_TEXT.length, postsFromFirebase.length);
 
+
         for (Post postFromFirebase: postsFromFirebase) {
             assertEquals("Post not correctly added or not in correct order\n"
-                            + postFromFirebase.toString() + "\n" + newPostsStack.toString(),
+                            + Arrays.toString(postsFromFirebase) + "\n" + newPostsStack.toString(),
                     postFromFirebase, newPostsStack.pop());
         }
     }
@@ -146,7 +165,8 @@ public class FirebaseProviderTest extends ApplicationTest {
     private Stack<Comment> addFakeCommentsToPost(Post post) {
         Stack<Comment> addedComments = new Stack<>();
         for (String commentText : FAKE_POSTS_TEXT) {
-            commentProvider.addComment(commentText, post.getId());
+            Comment newComment = commentProvider.addComment(commentText, post.getId());
+            addedComments.push(newComment);
         }
         return addedComments;
     }

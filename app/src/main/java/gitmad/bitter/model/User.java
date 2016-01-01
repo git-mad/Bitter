@@ -13,6 +13,9 @@ public class User {
         id = pId;
     }
 
+    public User(){
+    }
+
     public String getName() {
         return name;
     }

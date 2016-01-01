@@ -18,6 +18,9 @@ public class Post {
         this.authorId = authorId;
     }
 
+    public Post() {
+    }
+
     public String getAuthorId() {
         return authorId;
     }
@@ -55,7 +58,6 @@ public class Post {
 
     @Override
     public String toString() {
-        return "id:" + getId() + " authorId:" + getAuthorId() + " text:" + getText()
-                + " timestamp:" + getTimestamp() + " downvotes:" + getDownvotes();
+        return "id:" + getId();
     }
 }

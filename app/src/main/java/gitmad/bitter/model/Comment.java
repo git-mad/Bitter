@@ -20,6 +20,9 @@ public class Comment {
         this.downvotes = downvotes;
     }
 
+    public Comment() {
+    }
+
     public String getId() {
         return id;
     }
