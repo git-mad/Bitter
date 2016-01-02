@@ -58,13 +58,15 @@ public class FirebasePostProvider implements PostProvider {
     public Post getPost(String id) throws IllegalArgumentException {
         Firebase firebasePostRef = new Firebase(getFirebaseUrlForPost(id));
 
-        FirebaseSyncRequester<Post> firebaseSyncRequester = new FirebaseSyncRequester<>(firebasePostRef);
+        String firebaseUrl = getFirebaseUrlForPost(id);
+
+        FirebaseSyncRequester firebaseSyncRequester = new FirebaseSyncRequester(firebasePostRef);
 
         if (!firebaseSyncRequester.exists()) {
             throw new IllegalArgumentException("Post with id " + id + " does not exist.");
         }
 
-        return firebaseSyncRequester.get();
+        return firebaseSyncRequester.getPost();
     }
 
     @Override
@@ -104,13 +106,13 @@ public class FirebasePostProvider implements PostProvider {
     public Post downvotePost(String postId) {
         Firebase firebasePostRef = new Firebase(getFirebaseUrlForPost(postId));
 
-        FirebaseSyncRequester<Post> postRequester = new FirebaseSyncRequester<>(firebasePostRef);
+        FirebaseSyncRequester postRequester = new FirebaseSyncRequester(firebasePostRef);
 
         if (!postRequester.exists()) {
             throw new IllegalArgumentException("Post to downvote does not exist");
         }
 
-        Post downvotedPost = newDownvotedPost(postRequester.get());
+        Post downvotedPost = newDownvotedPost(postRequester.getPost());
 
         firebasePostRef.setValue(downvotedPost);
 
@@ -121,13 +123,13 @@ public class FirebasePostProvider implements PostProvider {
     public Post deletePost(String postId) {
         Firebase firebasePostRef = new Firebase(getFirebaseUrlForPost(postId));
 
-        FirebaseSyncRequester<Post> postRequester = new FirebaseSyncRequester<>(firebasePostRef);
+        FirebaseSyncRequester postRequester = new FirebaseSyncRequester(firebasePostRef);
 
         if (!postRequester.exists()) {
             throw new IllegalArgumentException("Post to delete does not exist");
         }
 
-        Post postToDelete = postRequester.get();
+        Post postToDelete = postRequester.getPost();
 
         firebasePostRef.removeValue();
 

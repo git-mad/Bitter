@@ -11,12 +11,16 @@ import com.firebase.client.ValueEventListener;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import gitmad.bitter.model.Comment;
+import gitmad.bitter.model.Post;
+import gitmad.bitter.model.User;
+
 /**
  * Provides synchronous method calls for Firebase data being updated by asynchronous
  * callbacks.
  *
  */
-public class FirebaseSyncRequester<T> {
+public class FirebaseSyncRequester {
 
     private Firebase firebaseRef;
     private RequesterValueEventListener firebaseListener;
@@ -51,18 +55,29 @@ public class FirebaseSyncRequester<T> {
      * Waits until data is present, and then returns
      * @return the data contained by at the firebase url contained by this FirebaseSyncRequester
      */
-    public T get() {
+    public Post getPost() {
         whenReady();
 
-        return currentDataSnapshot.get().getValue(new GenericTypeIndicator<T>() {});
+        return currentDataSnapshot.get().getValue(Post.class);
     }
 
+    public Comment getComment() {
+        whenReady();
+
+        return currentDataSnapshot.get().getValue(Comment.class);
+    }
+
+    public User getUser() {
+        whenReady();
+
+        return currentDataSnapshot.get().getValue(User.class);
+    }
     /**
      * Waits until this requester has data, and then returns a reference to this
      * requester
      * @return a reference to this requester.
      */
-    public FirebaseSyncRequester<T> whenReady() {
+    public FirebaseSyncRequester whenReady() {
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {

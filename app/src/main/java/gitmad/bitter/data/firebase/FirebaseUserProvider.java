@@ -22,13 +22,13 @@ public class FirebaseUserProvider implements UserProvider {
     public User getUser(String userId) {
         Firebase userFirebaseRef = newFirebaseRefForUser(userId);
 
-        FirebaseSyncRequester<User> userRequester = new FirebaseSyncRequester<>(userFirebaseRef);
+        FirebaseSyncRequester userRequester = new FirebaseSyncRequester(userFirebaseRef);
 
         if (!userRequester.exists()) {
             throw new IllegalArgumentException("User does not exist");
         }
 
-        return userRequester.get();
+        return userRequester.getUser();
     }
 
     @Override
@@ -40,12 +40,12 @@ public class FirebaseUserProvider implements UserProvider {
     public Map<Post, User> getAuthorsOfPosts(Post... posts) {
         String[] authorIds = getPostAuthorIds(posts);
 
-        FirebaseSyncRequester<User>[] userRequesters = startRequestersForUsers(authorIds);
+        FirebaseSyncRequester[] userRequesters = startRequestersForUsers(authorIds);
 
         Map<Post, User> authorsMap = new HashMap<>();
 
         for (int i = 0; i < posts.length; i++) {
-            authorsMap.put(posts[i], userRequesters[i].get());
+            authorsMap.put(posts[i], userRequesters[i].getUser());
         }
 
         return authorsMap;
@@ -61,12 +61,12 @@ public class FirebaseUserProvider implements UserProvider {
 
         String[] authorIds = getCommentAuthorIds(comments);
 
-        FirebaseSyncRequester<User>[] userRequesters = startRequestersForUsers(authorIds);
+        FirebaseSyncRequester[] userRequesters = startRequestersForUsers(authorIds);
 
         Map<Comment, User> authorsMap = new HashMap<>();
 
         for (int i = 0; i < comments.length; i++) {
-            authorsMap.put(comments[i], userRequesters[i].get());
+            authorsMap.put(comments[i], userRequesters[i].getUser());
         }
 
         return authorsMap;
@@ -80,12 +80,12 @@ public class FirebaseUserProvider implements UserProvider {
     }
 
     @NonNull
-    private static <T> FirebaseSyncRequester<T>[] startRequestersForUsers(String[] userIds) {
-        FirebaseSyncRequester<T>[] userRequesters = new FirebaseSyncRequester[userIds.length];
+    private static FirebaseSyncRequester[] startRequestersForUsers(String[] userIds) {
+        FirebaseSyncRequester[] userRequesters = new FirebaseSyncRequester[userIds.length];
 
         for (int i = 0; i < userIds.length; i++) {
             Firebase authorRef = newFirebaseRefForUser(userIds[i]);
-            FirebaseSyncRequester<T> userRequester = new FirebaseSyncRequester<>(authorRef);
+            FirebaseSyncRequester userRequester = new FirebaseSyncRequester(authorRef);
 
             userRequesters[i] = userRequester;
         }

@@ -161,6 +161,12 @@ public class FirebaseProviderTest extends ApplicationTestCase<Application> {
         assertEquals("did not return all comments, some expected where not found.", 0, allCommentsAdded.size());
     }
 
+    public void testSyncRequesterOnKnownPost() {
+        String knownPostId = "-K6yRhl7Hvm4vs6m9byb";
+
+        assertNotNull(postProvider.getPost(knownPostId));
+    }
+
     @NonNull
     private Stack<Comment> addFakeCommentsToPost(Post post) {
         Stack<Comment> addedComments = new Stack<>();
