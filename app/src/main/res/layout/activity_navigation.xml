@@ -33,6 +33,8 @@
             android:layout_width="@dimen/nav_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            app:itemIconTint="@color/nav_drawer_selector"
+            app:itemTextColor="@color/nav_drawer_selector"
             app:menu="@menu/nav_drawer" />
 
     </android.support.v4.widget.DrawerLayout>

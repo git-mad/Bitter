@@ -8,11 +8,15 @@
         <item
             android:id="@+id/nav_feed"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Feed" />
+            android:title="Main Feed" />
         <item
             android:id="@+id/nav_user"
             android:icon="@drawable/ic_menu_manage"
             android:title="User Profile" />
+        <item
+            android:id="@+id/nav_friends"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Friends" />
     </group>
 
     <item android:title="Other">

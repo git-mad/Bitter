@@ -98,6 +98,8 @@ public class NavigationActivity extends AppCompatActivity implements
             fragmentClass = FeedFragment.class;
         } else if (id == R.id.nav_user) {
             fragmentClass = UserFragment.class;
+        } else if (id == R.id.nav_friends) {
+            // TODO
         } else if (id == R.id.nav_settings) {
             // TODO
         } else if (id == R.id.nav_about) {
