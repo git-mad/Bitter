@@ -3,7 +3,7 @@
 
     <group
         android:checkableBehavior="none"
-        android:title="Debug">
+        android:title="Actions">
 
         <item
             android:id="@+id/nav_feed"
@@ -21,6 +21,10 @@
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Settings" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="About" />
         </menu>
     </item>
 
