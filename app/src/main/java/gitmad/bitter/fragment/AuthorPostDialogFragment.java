@@ -8,12 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import gitmad.bitter.R;
-import gitmad.bitter.model.Post;
-import gitmad.bitter.model.User;
 
 public class AuthorPostDialogFragment extends DialogFragment {
 
@@ -36,11 +31,6 @@ public class AuthorPostDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_author_post_dialog, container, false);
@@ -50,19 +40,9 @@ public class AuthorPostDialogFragment extends DialogFragment {
         root.findViewById(R.id.bitch_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Post post = new Post();
-                post.setText(bitchEditText.getText().toString());
-                post.setTimestamp(new Date().getTime());
-                User temp = new User();
+                String postText = bitchEditText.getText().toString();
 
-                //temporary//
-                temp.setName("me");
-                ArrayList<Post> posts = new ArrayList<>();
-                posts.add(post);
-                temp.setPosts(posts);
-                post.setUser(temp);
-
-                mListener.onPostCreated(post);
+                mListener.onPostCreated(postText);
                 AuthorPostDialogFragment.this.dismiss();
             }
         });
@@ -98,7 +78,7 @@ public class AuthorPostDialogFragment extends DialogFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnPostCreatedListener {
-        void onPostCreated(Post post);
+        void onPostCreated(String postText);
     }
 
 }

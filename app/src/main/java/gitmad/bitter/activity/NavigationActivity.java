@@ -21,7 +21,6 @@ import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.fragment.FeedFragment;
 import gitmad.bitter.fragment.UserFragment;
-import gitmad.bitter.model.Post;
 
 public class NavigationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -135,7 +134,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
     // TODO
     @Override
-    public void onPostCreated(Post post) {
-        Log.d("Bitter", "NavigationView#onPostCreated(" + post.toString() + ")");
+    public void onPostCreated(String postText) {
+        Log.d("Bitter", "NavigationView#onPostCreated(" + postText + ")");
     }
 }

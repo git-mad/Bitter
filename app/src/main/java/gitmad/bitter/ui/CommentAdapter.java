@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.Map;
+
 import gitmad.bitter.R;
 import gitmad.bitter.model.Comment;
+import gitmad.bitter.model.User;
 
 /**
  * Created by prabh on 10/19/2015.
@@ -16,13 +19,13 @@ import gitmad.bitter.model.Comment;
 public class CommentAdapter extends ArrayAdapter<Comment> {
 
     private Comment[] comments;
-    private Context context;
+    private Map<Comment, User> commentAuthors;
 
-    public CommentAdapter(Context context, Comment[] comments) {
-        super(context, 0, comments);
+    public CommentAdapter(Context context, Comment[] comments, Map<Comment, User> commentAuthors) {
+        super(context, 0, comments); // TODO is the zero here correct?
 
-        this.context = context;
         this.comments = comments;
+        this.commentAuthors = commentAuthors;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -35,7 +38,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         TextView userText = (TextView) convertView.findViewById(R.id.user_text);
         TextView commentText = (TextView) convertView.findViewById(R.id.comment_text);
 
-        userText.setText(comment.getUser().getName());
+        userText.setText(commentAuthors.get(comment).getName());
         commentText.setText(comment.getText());
 
         return convertView;
