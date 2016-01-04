@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tabLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="@style/MaterialTheme" />
+    android:theme="@style/MaterialTheme"
+    app:tabSelectedTextColor="@color/accent_color"
+    app:tabTextColor="@color/title_text_color" />

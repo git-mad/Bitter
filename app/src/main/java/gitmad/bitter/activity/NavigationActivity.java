@@ -1,5 +1,7 @@
 package gitmad.bitter.activity;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import gitmad.bitter.R;
@@ -36,17 +40,40 @@ public class NavigationActivity extends AppCompatActivity implements
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            /**
+             * Called when a drawer has settled in a completely closed state.
+             */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                setTitle(previousMI.getTitle());
+            }
+
+            /**
+             * Called when a drawer has settled in a completely open state.
+             */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                setTitle(R.string.toolbar_app_name);
+            }
+        };
         drawer.setDrawerListener(toggle);
+        drawer.setStatusBarBackgroundColor(Color.BLUE);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         previousMI = navigationView.getMenu().getItem(0);
         previousMI.setChecked(true);
+        setTitle(previousMI.getTitle());
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, FeedFragment.newInstance()).commit();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.primary_color_dark));
+        }
     }
 
     @Override
@@ -57,6 +84,7 @@ public class NavigationActivity extends AppCompatActivity implements
         } else {
             super.onBackPressed();
         }
+        setTitle(previousMI.getTitle());
     }
 
     @Override
@@ -69,7 +97,11 @@ public class NavigationActivity extends AppCompatActivity implements
             fragmentClass = FeedFragment.class;
         } else if (id == R.id.nav_user) {
             fragmentClass = UserFragment.class;
+        } else if (id == R.id.nav_friends) {
+            // TODO
         } else if (id == R.id.nav_settings) {
+            // TODO
+        } else if (id == R.id.nav_about) {
             // TODO
         }
 
