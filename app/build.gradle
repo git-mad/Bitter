@@ -4,6 +4,11 @@ android {
     compileSdkVersion 23
     buildToolsVersion '23.0.1'
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
     defaultConfig {
         applicationId "gitmad.bitter"
         //Note 19 = KitKat, 23 Marshmallow
@@ -29,4 +34,6 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:support-v13:23.1.1'
     compile "com.android.support:support-v4:23.1.1"
+    compile 'com.firebase:firebase-client-android:2.5.0'
+    androidTestCompile 'junit:junit:4.12'
 }

@@ -43,10 +43,10 @@ public class ViewPostActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.viewPostFrameLayout, viewPostFragment).commit();
     }
 
-    private int getPostIdFromIntent() {
+    private String getPostIdFromIntent() {
         Intent intent = getIntent();
         if (intent.hasExtra(KEY_POST_ID)) {
-            return getIntent().getIntExtra(KEY_POST_ID, -1);
+            return getIntent().getStringExtra(KEY_POST_ID);
         } else  {
             throw new IllegalStateException("ViewPostActivity was not passed a postId.");
         }

@@ -1,27 +1,42 @@
 package gitmad.bitter.model;
 
-import java.util.Collection;
 
 /**
- * Created by brian on 9/21/15.
+ * Models a user
  */
 public class User {
     private String name;
-    private Collection<Post> posts;
+    private String id;
+
+    public User(String pName, String pId) {
+        name = pName;
+        id = pId;
+    }
+
+    public User(){
+    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getId() {
+        return id;
     }
 
-    public Collection<Post> getPosts() {
-        return posts;
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 
-    public void setPosts(Collection<Post> posts) {
-        this.posts = posts;
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User)) {
+            return false;
+        }
+
+        User other = (User) o;
+
+        return other.getId().equals(getId());
     }
 }

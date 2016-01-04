@@ -1,5 +1,6 @@
 package gitmad.bitter.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,10 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import gitmad.bitter.R;
-import gitmad.bitter.data.MockPostProvider;
+import gitmad.bitter.activity.ViewPostActivity;
+import gitmad.bitter.data.mock.MockPostProvider;
+import gitmad.bitter.data.mock.MockUserProvider;
+import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.model.Post;
+import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
 
 public class FavoritePostFragment extends Fragment {
@@ -20,7 +28,9 @@ public class FavoritePostFragment extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private MockPostProvider postProvider;
+    private PostProvider postProvider;
+
+    private UserProvider userProvider;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -39,6 +49,8 @@ public class FavoritePostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initializeMockPostProviders();
     }
 
     @Override
@@ -49,25 +61,58 @@ public class FavoritePostFragment extends Fragment {
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        postProvider = new MockPostProvider(this.getActivity());
-
         // specify an adapter (see also next example)
 
-        Post[] posts = getMockPosts();
+        Post[] postsArray = getMockPosts();
 
-        ArrayList<Post> postList = new ArrayList<>(posts.length);
+        ArrayList<Post> postList = new ArrayList<>(postsArray.length);
 
-        for (Post p : posts) {
+        for (Post p : postsArray) {
             postList.add(p);
         }
 
-        adapter = new PostAdapter(postList);
+        Map<Post, User> authorsOfPosts = getAuthorsOfPosts(postsArray);
+
+        adapter = new PostAdapter(postList, authorsOfPosts, newFeedInteractionListener());
         recyclerView.setAdapter(adapter);
 
         return view;
     }
 
+    private PostAdapter.FeedInteractionListener newFeedInteractionListener() {
+        return new PostAdapter.FeedInteractionListener() {
+            @Override
+            public void onPostClicked(Post p, int index) {
+                Intent intent = new Intent(getActivity(), ViewPostActivity.class);
+                intent.putExtra(ViewPostActivity.KEY_POST_ID, p.getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onDownvoteClicked(Post p, int index) {
+                postProvider.downvotePost(p.getId());
+            }
+        };
+    }
+
+    private void initializeMockPostProviders() {
+        postProvider = new MockPostProvider(this.getActivity());
+        userProvider = new MockUserProvider();
+    }
+
     private Post[] getMockPosts() {
-        return postProvider.getPosts();
+        return postProvider.getPosts(Integer.MAX_VALUE);
+    }
+
+    private Map<Post, User> getAuthorsOfPosts(Post[] posts) {
+        Map<Post, User> postAuthors = new HashMap<>();
+
+        for (Post post : posts) {
+            User authorOfPost = userProvider.getAuthorOfPost(post);
+
+            postAuthors.put(post, authorOfPost);
+        }
+
+        return postAuthors;
     }
 }

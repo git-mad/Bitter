@@ -12,9 +12,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Map;
+
 import gitmad.bitter.R;
-import gitmad.bitter.data.MockPostProvider;
+import gitmad.bitter.data.mock.MockCommentProvider;
+import gitmad.bitter.data.mock.MockPostProvider;
+import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
@@ -23,7 +28,15 @@ import gitmad.bitter.ui.CommentAdapter;
 public class ViewPostFragment extends Fragment {
 
     private static final String KEY_POST_ID = "postIdKey";
-    private int postId;
+
+    public static ViewPostFragment newInstance(String postId) {
+        Bundle args = new Bundle();
+        args.putString(KEY_POST_ID, postId);
+        ViewPostFragment fragment = new ViewPostFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     private Post post;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -32,20 +45,12 @@ public class ViewPostFragment extends Fragment {
     public ViewPostFragment() {
     }
 
-    public static ViewPostFragment newInstance(int postId) {
-        Bundle args = new Bundle();
-        args.putInt(KEY_POST_ID, postId);
-        ViewPostFragment fragment = new ViewPostFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null && getArguments().containsKey(KEY_POST_ID)) {
-            int postId = getArguments().getInt(KEY_POST_ID);
+            String postId = getArguments().getString(KEY_POST_ID);
             post = getPostFromMockProvider(postId);
         }
     }
@@ -57,21 +62,21 @@ public class ViewPostFragment extends Fragment {
         TextView postBodyTextView = (TextView) view.findViewById(R.id.postContent);
         TextView userTextView = (TextView) view.findViewById(R.id.posterUsername);
 
+        postBodyTextView.setText(post.getText());
+        userTextView.setText(getUserFromMockProvider().getName());
+
         // FIXME temp profile pic, get pic from variable instead of hardcoded id
         ImageView pic = (ImageView) view.findViewById(R.id.posterPic);
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         Bitmap conv_bm = UserProfileFragment.getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
-        if (post != null) {
-            postBodyTextView.setText(post.getText());
-        }
-        // TODO
-        userTextView.setText("Username To Set");
 
-        Comment[] comments = getMockComments();
+        Comment[] comments = new MockCommentProvider(getContext()).getCommentsOnPost(post.getId());
 
-        CommentAdapter adapter = new CommentAdapter(this.getActivity(), comments);
+        Map<Comment, User> authorsMap = new MockUserProvider().getAuthorsOfComments(comments);
+
+        CommentAdapter adapter = new CommentAdapter(this.getActivity(), comments, authorsMap);
         ListView listView = (ListView) view.findViewById(R.id.comments_list_view);
         listView.setAdapter(adapter);
 
@@ -81,21 +86,13 @@ public class ViewPostFragment extends Fragment {
         return view;
     }
 
-    private Comment[] getMockComments() {
-        String[] commentsText = getResources().getStringArray(R.array.mock_comments);
-        User user = new User();
-        user.setName("NOTgBurdell");
-        Comment[] comments = new Comment[commentsText.length];
-        for (int i = 0; i < commentsText.length; i++) {
-            comments[i] = new Comment();
-            comments[i].setText(commentsText[i]);
-            comments[i].setUser(user);
-        }
-        return comments;
-    }
-
-    private Post getPostFromMockProvider(int postId) {
+    private Post getPostFromMockProvider(String postId) {
         PostProvider postProvider = new MockPostProvider(getActivity());
         return postProvider.getPost(postId);
+    }
+
+    private User getUserFromMockProvider() {
+        UserProvider mockUserProvider = new MockUserProvider();
+        return mockUserProvider.getAuthorOfPost(post);
     }
 }
