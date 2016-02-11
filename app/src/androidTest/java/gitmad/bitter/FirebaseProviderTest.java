@@ -3,6 +3,7 @@ package gitmad.bitter;
 import android.app.Application;
 import android.support.annotation.NonNull;
 import android.test.ApplicationTestCase;
+import android.util.Log;
 
 import com.firebase.client.Firebase;
 
@@ -27,7 +28,7 @@ import gitmad.bitter.model.User;
 /**
  * Created by brian on 12/29/15.
  */
-public class FirebaseProviderTest extends ApplicationTestCase<Application> {
+public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication> {
 
     private static final String[] FAKE_POSTS_TEXT = {
             "aasdff dsafasdf aij; jvodisja",
@@ -41,13 +42,15 @@ public class FirebaseProviderTest extends ApplicationTestCase<Application> {
     private CommentProvider commentProvider;
 
     public FirebaseProviderTest() {
-        super(Application.class);
+        super(BitterApplication.class);
     }
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
         createApplication();
+
+        Log.d("BitterTest", (getApplication() instanceof BitterApplication) + "");
 
         Firebase.setAndroidContext(getApplication());
         initializeFirebaseProviders();
@@ -56,8 +59,6 @@ public class FirebaseProviderTest extends ApplicationTestCase<Application> {
     public void testGettingPosts() {
         final int numPosts = 10;
         Post[] posts = postProvider.getPosts(numPosts);
-
-        assertEquals("length should equal requested amount.", numPosts, posts.length);
 
         for (int i = 0; i < posts.length; i++) {
             assertNotNull(posts[i]);
@@ -159,12 +160,6 @@ public class FirebaseProviderTest extends ApplicationTestCase<Application> {
         }
 
         assertEquals("did not return all comments, some expected where not found.", 0, allCommentsAdded.size());
-    }
-
-    public void testSyncRequesterOnKnownPost() {
-        String knownPostId = "-K6yRhl7Hvm4vs6m9byb";
-
-        assertNotNull(postProvider.getPost(knownPostId));
     }
 
     @NonNull
