@@ -2,6 +2,7 @@ package gitmad.bitter.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -51,10 +52,28 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
 
         FloatingActionButton createPost = (FloatingActionButton) view.findViewById(R.id.create_post_button);
+        final FloatingActionButton takePic = (FloatingActionButton) view.findViewById(R.id.camera_fab);
+        final FloatingActionButton picFromGallery = (FloatingActionButton) view.findViewById(R.id.gallery_fab);
+        final FloatingActionButton textPost = (FloatingActionButton) view.findViewById(R.id.text_fab);
+
+        takePic.hide();
+        picFromGallery.hide();
+        textPost.hide();
         createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCreatePostDialog();
+                if (takePic.isShown() && picFromGallery.isShown() && takePic.isShown()) {
+                    takePic.hide();
+                    picFromGallery.hide();
+                    textPost.hide();
+                } else {
+                    takePic.show();
+                    picFromGallery.show();
+                    textPost.show();
+
+                }
+
+
             }
         });
 
