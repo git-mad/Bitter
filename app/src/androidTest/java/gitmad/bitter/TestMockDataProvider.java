@@ -22,7 +22,7 @@ import gitmad.bitter.model.User;
 /**
  * Testing the MockUserProvider, MockPostProvider, and MockCommentProvider.
  */
-public class MockDataProviderTests extends InstrumentationTestCase {
+public class TestMockDataProvider extends InstrumentationTestCase {
     private UserProvider userProvider;
     private PostProvider postProvider;
     private CommentProvider commentProvider;

@@ -7,11 +7,11 @@ import com.firebase.client.Firebase;
 /**
  * Created by brian on 2/18/16.
  */
-public class FirebaseImageTests extends ApplicationTestCase<BitterApplication> {
+public class TestFirebaseImage extends ApplicationTestCase<BitterApplication> {
 
 
 
-    public FirebaseImageTests(Class<BitterApplication> applicationClass) {
+    public TestFirebaseImage(Class<BitterApplication> applicationClass) {
         super(applicationClass);
     }
 

@@ -3,9 +3,11 @@ package gitmad.bitter;
 import android.app.Application;
 import android.support.annotation.NonNull;
 import android.test.ApplicationTestCase;
+import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Log;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.authentication.AuthenticationManager;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +23,7 @@ import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.firebase.FirebaseCommentProvider;
 import gitmad.bitter.data.firebase.FirebasePostProvider;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
+import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
@@ -28,7 +31,7 @@ import gitmad.bitter.model.User;
 /**
  * Created by brian on 12/29/15.
  */
-public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication> {
+public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication> {
 
     private static final String[] FAKE_POSTS_TEXT = {
             "aasdff dsafasdf aij; jvodisja",
@@ -41,20 +44,28 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
     private UserProvider userProvider;
     private CommentProvider commentProvider;
 
-    public FirebaseProviderTest() {
+    public TestFirebaseProvider() {
         super(BitterApplication.class);
     }
 
-    @Before
-    public void setUp() throws Exception {
+    @Override
+    protected void setUp() throws Exception {
         super.setUp();
         createApplication();
 
-        Log.d("BitterTest", (getApplication() instanceof BitterApplication) + "");
+        authenticate();
 
         initializeFirebaseProviders();
     }
 
+    private void authenticate() {
+        FirebaseAuthManager authManager = new FirebaseAuthManager(getApplication());
+        if (!authManager.isAuthed()) {
+            authManager.authenticate();
+        }
+    }
+
+    @SmallTest
     public void testGettingPosts() {
         final int numPosts = 10;
         Post[] posts = postProvider.getPosts(numPosts);
@@ -64,6 +75,7 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
         }
     }
 
+    @SmallTest
     public void testAddingAndGettingPosts() {
         Stack<Post> newPostsStack = addFakePosts();
 
@@ -80,6 +92,7 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
         }
     }
 
+    @SmallTest
     public void testGetPostsByUser() {
         Stack<Post> fakePostsAdded = addFakePosts();
 
@@ -94,6 +107,7 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
         }
     }
 
+    @SmallTest
     public void testGetSinglePost() {
         Post postAdded = postProvider.addPost(FAKE_POSTS_TEXT[0]);
 
@@ -102,6 +116,7 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
         assertEquals("posts not equal", postAdded, postQueried);
     }
 
+    @SmallTest
     public void testDownvotePost() {
         Post postAdded = postProvider.addPost(FAKE_POSTS_TEXT[0]);
 
@@ -111,6 +126,7 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
                 postAdded.getDownvotes() - 1, postDownvoted.getDownvotes());
     }
 
+    @SmallTest
     public void testAddAndGetComment() {
         Post post = postProvider.addPost(FAKE_POSTS_TEXT[0]);
 
@@ -121,6 +137,7 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
         assertEquals("Comment queried should be the same as added", addedComment, queriedComment);
     }
 
+    @SmallTest
     public void testGetCommentByPost() {
         Post post = postProvider.addPost(FAKE_POSTS_TEXT[0]);
 
@@ -135,6 +152,7 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
         }
     }
 
+    @SmallTest
     public void testGetCommentsByUser() {
         Post firstPost = postProvider.addPost(FAKE_POSTS_TEXT[0]);
         Post secondPost = postProvider.addPost(FAKE_POSTS_TEXT[1]);
