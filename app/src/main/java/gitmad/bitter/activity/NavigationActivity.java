@@ -20,11 +20,12 @@ import android.widget.Toast;
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.fragment.FeedFragment;
+import gitmad.bitter.fragment.SettingsFragment;
 import gitmad.bitter.fragment.UserFragment;
 
 public class NavigationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        AuthorPostDialogFragment.OnPostCreatedListener {
+        AuthorPostDialogFragment.OnPostCreatedListener{
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -101,9 +102,11 @@ public class NavigationActivity extends AppCompatActivity implements
             // TODO
         } else if (id == R.id.nav_settings) {
             // TODO
+            fragmentClass = SettingsFragment.class;
         } else if (id == R.id.nav_about) {
             // TODO
         }
+
 
         Fragment fragment;
         try {
@@ -137,4 +140,6 @@ public class NavigationActivity extends AppCompatActivity implements
     public void onPostCreated(String postText) {
         Log.d("Bitter", "NavigationView#onPostCreated(" + postText + ")");
     }
+
+
 }
