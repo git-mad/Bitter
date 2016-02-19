@@ -52,7 +52,7 @@ public class FirebasePostProvider implements PostProvider {
     @Override
     public Post[] getPosts(int numPosts) {
         int lengthOfArrayToReturn = Math.min(numPosts, currentPostsInFeed.length);
-        return Arrays.copyOf(currentPostsInFeed, lengthOfArrayToReturn);
+        return getMostRecent(lengthOfArrayToReturn);
     }
 
     @Override
@@ -82,6 +82,36 @@ public class FirebasePostProvider implements PostProvider {
 
         newPostRef.setValue(post);
 
+        return post;
+    }
+
+    public Post addPostSync(String postText) {
+        Firebase newPostRef = firebasePostsRef.push();
+
+        String newPostId = newPostRef.getKey();
+        long timestamp = millisSinceEpoch();
+        final int zeroDownvotes = 0;
+
+        Post post = new Post(newPostId, postText, timestamp, zeroDownvotes, getLoggedInUserId());
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        newPostRef.setValue(post, new Firebase.CompletionListener() {
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                        if (firebaseError != null) {
+                            throw firebaseError.toException();
+                        }
+
+                        latch.countDown();
+                    }
+                });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return post;
     }
 
@@ -160,7 +190,9 @@ public class FirebasePostProvider implements PostProvider {
     }
 
     private void setFirebaseListener() {
-        Query postsQuery = firebasePostsRef.limitToFirst(numberOfPostsToRetrieve);
+        Query postsQuery = firebasePostsRef
+                .orderByChild("timestamp")
+                .limitToLast(numberOfPostsToRetrieve);
 
         countDownLatch = new CountDownLatch(1);
 
@@ -237,5 +269,15 @@ public class FirebasePostProvider implements PostProvider {
 
     private static Post newDownvotedPost(Post post) {
         return new Post(post.getId(), post.getText(), post.getTimestamp(), post.getDownvotes() - 1, post.getAuthorId());
+    }
+
+    private Post[] getMostRecent(int numberOfPostsToRetrieve) {
+        Post[] toReturn = new Post[numberOfPostsToRetrieve];
+
+        for (int i = currentPostsInFeed.length - 1, j = 0; i >= currentPostsInFeed.length - numberOfPostsToRetrieve; i--, j++) {
+            toReturn[j] = currentPostsInFeed[i];
+        }
+
+        return toReturn;
     }
 }

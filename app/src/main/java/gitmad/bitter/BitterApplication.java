@@ -24,10 +24,11 @@ public class BitterApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Necessary for firebase to work in all Activities //
-        Firebase.setAndroidContext(this);
+            // Necessary for firebase to work in all Activities //
+            Firebase.setAndroidContext(this);
 
-        // store data locally until it can be pushed //
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
+            // store data locally until it can be pushed //
+//            Firebase.getDefaultConfig().setPersistenceEnabled(true);
+
     }
 }

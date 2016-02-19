@@ -79,15 +79,16 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
     public void testAddingAndGettingPosts() {
         Stack<Post> newPostsStack = addFakePosts();
 
-        Post[] postsFromFirebase = postProvider.getPosts(FAKE_POSTS_TEXT.length);
+        Post[] postsFromFirebase = postProvider.getPosts(newPostsStack.size());
 
         assertEquals("Problem getting posts; array from database has wrong size",
-                FAKE_POSTS_TEXT.length, postsFromFirebase.length);
+                newPostsStack.size(), postsFromFirebase.length);
 
 
         for (Post postFromFirebase: postsFromFirebase) {
             assertEquals("Post not correctly added or not in correct order\n"
-                            + Arrays.toString(postsFromFirebase) + "\n" + newPostsStack.toString(),
+                            + "posts from Firebase: " + Arrays.toString(postsFromFirebase)
+                            + "\n" + "posts before sending: " + newPostsStack.toString(),
                     postFromFirebase, newPostsStack.pop());
         }
     }
@@ -250,10 +251,12 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
     private Stack<Post> addFakePosts() {
         Stack<Post> newPostsStack = new Stack<>();
 
-        for (String postText : FAKE_POSTS_TEXT) {
-            Post newPost = postProvider.addPost(postText);
+        for (int i = 0; i < 10; i++) {
+            for (String postText : FAKE_POSTS_TEXT) {
+                Post newPost = ((FirebasePostProvider) postProvider).addPostSync(postText);
 
-            newPostsStack.push(newPost);
+                newPostsStack.push(newPost);
+            }
         }
         return newPostsStack;
     }
