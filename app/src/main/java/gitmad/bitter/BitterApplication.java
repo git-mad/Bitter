@@ -27,6 +27,7 @@ public class BitterApplication extends Application {
 
         Firebase fbRef = new Firebase("https://bitter-gitmad.firebaseio.com");
 
+
         if (fbRef.getAuth() == null) {
             Log.d("Bitter", "logging in for first time");
             authenticateForFirstTime(fbRef);

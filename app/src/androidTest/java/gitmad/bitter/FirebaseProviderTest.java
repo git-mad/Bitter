@@ -52,7 +52,6 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
 
         Log.d("BitterTest", (getApplication() instanceof BitterApplication) + "");
 
-        Firebase.setAndroidContext(getApplication());
         initializeFirebaseProviders();
     }
 

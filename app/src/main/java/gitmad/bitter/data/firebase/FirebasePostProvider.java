@@ -16,6 +16,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.firebase.auth.FirebaseNotAuthenticatedException;
 import gitmad.bitter.model.Post;
 
 /**
