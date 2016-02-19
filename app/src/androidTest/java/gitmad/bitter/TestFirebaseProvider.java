@@ -110,7 +110,7 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
 
     @SmallTest
     public void testGetSinglePost() {
-        Post postAdded = postProvider.addPost(FAKE_POSTS_TEXT[0]);
+        Post postAdded = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
 
         Post postQueried = postProvider.getPost(postAdded.getId());
 
@@ -119,7 +119,7 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
 
     @SmallTest
     public void testDownvotePost() {
-        Post postAdded = postProvider.addPost(FAKE_POSTS_TEXT[0]);
+        Post postAdded = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
 
         Post postDownvoted = postProvider.downvotePost(postAdded.getId());
 
@@ -129,9 +129,9 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
 
     @SmallTest
     public void testAddAndGetComment() {
-        Post post = postProvider.addPost(FAKE_POSTS_TEXT[0]);
+        Post post = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
 
-        Comment addedComment = commentProvider.addComment(FAKE_POSTS_TEXT[0], post.getId());
+        Comment addedComment = commentProvider.addCommentSync(FAKE_POSTS_TEXT[0], post.getId());
 
         Comment queriedComment = commentProvider.getComment(addedComment.getId());
 
@@ -140,7 +140,7 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
 
     @SmallTest
     public void testGetCommentByPost() {
-        Post post = postProvider.addPost(FAKE_POSTS_TEXT[0]);
+        Post post = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
 
         Stack<Comment> addedComments = addFakeCommentsToPost(post);
 
@@ -155,8 +155,8 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
 
     @SmallTest
     public void testGetCommentsByUser() {
-        Post firstPost = postProvider.addPost(FAKE_POSTS_TEXT[0]);
-        Post secondPost = postProvider.addPost(FAKE_POSTS_TEXT[1]);
+        Post firstPost = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
+        Post secondPost = postProvider.addPostSync(FAKE_POSTS_TEXT[1]);
 
         Stack<Comment> commentsOnFirstPost = addFakeCommentsToPost(firstPost);
         Stack<Comment> commentsOnSecondPost = addFakeCommentsToPost(secondPost);
@@ -184,7 +184,7 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
     private Stack<Comment> addFakeCommentsToPost(Post post) {
         Stack<Comment> addedComments = new Stack<>();
         for (String commentText : FAKE_POSTS_TEXT) {
-            Comment newComment = commentProvider.addComment(commentText, post.getId());
+            Comment newComment = commentProvider.addCommentSync(commentText, post.getId());
             addedComments.push(newComment);
         }
         return addedComments;
@@ -251,13 +251,11 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
     private Stack<Post> addFakePosts() {
         Stack<Post> newPostsStack = new Stack<>();
 
-        for (int i = 0; i < 10; i++) {
-            for (String postText : FAKE_POSTS_TEXT) {
-                Post newPost = ((FirebasePostProvider) postProvider).addPostSync(postText);
-
-                newPostsStack.push(newPost);
-            }
+        for (String postText : FAKE_POSTS_TEXT) {
+            Post newPost = ((FirebasePostProvider) postProvider).addPostSync(postText);
+            newPostsStack.push(newPost);
         }
+
         return newPostsStack;
     }
 

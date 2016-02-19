@@ -71,7 +71,7 @@ public class FirebasePostProvider implements PostProvider {
     }
 
     @Override
-    public Post addPost(String postText) {
+    public Post addPostAsync(String postText) {
         Firebase newPostRef = firebasePostsRef.push();
 
         String newPostId = newPostRef.getKey();

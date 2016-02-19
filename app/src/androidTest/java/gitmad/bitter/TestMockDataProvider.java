@@ -47,7 +47,7 @@ public class TestMockDataProvider extends InstrumentationTestCase {
     public void testAddPost() {
         final String newPostText = "I hate writing test cases, but it kinda helps.";
 
-        Post newPost = postProvider.addPost(newPostText);
+        Post newPost = postProvider.addPostSync(newPostText);
 
         assertEquals("Should be able to get added post from postProvider#getPost()",
                 newPost, postProvider.getPost(newPost.getId()));

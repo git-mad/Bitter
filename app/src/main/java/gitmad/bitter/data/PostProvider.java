@@ -22,7 +22,13 @@ public interface PostProvider {
     /**
      * @param postText the text of the Post we are adding
      */
-    Post addPost(String postText);
+    Post addPostSync(String postText);
+
+    /**
+     * returns immediately
+     * @param postText the text of the Post we are adding
+     */
+    Post addPostAsync(String postText);
 
     /**
      * gets all of the posts made by a particular user

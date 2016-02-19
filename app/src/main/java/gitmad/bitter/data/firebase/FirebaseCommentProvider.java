@@ -67,7 +67,7 @@ public class FirebaseCommentProvider implements CommentProvider {
     }
 
     @Override
-    public Comment addComment(String commentText, String postId) {
+    public Comment addCommentAsync(String commentText, String postId) {
 
         startCheckingIfPostExists(postId);
 
@@ -87,6 +87,42 @@ public class FirebaseCommentProvider implements CommentProvider {
 
         newCommentRef.setValue(newComment);
 
+        return newComment;
+    }
+
+    @Override
+    public Comment addCommentSync(String commentText, String postId) {
+
+        startCheckingIfPostExists(postId);
+
+        Firebase newCommentRef = commentsFirebaseRef.push();
+
+        if (!finishCheckingIfPostExists()) {
+            newCommentRef.removeValue();
+
+            throw new IllegalArgumentException("Post being commented on does not exist.");
+        }
+
+        String newCommentId = newCommentRef.getKey();
+        long timestamp = new Date().getTime();
+        int zeroDownvotes = 0;
+
+        Comment newComment = new Comment(newCommentId, postId, getLoggedInUserId(), commentText, timestamp, zeroDownvotes);
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        newCommentRef.setValue(newComment, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return newComment;
     }
 
