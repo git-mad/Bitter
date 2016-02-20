@@ -55,7 +55,12 @@ public class MockCommentProvider implements CommentProvider {
     }
 
     @Override
-    public Comment addComment(String commentText, String postId) {
+    public Comment addCommentSync(String commentText, String postId) {
+        throw new UnsupportedOperationException("Not implemented on mock data provider");
+    }
+
+    @Override
+    public Comment addCommentAsync(String commentText, String postId) {
         throw new UnsupportedOperationException("Not implemented on mock data provider");
     }
 

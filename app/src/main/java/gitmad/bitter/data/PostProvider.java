@@ -22,7 +22,13 @@ public interface PostProvider {
     /**
      * @param postText the text of the Post we are adding
      */
-    Post addPost(String postText);
+    Post addPostSync(String postText);
+
+    /**
+     * returns immediately
+     * @param postText the text of the Post we are adding
+     */
+    Post addPostAsync(String postText);
 
     /**
      * gets all of the posts made by a particular user
@@ -41,6 +47,7 @@ public interface PostProvider {
 
     /**
      * removes a post from the database, if it is owned by the currently logged in user.
+     * synchronous
      * @param postId the id of the post to be deleted
      * @return a Post Object containing the Post's last state.
      */

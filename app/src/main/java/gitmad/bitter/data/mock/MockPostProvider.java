@@ -70,13 +70,18 @@ public class MockPostProvider implements PostProvider {
     }
 
     @Override
-    public Post addPost(String postText) {
+    public Post addPostSync(String postText) {
         logMessageIfEnabled(String.format("MockPostProvider#addPost(%s)", postText));
 
         String nextId = Integer.toString(getNextId());
         Post newPost = createPostWithText(postText, nextId, getMockLoggedInUserId());
         posts.put(nextId, newPost);
         return newPost;
+    }
+
+    @Override
+    public Post addPostAsync(String postText) {
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override

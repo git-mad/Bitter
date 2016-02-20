@@ -1,9 +1,9 @@
-package gitmad.bitter.data.firebase;
+package gitmad.bitter.data.firebase.auth;
 
 /**
  * Created by brian on 12/26/15.
  */
-class FirebaseNotAuthenticatedException extends RuntimeException {
+public class FirebaseNotAuthenticatedException extends RuntimeException {
     public FirebaseNotAuthenticatedException() {
         super("Firebase user must be authenticated.");
     }

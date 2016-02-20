@@ -13,7 +13,7 @@ public class User {
         id = pId;
     }
 
-    public User(){
+    public User() {
     }
 
     public String getName() {
