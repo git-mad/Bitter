@@ -7,9 +7,13 @@ import gitmad.bitter.model.FirebaseImage;
  */
 public interface ImageProvider {
 
-    void addImage(FirebaseImage image);
+    void addImageSync(FirebaseImage image);
+
+    void addImageAsync(FirebaseImage image);
 
     FirebaseImage getImage(String imageUid);
 
     FirebaseImage deleteImage(String imageUid);
+
+    FirebaseImage[] getImagesByUser(String ownerUid);
 }

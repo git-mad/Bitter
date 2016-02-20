@@ -17,7 +17,7 @@ public class FirebaseImageProvider implements ImageProvider {
     }
 
     @Override
-    public void addImage(FirebaseImage image) {
+    public void addImageSync(FirebaseImage image) {
         Firebase newImageRef = imagesRef.push();
 
         imagesRef.setValue(image);
