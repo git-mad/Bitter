@@ -134,7 +134,25 @@ public class FirebaseCommentProvider implements CommentProvider {
         Comment commentToReturn = null;
 
         if (commentRequester.exists()) {
-            firebaseCommentRef.removeValue();
+            final CountDownLatch latch = new CountDownLatch(1);
+
+            firebaseCommentRef.removeValue(new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                    if (firebaseError != null) {
+                        throw firebaseError.toException();
+                    }
+
+                    latch.countDown();
+                }
+            });
+
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             commentToReturn = commentRequester.getComment();
         } else {
             throw new IllegalArgumentException("Comment with id " + commentId + " does not exist.");

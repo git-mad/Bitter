@@ -60,8 +60,7 @@ public class TestFirebaseAuthManager extends ApplicationTestCase<FirebaseApplica
     }
 
     @SmallTest
-    public void testAAIsAlreadyAuthed() {
-        Log.d("Bitter", "testIsAlreadyAuthed");
+    public void testIsAlreadyAuthed() {
         assertNull("auth should be null at this point in the tests", usersFirebaseRef.getAuth());
     }
 
@@ -75,7 +74,6 @@ public class TestFirebaseAuthManager extends ApplicationTestCase<FirebaseApplica
         FirebaseAuthManager authManager = new FirebaseAuthManager(application);
 
         authManager.authenticate();
-        String uid = authManager.getUid();
 
 
         assertTrue("prefs should contain an email address", prefs.contains(KEY_EMAIL));

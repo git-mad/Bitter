@@ -89,22 +89,41 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
             assertEquals("Post not correctly added or not in correct order\n"
                             + "posts from Firebase: " + Arrays.toString(postsFromFirebase)
                             + "\n" + "posts before sending: " + newPostsStack.toString(),
-                    postFromFirebase, newPostsStack.pop());
+                    newPostsStack.pop(), postFromFirebase);
         }
     }
 
     @SmallTest
     public void testGetPostsByUser() {
-        Stack<Post> fakePostsAdded = addFakePosts();
+
+        // first remove all posts by user, relying getPostsByUser() //
+        removePastPosts();
 
         User loggedInUser = userProvider.getLoggedInUser();
 
-        Post[] postsByLoggedInUser = postProvider.getPostsByUser(loggedInUser.getId());
+        Stack<Post> fakePostsAdded = addFakePosts();
 
-        for (Post postQueried : postsByLoggedInUser) {
+        Post[] postsFromFirebase = postProvider.getPostsByUser(loggedInUser.getId());
+
+        String errorString = "Posts not equal or not in correct order.\n" +
+                "fake posts added: " + fakePostsAdded.toString() + "\n" +
+                "posts from firebase: " + Arrays.toString(postsFromFirebase) + "\n";
+
+        for (Post postQueried : postsFromFirebase) {
             Post postAdded = fakePostsAdded.pop();
 
-            assertEquals("Posts not equal or not in correct order", postAdded, postQueried);
+            assertEquals(errorString, postAdded, postQueried);
+        }
+    }
+
+    @NonNull
+    private void removePastPosts() {
+        User loggedInUser = userProvider.getLoggedInUser();
+
+        Post[] previousPostsByUser = postProvider.getPostsByUser(loggedInUser.getId());
+
+        for (Post p : previousPostsByUser) {
+            postProvider.deletePost(p.getId());
         }
     }
 
@@ -157,6 +176,12 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
 
     @SmallTest
     public void testGetCommentsByUser() {
+
+        // first remove past comments, counting on getCommentsByUser() //
+        Comment[] pastComments = commentProvider.getCommentsByUser(userProvider.getLoggedInUser().getId());
+        removeComments(pastComments);
+
+
         Post firstPost = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
         Post secondPost = postProvider.addPostSync(FAKE_POSTS_TEXT[1]);
 
@@ -254,7 +279,7 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
         Stack<Post> newPostsStack = new Stack<>();
 
         for (String postText : FAKE_POSTS_TEXT) {
-            Post newPost = ((FirebasePostProvider) postProvider).addPostSync(postText);
+            Post newPost = postProvider.addPostSync(postText);
             newPostsStack.push(newPost);
         }
 
