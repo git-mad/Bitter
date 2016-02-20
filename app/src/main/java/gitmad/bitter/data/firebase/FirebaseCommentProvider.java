@@ -189,7 +189,8 @@ public class FirebaseCommentProvider implements CommentProvider {
         Comment[] comments = new Comment[(int) commentCallbackData.getChildrenCount()];
 
         Iterator<DataSnapshot> userDataIterator = commentCallbackData.getChildren().iterator();
-        for (int i = 0; userDataIterator.hasNext(); i++) {
+
+        for (int i = comments.length - 1; userDataIterator.hasNext(); i--) {
             comments[i] = userDataIterator.next().getValue(Comment.class);
         }
         return comments;

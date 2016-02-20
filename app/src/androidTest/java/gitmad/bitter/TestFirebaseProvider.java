@@ -149,7 +149,9 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
         for (Comment queriedCommment : queriedComments) {
             Comment addedComment = addedComments.pop();
 
-            assertEquals("Comments not equal or out of order", addedComment, queriedCommment);
+            assertEquals("Comments not equal or out of order " +
+                    "\nadded Comments: " + addedComments.toString() +
+                    "\ncomments From firebase: " + Arrays.toString(queriedComments) + "\n", addedComment, queriedCommment);
         }
     }
 
