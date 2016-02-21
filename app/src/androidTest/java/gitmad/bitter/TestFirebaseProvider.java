@@ -3,9 +3,11 @@ package gitmad.bitter;
 import android.app.Application;
 import android.support.annotation.NonNull;
 import android.test.ApplicationTestCase;
+import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Log;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.authentication.AuthenticationManager;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +23,7 @@ import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.firebase.FirebaseCommentProvider;
 import gitmad.bitter.data.firebase.FirebasePostProvider;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
+import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
@@ -28,7 +31,7 @@ import gitmad.bitter.model.User;
 /**
  * Created by brian on 12/29/15.
  */
-public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication> {
+public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication> {
 
     private static final String[] FAKE_POSTS_TEXT = {
             "aasdff dsafasdf aij; jvodisja",
@@ -41,21 +44,28 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
     private UserProvider userProvider;
     private CommentProvider commentProvider;
 
-    public FirebaseProviderTest() {
+    public TestFirebaseProvider() {
         super(BitterApplication.class);
     }
 
-    @Before
-    public void setUp() throws Exception {
+    @Override
+    protected void setUp() throws Exception {
         super.setUp();
         createApplication();
 
-        Log.d("BitterTest", (getApplication() instanceof BitterApplication) + "");
+        authenticate();
 
-        Firebase.setAndroidContext(getApplication());
         initializeFirebaseProviders();
     }
 
+    private void authenticate() {
+        FirebaseAuthManager authManager = new FirebaseAuthManager(getApplication());
+        if (!authManager.isAuthed()) {
+            authManager.authenticate();
+        }
+    }
+
+    @SmallTest
     public void testGettingPosts() {
         final int numPosts = 10;
         Post[] posts = postProvider.getPosts(numPosts);
@@ -65,46 +75,70 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
         }
     }
 
+    @SmallTest
     public void testAddingAndGettingPosts() {
         Stack<Post> newPostsStack = addFakePosts();
 
-        Post[] postsFromFirebase = postProvider.getPosts(FAKE_POSTS_TEXT.length);
+        Post[] postsFromFirebase = postProvider.getPosts(newPostsStack.size());
 
         assertEquals("Problem getting posts; array from database has wrong size",
-                FAKE_POSTS_TEXT.length, postsFromFirebase.length);
+                newPostsStack.size(), postsFromFirebase.length);
 
 
         for (Post postFromFirebase: postsFromFirebase) {
             assertEquals("Post not correctly added or not in correct order\n"
-                            + Arrays.toString(postsFromFirebase) + "\n" + newPostsStack.toString(),
-                    postFromFirebase, newPostsStack.pop());
+                            + "posts from Firebase: " + Arrays.toString(postsFromFirebase)
+                            + "\n" + "posts before sending: " + newPostsStack.toString(),
+                    newPostsStack.pop(), postFromFirebase);
         }
     }
 
+    @SmallTest
     public void testGetPostsByUser() {
-        Stack<Post> fakePostsAdded = addFakePosts();
+
+        // first remove all posts by user, relying getPostsByUser() //
+        removePastPosts();
 
         User loggedInUser = userProvider.getLoggedInUser();
 
-        Post[] postsByLoggedInUser = postProvider.getPostsByUser(loggedInUser.getId());
+        Stack<Post> fakePostsAdded = addFakePosts();
 
-        for (Post postQueried : postsByLoggedInUser) {
+        Post[] postsFromFirebase = postProvider.getPostsByUser(loggedInUser.getId());
+
+        String errorString = "Posts not equal or not in correct order.\n" +
+                "fake posts added: " + fakePostsAdded.toString() + "\n" +
+                "posts from firebase: " + Arrays.toString(postsFromFirebase) + "\n";
+
+        for (Post postQueried : postsFromFirebase) {
             Post postAdded = fakePostsAdded.pop();
 
-            assertEquals("Posts not equal or not in correct order", postAdded, postQueried);
+            assertEquals(errorString, postAdded, postQueried);
         }
     }
 
+    @NonNull
+    private void removePastPosts() {
+        User loggedInUser = userProvider.getLoggedInUser();
+
+        Post[] previousPostsByUser = postProvider.getPostsByUser(loggedInUser.getId());
+
+        for (Post p : previousPostsByUser) {
+            postProvider.deletePost(p.getId());
+        }
+    }
+
+    @SmallTest
     public void testGetSinglePost() {
-        Post postAdded = postProvider.addPost(FAKE_POSTS_TEXT[0]);
+        Post postAdded = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
 
         Post postQueried = postProvider.getPost(postAdded.getId());
 
         assertEquals("posts not equal", postAdded, postQueried);
     }
 
+    @SmallTest
     public void testDownvotePost() {
-        Post postAdded = postProvider.addPost(FAKE_POSTS_TEXT[0]);
+        Post postAdded = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
 
         Post postDownvoted = postProvider.downvotePost(postAdded.getId());
 
@@ -112,18 +146,20 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
                 postAdded.getDownvotes() - 1, postDownvoted.getDownvotes());
     }
 
+    @SmallTest
     public void testAddAndGetComment() {
-        Post post = postProvider.addPost(FAKE_POSTS_TEXT[0]);
+        Post post = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
 
-        Comment addedComment = commentProvider.addComment(FAKE_POSTS_TEXT[0], post.getId());
+        Comment addedComment = commentProvider.addCommentSync(FAKE_POSTS_TEXT[0], post.getId());
 
         Comment queriedComment = commentProvider.getComment(addedComment.getId());
 
         assertEquals("Comment queried should be the same as added", addedComment, queriedComment);
     }
 
+    @SmallTest
     public void testGetCommentByPost() {
-        Post post = postProvider.addPost(FAKE_POSTS_TEXT[0]);
+        Post post = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
 
         Stack<Comment> addedComments = addFakeCommentsToPost(post);
 
@@ -132,13 +168,22 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
         for (Comment queriedCommment : queriedComments) {
             Comment addedComment = addedComments.pop();
 
-            assertEquals("Comments not equal or out of order", addedComment, queriedCommment);
+            assertEquals("Comments not equal or out of order " +
+                    "\nadded Comments: " + addedComments.toString() +
+                    "\ncomments From firebase: " + Arrays.toString(queriedComments) + "\n", addedComment, queriedCommment);
         }
     }
 
+    @SmallTest
     public void testGetCommentsByUser() {
-        Post firstPost = postProvider.addPost(FAKE_POSTS_TEXT[0]);
-        Post secondPost = postProvider.addPost(FAKE_POSTS_TEXT[1]);
+
+        // first remove past comments, counting on getCommentsByUser() //
+        Comment[] pastComments = commentProvider.getCommentsByUser(userProvider.getLoggedInUser().getId());
+        removeComments(pastComments);
+
+
+        Post firstPost = postProvider.addPostSync(FAKE_POSTS_TEXT[0]);
+        Post secondPost = postProvider.addPostSync(FAKE_POSTS_TEXT[1]);
 
         Stack<Comment> commentsOnFirstPost = addFakeCommentsToPost(firstPost);
         Stack<Comment> commentsOnSecondPost = addFakeCommentsToPost(secondPost);
@@ -166,7 +211,7 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
     private Stack<Comment> addFakeCommentsToPost(Post post) {
         Stack<Comment> addedComments = new Stack<>();
         for (String commentText : FAKE_POSTS_TEXT) {
-            Comment newComment = commentProvider.addComment(commentText, post.getId());
+            Comment newComment = commentProvider.addCommentSync(commentText, post.getId());
             addedComments.push(newComment);
         }
         return addedComments;
@@ -234,10 +279,10 @@ public class FirebaseProviderTest extends ApplicationTestCase<BitterApplication>
         Stack<Post> newPostsStack = new Stack<>();
 
         for (String postText : FAKE_POSTS_TEXT) {
-            Post newPost = postProvider.addPost(postText);
-
+            Post newPost = postProvider.addPostSync(postText);
             newPostsStack.push(newPost);
         }
+
         return newPostsStack;
     }
 
