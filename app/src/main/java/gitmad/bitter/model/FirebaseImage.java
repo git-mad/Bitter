@@ -1,7 +1,10 @@
 package gitmad.bitter.model;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -13,6 +16,7 @@ public class FirebaseImage {
 
     private String uid;
     private String ownerUid;
+    @JsonIgnore
     private Bitmap bitmap;
     private String imageData;
     private long timestamp;
@@ -34,8 +38,9 @@ public class FirebaseImage {
     private String getImageDataAsString() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        bitmap.recycle();
+        int quality = 100;
+
+        getBitmap().compress(Bitmap.CompressFormat.PNG, quality, stream);
 
         byte[] byteArray = stream.toByteArray();
 
@@ -51,7 +56,7 @@ public class FirebaseImage {
         return ownerUid;
     }
 
-    private String getImageData() {
+    public String getImageData() {
         return imageData;
     }
 
@@ -59,7 +64,17 @@ public class FirebaseImage {
         return timestamp;
     }
 
+
     public Bitmap getBitmap() {
+        if (bitmap == null) {
+            bitmap = getImageDataAsBitmap();
+        }
+        return bitmap;
+    }
+
+    private Bitmap getImageDataAsBitmap() {
+        byte [] encodeByte = Base64.decode(imageData, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         return bitmap;
     }
 
@@ -71,7 +86,7 @@ public class FirebaseImage {
 
         FirebaseImage other = (FirebaseImage) o;
 
-        return uid.equals(other.uid) && getImageDataAsString().equals(other.getImageDataAsString());
+        return getUid().equals(other.getUid()) && getImageDataAsString().equals(other.getImageDataAsString());
     }
 
     @Override

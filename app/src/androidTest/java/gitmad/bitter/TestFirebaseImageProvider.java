@@ -6,17 +6,20 @@ import android.support.annotation.NonNull;
 import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
+import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.Stack;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import gitmad.bitter.data.ImageProvider;
 import gitmad.bitter.data.firebase.FirebaseImageProvider;
+import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.FirebaseImage;
 
 /**
@@ -25,9 +28,10 @@ import gitmad.bitter.model.FirebaseImage;
 public class TestFirebaseImageProvider extends ApplicationTestCase<BitterApplication> {
 
     ImageProvider imageProvider;
+    private FirebaseAuthManager authManager;
 
-    public TestFirebaseImageProvider(Class<BitterApplication> applicationClass) {
-        super(applicationClass);
+    public TestFirebaseImageProvider() {
+        super(BitterApplication.class);
     }
 
     @Override
@@ -35,18 +39,22 @@ public class TestFirebaseImageProvider extends ApplicationTestCase<BitterApplica
         super.setUp();
         createApplication();
 
+        authenticate();
+
         imageProvider = new FirebaseImageProvider();
     }
 
     @MediumTest
     public void testFirebaseImageSerialization() {
-        final Firebase tempFirebaseLocation = new Firebase("https://bitter-gitmad.firebaseio.com/testFirebaseImage");
+        final Firebase imageFirebaseRef = new Firebase("https://bitter-gitmad.firebaseio.com/images")
+                .push();
 
-        FirebaseImage originalFirebaseImage = makeAFirebaseImage();
+        FirebaseImage originalFirebaseImage = new FirebaseImage(imageFirebaseRef.getKey(),
+                makeABitmap(), authManager.getUid());
 
 
         final CountDownLatch pushLatch = new CountDownLatch(1);
-        tempFirebaseLocation.setValue(originalFirebaseImage, new Firebase.CompletionListener() {
+        imageFirebaseRef.setValue(originalFirebaseImage, new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError != null) {
@@ -60,10 +68,10 @@ public class TestFirebaseImageProvider extends ApplicationTestCase<BitterApplica
         final CountDownLatch readLatch = new CountDownLatch(1);
         final AtomicReference<FirebaseImage> imageAtomicReference = new AtomicReference<>();
 
-        tempFirebaseLocation.addListenerForSingleValueEvent(new ValueEventListener() {
+        imageFirebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                tempFirebaseLocation.removeValue();
+                imageFirebaseRef.removeValue();
                 imageAtomicReference.set(dataSnapshot.getValue(FirebaseImage.class));
                 readLatch.countDown();
             }
@@ -83,10 +91,10 @@ public class TestFirebaseImageProvider extends ApplicationTestCase<BitterApplica
     @SmallTest
     public void testAddingAndGettingImage() {
 
-        FirebaseImage originalImage = makeAFirebaseImage();
+        Bitmap bitmap = makeABitmap();
 
 
-        imageProvider.addImageSync(originalImage);
+        FirebaseImage originalImage = imageProvider.addImageSync(bitmap);
 
         FirebaseImage imageFromFirebase = imageProvider.getImage(originalImage.getUid());
 
@@ -96,12 +104,11 @@ public class TestFirebaseImageProvider extends ApplicationTestCase<BitterApplica
 
     @SmallTest
     public void testDeleteImage() {
-        FirebaseImage image = makeAFirebaseImage();
+        Bitmap bitmap = makeABitmap();
+
+        FirebaseImage image = imageProvider.addImageSync(bitmap);
 
         Firebase imageRef = new Firebase("https://bitter-gitmad.firebaseio.com/images/" + image.getUid());
-
-
-        imageProvider.addImageSync(image);
 
         imageProvider.deleteImage(image.getUid());
 
@@ -127,44 +134,40 @@ public class TestFirebaseImageProvider extends ApplicationTestCase<BitterApplica
         // delete past mock images, relying on ImageProvider#getImagesByUser() //
         removePastMockImages();
 
-        FirebaseImage[] originalImages = addImagesToFirebase();
+        Stack<FirebaseImage> originalImages = addImagesToFirebase();
 
-        String mockPostOwnerId = originalImages[0].getOwnerUid();
+        String mockPostOwnerId = originalImages.peek().getOwnerUid();
 
         FirebaseImage[] imagesFromFirebase = imageProvider.getImagesByUser(mockPostOwnerId);
 
-        for (int i = 0; i < originalImages.length; i++) {
-            assertEquals("Images should be equal", originalImages[i], imagesFromFirebase[i]);
+        int imagesPushed = originalImages.size();
+
+        for (int i = 0; i < imagesPushed; i++) {
+            assertEquals("Images should be equal", originalImages.pop(), imagesFromFirebase[i]);
         }
     }
 
     @NonNull
-    private FirebaseImage[] addImagesToFirebase() {
+    private Stack<FirebaseImage> addImagesToFirebase() {
         final int NUM_IMAGES = 4;
 
-        FirebaseImage[] originalImages = new FirebaseImage[NUM_IMAGES];
+        Stack<FirebaseImage> originalImages = new Stack<>();
 
-        for (int i = 0; i < originalImages.length; i++) {
-            originalImages[i] = makeAFirebaseImage();
-            imageProvider.addImageSync(originalImages[i]);
+        for (int i = 0; i < NUM_IMAGES; i++) {
+            originalImages.push(imageProvider.addImageSync(makeABitmap()));
         }
         return originalImages;
     }
 
     private void removePastMockImages() {
-        String mockOwnerUid = makeAFirebaseImage().getOwnerUid();
+        String mockOwnerUid = authManager.getUid();
         for (FirebaseImage image : imageProvider.getImagesByUser(mockOwnerUid)) {
             imageProvider.deleteImage(image.getUid());
         }
     }
 
-    private FirebaseImage makeAFirebaseImage() {
-        Bitmap originalBitmap = BitmapFactory.decodeResource(getApplication().getResources(), R.drawable.ic_menu_camera);
-
-        final String IMAGE_UID = "imageUID";
-        final String AUTHOR_UID = "authoruid";
-
-        return new FirebaseImage(IMAGE_UID, originalBitmap, AUTHOR_UID);
+    private Bitmap makeABitmap() {
+        return BitmapFactory.decodeResource(getApplication().getResources(), R.drawable.ic_menu_camera);
     }
 
     private void awaitLatch(CountDownLatch latch) {
@@ -172,6 +175,13 @@ public class TestFirebaseImageProvider extends ApplicationTestCase<BitterApplica
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void authenticate() {
+        authManager = new FirebaseAuthManager(getApplication());
+        if (!authManager.isAuthed()) {
+            authManager.authenticate();
         }
     }
 

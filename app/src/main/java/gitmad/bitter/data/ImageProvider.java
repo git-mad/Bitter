@@ -1,5 +1,7 @@
 package gitmad.bitter.data;
 
+import android.graphics.Bitmap;
+
 import gitmad.bitter.model.FirebaseImage;
 
 /**
@@ -7,9 +9,9 @@ import gitmad.bitter.model.FirebaseImage;
  */
 public interface ImageProvider {
 
-    void addImageSync(FirebaseImage image);
+    FirebaseImage addImageSync(Bitmap image);
 
-    void addImageAsync(FirebaseImage image);
+    FirebaseImage addImageAsync(Bitmap image);
 
     FirebaseImage getImage(String imageUid);
 
