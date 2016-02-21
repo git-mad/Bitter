@@ -18,9 +18,7 @@ import android.widget.TextView;
 
 import gitmad.bitter.R;
 
-// TODO Bio
-// TODO Edit stuff
-// TODO scrollable
+// TODO # of followers + following
 
 /**
  * A placeholder fragment containing a simple view.
