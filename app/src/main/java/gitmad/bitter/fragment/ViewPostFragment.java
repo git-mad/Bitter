@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +29,8 @@ import gitmad.bitter.ui.CommentAdapter;
 public class ViewPostFragment extends Fragment {
 
     private static final String KEY_POST_ID = "postIdKey";
+    public ImageButton imageButton;
+    private boolean clicked = false;
 
     public static ViewPostFragment newInstance(String postId) {
         Bundle args = new Bundle();
@@ -59,6 +62,8 @@ public class ViewPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_post, container, false);
 
+        imageButton = (ImageButton) view.findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(imgButtonHandler);
         TextView postBodyTextView = (TextView) view.findViewById(R.id.postContent);
         TextView userTextView = (TextView) view.findViewById(R.id.posterUsername);
 
@@ -85,6 +90,19 @@ public class ViewPostFragment extends Fragment {
 
         return view;
     }
+
+    private View.OnClickListener imgButtonHandler = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (!clicked) {
+                imageButton.setBackgroundResource(R.drawable.arrow_down_float_downvote);
+            } else {
+                imageButton.setBackgroundResource(R.drawable.arrow_down_float);
+            }
+
+            clicked = !clicked;
+            //implement some way to store downvote
+        }
+    };
 
     private Post getPostFromMockProvider(String postId) {
         PostProvider postProvider = new MockPostProvider(getActivity());
