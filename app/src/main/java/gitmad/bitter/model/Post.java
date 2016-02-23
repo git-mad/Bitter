@@ -6,6 +6,7 @@ package gitmad.bitter.model;
 public class Post {
     private String id;
     private String text;
+    private String category;
     private long timestamp;
     private int downvotes;
     private String authorId;

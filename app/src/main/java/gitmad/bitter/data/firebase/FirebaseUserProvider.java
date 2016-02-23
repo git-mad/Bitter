@@ -80,7 +80,7 @@ public class FirebaseUserProvider implements UserProvider {
     }
 
     @Override
-    public Map<String, Integer> getPostCatergoryCount(String userUid) {
+    public Map<String, Integer> getPostCategoryCount(String userUid) {
         throw new UnsupportedOperationException();
     }
 
