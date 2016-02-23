@@ -22,10 +22,6 @@
         <activity
             android:name=".activity.ViewPostActivity"
             android:label="View Post"></activity>
-        <activity
-            android:name=".activity.Settings"
-            android:label="@string/title_activity_settin"
-            android:theme="@style/MaterialTheme"></activity>
     </application>
 
 </manifest>

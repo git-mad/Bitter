@@ -22,6 +22,7 @@ import android.widget.Toast;
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.fragment.FeedFragment;
+import gitmad.bitter.fragment.SettingsFragment;
 import gitmad.bitter.fragment.UserFragment;
 
 public class NavigationActivity extends AppCompatActivity implements
@@ -102,7 +103,7 @@ public class NavigationActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_friends) {
             // TODO
         } else if (id == R.id.nav_settings) {
-            // TODO
+            fragmentClass = SettingsFragment.class;
         } else if (id == R.id.nav_about) {
             // TODO
         }
@@ -142,17 +143,13 @@ public class NavigationActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings_menu, menu);
+        getMenuInflater().inflate(R.menu.nav_drawer, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.settings) {
-            Intent intent = new Intent(this, Settings.class);
-            startActivity(intent);
-        }
         return super.onOptionsItemSelected(item);
     }
 }
