@@ -101,8 +101,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
     @Override
     public void onPostCreated(String postText) {
 
-        //TODO re-read from provider
-        Post newPost = postProvider.addPost(postText);
+        Post newPost = postProvider.addPostSync(postText);
         ((PostAdapter) adapter).add(newPost);
         recyclerView.swapAdapter(adapter, false);
     }

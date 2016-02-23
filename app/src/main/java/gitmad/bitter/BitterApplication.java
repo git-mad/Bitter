@@ -8,6 +8,9 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import java.util.concurrent.CountDownLatch;
+
+import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.User;
 
 /**
@@ -21,43 +24,11 @@ public class BitterApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Firebase.setAndroidContext(this); // Necessary for firebase to work in all Activities
+            // Necessary for firebase to work in all Activities //
+            Firebase.setAndroidContext(this);
 
-        Firebase fbRef = new Firebase("https://bitter-gitmad.firebaseio.com");
+            // store data locally until it can be pushed //
+//            Firebase.getDefaultConfig().setPersistenceEnabled(true);
 
-        if (fbRef.getAuth() == null) {
-            authenticateForFirstTime(fbRef);
-        } else {
-            Log.d("Bitter", "Logged in anonymously");
-        }
-    }
-
-    private void authenticateForFirstTime(Firebase fbRef) {
-
-        fbRef.authAnonymously(new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                storeInitialUserData(authData.getUid());
-            }
-
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                Log.d("Bitter", "could not log in");
-                Toast.makeText(getApplicationContext(), "Could not log in to server. Check internet.",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private String generateRandomUsername() {
-        return "asdf"; // TODO
-    }
-
-    private void storeInitialUserData(String userId) {
-        User me = new User(generateRandomUsername(), userId);
-
-        Firebase userRef = new Firebase("https://bitter-gitmad.firebaseio.com/users/" + userId);
-
-        userRef.setValue(me);
     }
 }
