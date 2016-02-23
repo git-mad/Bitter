@@ -33,7 +33,15 @@ public interface CommentProvider {
      * @param postId the id of the post commented on.
      * @return the Comment Object added to the post.
      */
-    Comment addComment(String commentText, String postId);
+    Comment addCommentSync(String commentText, String postId);
+
+    /**
+     * Adds a comment to a post
+     * @param commentText the text of the comment to add.
+     * @param postId the id of the post commented on.
+     * @return the Comment Object added to the post.
+     */
+    Comment addCommentAsync(String commentText, String postId);
 
     /**
      * removes a comment from the feed

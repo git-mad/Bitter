@@ -22,7 +22,7 @@ import gitmad.bitter.model.User;
 /**
  * Testing the MockUserProvider, MockPostProvider, and MockCommentProvider.
  */
-public class MockDataProviderTests extends InstrumentationTestCase {
+public class TestMockDataProvider extends InstrumentationTestCase {
     private UserProvider userProvider;
     private PostProvider postProvider;
     private CommentProvider commentProvider;
@@ -47,7 +47,7 @@ public class MockDataProviderTests extends InstrumentationTestCase {
     public void testAddPost() {
         final String newPostText = "I hate writing test cases, but it kinda helps.";
 
-        Post newPost = postProvider.addPost(newPostText);
+        Post newPost = postProvider.addPostSync(newPostText);
 
         assertEquals("Should be able to get added post from postProvider#getPost()",
                 newPost, postProvider.getPost(newPost.getId()));
