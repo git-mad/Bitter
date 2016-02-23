@@ -79,6 +79,11 @@ public class FirebaseUserProvider implements UserProvider {
         return getUser(firebaseUsersRef.getAuth().getUid());
     }
 
+    @Override
+    public Map<String, Integer> getPostCatergoryCount(String userUid) {
+        throw new UnsupportedOperationException();
+    }
+
     @NonNull
     private static FirebaseSyncRequester[] startRequestersForUsers(String[] userIds) {
         FirebaseSyncRequester[] userRequesters = new FirebaseSyncRequester[userIds.length];

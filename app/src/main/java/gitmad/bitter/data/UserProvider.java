@@ -53,4 +53,6 @@ public interface UserProvider {
      * @return the current user, or null if none is logged in.
      */
     User getLoggedInUser();
+
+    Map<String, Integer> getPostCatergoryCount(String userUid);
 }

@@ -66,6 +66,11 @@ public class MockUserProvider implements UserProvider {
         return locallyLoggedInUser;
     }
 
+    @Override
+    public Map<String, Integer> getPostCatergoryCount(String userUid) {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * gets the index of a consistent user from the fakeUsers array, by taking a hash of a user id.
      * This way, one will always be able to retrieve the same fake user using a given fake id.
