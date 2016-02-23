@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
 
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.ViewPostFragment;
@@ -39,8 +38,6 @@ public class ViewPostActivity extends AppCompatActivity {
             }
         });
 
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(getResources().getColor(R.color.primary_color_dark));
@@ -49,7 +46,6 @@ public class ViewPostActivity extends AppCompatActivity {
 
     private void addFragmentToContentView() {
         ViewPostFragment viewPostFragment = ViewPostFragment.newInstance(getPostIdFromIntent());
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.viewPostFrameLayout, viewPostFragment).commit();
     }

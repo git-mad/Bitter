@@ -12,19 +12,22 @@
             android:id="@+id/user_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="3dp"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/accent_color" />
 
         <TextView
             android:id="@+id/comment_text"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/user_text"
             android:layout_alignStart="@+id/user_text"
             android:layout_below="@+id/user_text"
+            android:paddingBottom="3dp"
             android:text="Small Text"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
 
