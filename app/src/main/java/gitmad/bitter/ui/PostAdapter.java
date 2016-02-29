@@ -59,14 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 listener.onDownvoteClicked(posts.get(i), i);
-                if (oddEven % 2 == 0) {
-                    viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
-                    oddEven++;
-
-                } else if (oddEven % 2 != 0) {
-                    viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
-                    oddEven++;
-                }
+                viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
             }
         });
     }

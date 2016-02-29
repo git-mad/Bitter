@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 
 import gitmad.bitter.R;
@@ -22,7 +23,7 @@ import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
 
-public class RecentPostFragment extends Fragment {
+public class RecentPostFragment extends SortedPostFragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -34,6 +35,12 @@ public class RecentPostFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public RecentPostFragment() {
+        super (new Comparator<Post>() {
+            @Override
+            public int compare(Post lhs, Post rhs) {
+                return Long.compare(lhs.getTimestamp(), rhs.getTimestamp());
+            }
+        });
     }
 
     public static RecentPostFragment newInstance() {
@@ -41,52 +48,5 @@ public class RecentPostFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recent_posts, container, false);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recent_posts_recycler_view);
-        layoutManager = new LinearLayoutManager(this.getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-
-        postProvider = new MockPostProvider(this.getActivity());
-        UserProvider userProvider = new MockUserProvider();
-
-        // specify an adapter (see also next example)
-
-        Post[] posts = getMockPosts();
-        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
-
-        ArrayList<Post> postList = new ArrayList<>(posts.length);
-
-        Collections.addAll(postList, posts);
-
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener());
-        recyclerView.setAdapter(adapter);
-
-        return view;
-    }
-
-
-    private PostAdapter.FeedInteractionListener newFeedInteractionListener() {
-        return new PostAdapter.FeedInteractionListener() {
-            @Override
-            public void onPostClicked(Post p, int index) {
-                Intent intent = new Intent(getActivity(), ViewPostActivity.class);
-                intent.putExtra(ViewPostActivity.KEY_POST_ID, p.getId());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onDownvoteClicked(Post p, int index) {
-                postProvider.downvotePost(p.getId());
-            }
-        };
-    }
-
-    private Post[] getMockPosts() {
-        return postProvider.getPosts(Integer.MAX_VALUE);
     }
 }
