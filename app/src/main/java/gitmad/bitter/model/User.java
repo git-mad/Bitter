@@ -7,6 +7,8 @@ package gitmad.bitter.model;
 public class User {
     private String name;
     private String id;
+    private int posts;
+    private int salt;
 
     public User(String pName, String pId) {
         name = pName;
@@ -23,6 +25,10 @@ public class User {
     public String getId() {
         return id;
     }
+
+    public int getPosts() { return posts; }
+
+    public int getSalt() { return salt; }
 
     @Override
     public int hashCode() {
