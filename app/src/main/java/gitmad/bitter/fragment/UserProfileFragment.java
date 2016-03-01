@@ -94,6 +94,8 @@ public class UserProfileFragment extends Fragment {
         TextView totalVotes = (TextView) view.findViewById(R.id.user_profile_votes);
         totalVotes.setText("Total Votes: " + String.valueOf(myUser.getTotalVotes()));
 
+        TextView userSinceDate = (TextView) view.findViewById(R.id.user_profile_user_since);
+        userSinceDate.setText("User Since: " + myUser.getUserSince());
 
         return view;
     }
