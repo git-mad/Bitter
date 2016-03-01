@@ -87,8 +87,12 @@ public class UserProfileFragment extends Fragment {
         TextView userSalt = (TextView) view.findViewById(R.id.user_profile_salt);
         userSalt.setText(myUser.getSalt());
 
-        TextView countPosts= (TextView) view.findViewById(R.id.user_profile_posts);
+        TextView countPosts = (TextView) view.findViewById(R.id.user_profile_posts);
         userSalt.setText(myUser.getPosts());
+
+        TextView totalVotes = (TextView) view.findViewById(R.id.user_profile_votes);
+        totalVotes.setText(myUser.getTotalVotes());
+
 
         return view;
     }

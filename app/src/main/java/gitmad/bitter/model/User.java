@@ -9,6 +9,7 @@ public class User {
     private String id;
     private int posts;
     private int salt;
+    private int totalVotes;
 
     public User(String pName, String pId) {
         name = pName;
@@ -29,6 +30,8 @@ public class User {
     public int getPosts() { return posts; }
 
     public int getSalt() { return salt; }
+
+    public int getTotalVotes() { return totalVotes; }
 
     @Override
     public int hashCode() {
