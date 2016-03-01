@@ -77,6 +77,7 @@ public class UserProfileFragment extends Fragment {
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
+
         MockUserProvider dataSrc = new MockUserProvider();
 
         User myUser = dataSrc.getUser("me123");
@@ -85,13 +86,13 @@ public class UserProfileFragment extends Fragment {
         userName.setText(myUser.getName());
 
         TextView userSalt = (TextView) view.findViewById(R.id.user_profile_salt);
-        userSalt.setText(myUser.getSalt());
+        userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
 
         TextView countPosts = (TextView) view.findViewById(R.id.user_profile_posts);
-        userSalt.setText(myUser.getPosts());
+        userSalt.setText("Posts: " + String.valueOf(myUser.getPosts()));
 
         TextView totalVotes = (TextView) view.findViewById(R.id.user_profile_votes);
-        totalVotes.setText(myUser.getTotalVotes());
+        totalVotes.setText("Total Votes: " + String.valueOf(myUser.getTotalVotes()));
 
 
         return view;

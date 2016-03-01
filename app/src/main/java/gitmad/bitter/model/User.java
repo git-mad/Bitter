@@ -14,6 +14,9 @@ public class User {
     public User(String pName, String pId) {
         name = pName;
         id = pId;
+        posts = 0;
+        salt = 0;
+        totalVotes = 0;
     }
 
     public User() {
@@ -26,6 +29,12 @@ public class User {
     public String getId() {
         return id;
     }
+
+    public void setTotalPosts(int numPosts) { posts = numPosts; }
+
+    public void setSalt(int numSalt) { salt = numSalt; }
+
+    public void setTotalVotes( int numVotes) { totalVotes = numVotes; }
 
     public int getPosts() { return posts; }
 
