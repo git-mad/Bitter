@@ -49,7 +49,7 @@ public class TestFirebaseCategories extends ApplicationTestCase<BitterApplicatio
 
     @SmallTest
     public void testGetCategories() {
-        Firebase categoriesRef = new Firebase(FirebaseCategoryProvider.CATEGORIES_URL);
+        Firebase categoriesRef = new Firebase(FirebaseCategoryProvider.FIREBASE_CATEGORIES_URL);
 
         FirebaseSyncRequester<Map> categoriesRequester = new FirebaseSyncRequester<>(categoriesRef, Map.class);
 
