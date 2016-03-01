@@ -89,10 +89,13 @@ public class UserProfileFragment extends Fragment {
         userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
 
         TextView countPosts = (TextView) view.findViewById(R.id.user_profile_posts);
-        userSalt.setText("Posts: " + String.valueOf(myUser.getPosts()));
+        countPosts.setText("Total Posts: " + String.valueOf(myUser.getPosts()));
 
         TextView totalVotes = (TextView) view.findViewById(R.id.user_profile_votes);
         totalVotes.setText("Total Votes: " + String.valueOf(myUser.getTotalVotes()));
+
+        TextView totalComments = (TextView) view.findViewById(R.id.user_profile_comments);
+        totalComments.setText("Total Comments: " + String.valueOf(myUser.getTotalComments()));
 
         TextView userSinceDate = (TextView) view.findViewById(R.id.user_profile_user_since);
         userSinceDate.setText("User Since: " + myUser.getUserSince());

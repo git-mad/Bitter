@@ -13,6 +13,7 @@ public class User {
     private int posts;
     private int salt;
     private int totalVotes;
+    private int totalComments;
     private Date userSince;
 
     public User(String pName, String pId) {
@@ -21,6 +22,7 @@ public class User {
         posts = 0;
         salt = 0;
         totalVotes = 0;
+        totalComments = 0;
         userSince = new Date();
     }
 
@@ -46,6 +48,8 @@ public class User {
     public int getSalt() { return salt; }
 
     public int getTotalVotes() { return totalVotes; }
+
+    public int getTotalComments() { return totalComments; }
 
     public String getUserSince() {
         SimpleDateFormat formater = new SimpleDateFormat("MMMM d, yyyy");
