@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
+import gitmad.bitter.data.mock.MockUserProvider;
+import gitmad.bitter.model.User;
 
 // TODO # of followers + following
 
@@ -74,8 +77,28 @@ public class UserProfileFragment extends Fragment {
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
+
+        MockUserProvider dataSrc = new MockUserProvider();
+
+        User myUser = dataSrc.getUser("me123");
+
         TextView userName = (TextView) view.findViewById(R.id.user_profile_username);
-        userName.setText("Username: To Set");
+        userName.setText(myUser.getName());
+
+        TextView userSalt = (TextView) view.findViewById(R.id.user_profile_salt);
+        userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
+
+        TextView countPosts = (TextView) view.findViewById(R.id.user_profile_posts);
+        countPosts.setText("Total Posts: " + String.valueOf(myUser.getPosts()));
+
+        TextView totalVotes = (TextView) view.findViewById(R.id.user_profile_votes);
+        totalVotes.setText("Total Votes: " + String.valueOf(myUser.getTotalVotes()));
+
+        TextView totalComments = (TextView) view.findViewById(R.id.user_profile_comments);
+        totalComments.setText("Total Comments: " + String.valueOf(myUser.getTotalComments()));
+
+        TextView userSinceDate = (TextView) view.findViewById(R.id.user_profile_user_since);
+        userSinceDate.setText("User Since: " + myUser.getUserSince());
 
         return view;
     }
