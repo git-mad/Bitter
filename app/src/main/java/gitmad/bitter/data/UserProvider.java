@@ -53,4 +53,12 @@ public interface UserProvider {
      * @return the current user, or null if none is logged in.
      */
     User getLoggedInUser();
+
+    /**
+     * retrieves a map that contains each of the post categories, mapped to the number
+     * of posts the user has made in each category
+     * @param userUid the id of the user whose category counts should be retrieved.
+     * @return
+     */
+    Map<String, Integer> getPostCategoryCount(String userUid);
 }

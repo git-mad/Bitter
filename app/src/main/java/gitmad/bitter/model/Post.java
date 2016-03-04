@@ -6,16 +6,18 @@ package gitmad.bitter.model;
 public class Post {
     private String id;
     private String text;
+    private String category;
     private long timestamp;
     private int downvotes;
     private String authorId;
 
-    public Post(String id, String text, long timestamp, int downvotes, String authorId) {
+    public Post(String id, String text, long timestamp, int downvotes, String authorId, String category) {
         this.id = id;
         this.text = text;
         this.timestamp = timestamp;
         this.downvotes = downvotes;
         this.authorId = authorId;
+        this.category = category;
     }
 
     public Post() {
@@ -59,5 +61,9 @@ public class Post {
     @Override
     public String toString() {
         return "id:" + getId();
+    }
+
+    public String getCategory() {
+        return category;
     }
 }
