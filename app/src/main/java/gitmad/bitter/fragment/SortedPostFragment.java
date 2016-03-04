@@ -1,8 +1,8 @@
 package gitmad.bitter.fragment;
 
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,8 +18,6 @@ import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
-import gitmad.bitter.data.firebase.FirebasePostProvider;
-import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
@@ -28,20 +26,19 @@ import gitmad.bitter.ui.PostAdapter;
 
 //TODO fix downvote issues with recycler view
 
-/**
- * Created by Sam Costley on 2/22/2016.
- */
 public abstract class SortedPostFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private Comparator<Post> comparator;
 
-    private  PostProvider postProvider;
+    private PostProvider postProvider;
 
-    /**Provides a way to implement different ways of sorting compactly
+    /**
+     * Provides a way to implement different ways of sorting compactly
      * as defined by each subclass
-     * @param comparator  The comparator to be used in sorting the posts
+     *
+     * @param comparator The comparator to be used in sorting the posts
      */
     public SortedPostFragment(Comparator<Post> comparator) {
         this.comparator = comparator;

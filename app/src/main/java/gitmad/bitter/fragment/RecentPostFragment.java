@@ -1,27 +1,12 @@
 package gitmad.bitter.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Map;
 
-import gitmad.bitter.R;
-import gitmad.bitter.activity.ViewPostActivity;
-import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
-import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
-import gitmad.bitter.model.User;
-import gitmad.bitter.ui.PostAdapter;
 
 public class RecentPostFragment extends SortedPostFragment {
     private RecyclerView recyclerView;
@@ -35,7 +20,7 @@ public class RecentPostFragment extends SortedPostFragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public RecentPostFragment() {
-        super (new Comparator<Post>() {
+        super(new Comparator<Post>() {
             @Override
             public int compare(Post lhs, Post rhs) {
                 return Long.compare(lhs.getTimestamp(), rhs.getTimestamp());
