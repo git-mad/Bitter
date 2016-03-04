@@ -72,14 +72,15 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
+        // FIXME get the image from the user object
         ImageView pic = (ImageView) view.findViewById(R.id.user_profile_pic);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.tejunareddy); //FIXME how do I get the image from a variable id?
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.tejunareddy);
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
-
         MockUserProvider dataSrc = new MockUserProvider();
 
+        // TODO change these when we change the user profile layout
         User myUser = dataSrc.getUser("me123");
 
         TextView userName = (TextView) view.findViewById(R.id.user_profile_username);
