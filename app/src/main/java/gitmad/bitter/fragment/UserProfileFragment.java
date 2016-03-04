@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
-import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.User;
 

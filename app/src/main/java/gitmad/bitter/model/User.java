@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
@@ -13,23 +12,24 @@ import gitmad.bitter.data.firebase.FirebaseUserProvider;
  * Models a user
  */
 public class User {
+    private final SimpleDateFormat formater = new SimpleDateFormat("MMMM d, yyyy");
     private UserProvider userProvider;
 
-    private String name;
     private String id;
-
+    private String name;
+    private String imageId;
     private int posts;
     private int salt;
     private int totalVotes;
     private int totalComments;
     private Date userSince;
     private List<String> enemies;
-
-    public User(String pName, String pId) {
+    public User(String name, String userId, String imageId) {
         userProvider = new FirebaseUserProvider();
 
-        name = pName;
-        id = pId;
+        this.id = userId;
+        this.name = name;
+        this.imageId = imageId;
 
         posts = 0;
         salt = 0;
@@ -37,6 +37,15 @@ public class User {
         totalComments = 0;
         userSince = new Date();
         enemies = new ArrayList<>();
+    }
+
+    public User(String name, String userId) {
+        // FIXME set imageId to the id for the defualt picture
+        this(name, userId, "default-image");
+    }
+
+    public String getImageId() {
+        return imageId;
     }
 
     public String getName() {
@@ -76,7 +85,6 @@ public class User {
     }
 
     public String getUserSince() {
-        SimpleDateFormat formater = new SimpleDateFormat("MMMM d, yyyy");
         String formatedDate = formater.format(userSince);
         return formatedDate;
     }
@@ -99,7 +107,7 @@ public class User {
             User user = userProvider.getUser(userId);
             return user;
         } else {
-            throw new NoSuchElementException("No Such Enemy Exists");
+            return null;
         }
     }
 

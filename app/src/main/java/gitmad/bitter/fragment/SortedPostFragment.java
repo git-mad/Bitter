@@ -18,6 +18,8 @@ import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.firebase.FirebasePostProvider;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
@@ -33,6 +35,7 @@ public abstract class SortedPostFragment extends Fragment {
     private Comparator<Post> comparator;
 
     private PostProvider postProvider;
+    private UserProvider userProvider;
 
     /**
      * Provides a way to implement different ways of sorting compactly
@@ -52,10 +55,11 @@ public abstract class SortedPostFragment extends Fragment {
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-//        postProvider = new FirebasePostProvider(); //From backend does not work
-//        UserProvider userProvider = new FirebaseUserProvider();
+        // FIXME from backend does not work
+        // postProvider = new FirebasePostProvider();
+        // userProvider = new FirebaseUserProvider();
         postProvider = new MockPostProvider(this.getContext()); //From mock
-        UserProvider userProvider = new MockUserProvider();
+        userProvider = new MockUserProvider();
 
         Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
 
