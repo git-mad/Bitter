@@ -1,0 +1,41 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/user_profile_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context="gitmad.bitter.fragment.UserProfileFragment">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/user_profile_pic_relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_alignParentTop="true"
+            android:orientataion="horizontal"
+            tools:context="gitmad.bitter.fragment.UserProfileFragment">
+
+            <ImageView
+                android:id="@+id/user_profile_pic"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@android:drawable/sym_def_app_icon" />
+                <!-- Note that the picture is changed in the Java file and will be circular -->
+
+            <ImageView
+                android:id="@+id/user_profile_skull"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_gravity="left"
+                android:layout_toLeftOf="@id/user_profile_pic"
+                android:src="@android:drawable/sym_def_app_icon" />
+            <!-- Note that the picture is changed in the Java file and will be circular -->
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

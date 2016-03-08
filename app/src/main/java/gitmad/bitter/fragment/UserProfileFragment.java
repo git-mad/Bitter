@@ -77,6 +77,10 @@ public class UserProfileFragment extends Fragment {
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
+       /* ImageView enemyPic = (ImageView) view.findViewById(R.id.);
+        Bitmap skull = BitmapFactory.decodeResource(getResources(), R.mipmap.skull);
+        Bitmap conv_skull = getRoundedRectBitmap(skull, 100);
+*/
         MockUserProvider dataSrc = new MockUserProvider();
 
         // TODO change these when we change the user profile layout
