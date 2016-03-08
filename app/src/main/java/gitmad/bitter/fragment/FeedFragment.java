@@ -86,6 +86,13 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
             }
         });
 
+        textPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCreatePostDialog();
+            }
+        });
+
         recyclerView = (RecyclerView) view.findViewById(R.id.feed_recycler_view);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
