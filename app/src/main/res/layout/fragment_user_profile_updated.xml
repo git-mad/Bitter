@@ -10,6 +10,7 @@
         android:orientation="vertical"
         tools:context="gitmad.bitter.fragment.UserProfileFragment">
 
+        <!-- Top bar layout -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/user_profile_pic_top_layout"
