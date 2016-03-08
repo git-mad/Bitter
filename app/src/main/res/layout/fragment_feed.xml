@@ -17,7 +17,7 @@
         android:layout_above="@+id/gallery_fab"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_edit"
+        android:src="@android:drawable/ic_menu_camera"
         app:fabSize="mini" />
 
 
