@@ -85,7 +85,15 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
 
             }
         });
-
+        final Intent photoOp = new Intent();
+        photoOp.setType("image/*");
+        photoOp.setAction(Intent.ACTION_VIEW);
+        picFromGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(photoOp);
+            }
+        });
         textPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
