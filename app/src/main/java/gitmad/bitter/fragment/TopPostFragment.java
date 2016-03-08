@@ -23,7 +23,7 @@ public class TopPostFragment extends SortedPostFragment {
         super(new Comparator<Post>() {
             @Override
             public int compare(Post lhs, Post rhs) {
-                return rhs.getDownvotes() - lhs.getDownvotes();
+                return lhs.getDownvotes() - rhs.getDownvotes();
             }
         });
     }

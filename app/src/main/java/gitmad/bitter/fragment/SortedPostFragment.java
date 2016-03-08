@@ -71,10 +71,39 @@ public abstract class SortedPostFragment extends Fragment {
         }
         Collections.sort(postList, comparator);
 
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener());
+        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider);
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        View view = getView();
+        recyclerView = (RecyclerView) view.findViewById(R.id.top_posts_recycler_view);
+        layoutManager = new LinearLayoutManager(this.getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+        // FIXME from backend does not work
+        // postProvider = new FirebasePostProvider();
+        // userProvider = new FirebaseUserProvider();
+        postProvider = new MockPostProvider(this.getContext()); //From mock
+        userProvider = new MockUserProvider();
+
+        Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
+
+        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
+        ArrayList<Post> postList = new ArrayList<>(posts.length);
+
+        for (Post p : posts) {
+            postList.add(p);
+        }
+        Collections.sort(postList, comparator);
+
+        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider);
+        recyclerView.setAdapter(adapter);
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     private PostAdapter.FeedInteractionListener newFeedInteractionListener() {

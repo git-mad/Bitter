@@ -72,7 +72,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         for (Post p : posts) {
             postList.add(p);
         }
-        adapter = new PostAdapter(postList, postAuthors, newFeedInteractionListener());
+        adapter = new PostAdapter(postList, postAuthors, newFeedInteractionListener(), postProvider);
         recyclerView.setAdapter(adapter);
 
         return view;
