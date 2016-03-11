@@ -15,8 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.os.AsyncTask;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
+import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.User;
 
@@ -77,9 +80,14 @@ public class UserProfileFragment extends Fragment {
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
-        MockUserProvider dataSrc = new MockUserProvider();
+        FirebaseAuthManager authenticator = new FirebaseAuthManager(getActivity());
+        getFirebaseTask asyncTask = new getFirebaseTask();
 
         // TODO change these when we change the user profile layout
+        //User myUser = asyncTask.doInBackground(authenticator.getUid());
+
+        MockUserProvider dataSrc = new MockUserProvider();
+
         User myUser = dataSrc.getUser("me123");
 
         TextView userName = (TextView) view.findViewById(R.id.user_profile_username);
@@ -103,5 +111,17 @@ public class UserProfileFragment extends Fragment {
         return view;
     }
 
+    private class getFirebaseTask extends AsyncTask<String, String, User> {
+        private User userData;
+
+        @Override
+        protected User doInBackground(String...params){
+            FirebaseUserProvider provider = new FirebaseUserProvider();
+            userData = provider.getUser(params[0]);
+            return userData;
+        }
+
+
+    }
 
 }
