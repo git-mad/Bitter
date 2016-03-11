@@ -15,36 +15,87 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/user_profile_pic_top_layout"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="230dp"
+            android:weightSum="8"
             android:layout_alignParentTop="true"
             android:orientation="horizontal"
             tools:context="gitmad.bitter.fragment.UserProfileFragment">
-
-            <ImageView
-                android:id="@+id/user_profile_skull"
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/user_profile_skull_layout"
                 android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_gravity="start"
+                android:layout_width="0dp"
+                android:orientation="vertical"
                 android:layout_weight="2"
-                android:src="@android:drawable/sym_def_app_icon" />
-
-            <ImageView
-                android:id="@+id/user_profile_pic"
+                android:weightSum="3"
+                tools:context="gitmad.bitter.fragment.UserProfileFragment">
+                <ImageView
+                    android:id="@+id/user_profile_skull"
+                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:src="@android:drawable/sym_def_app_icon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/user_profile_skull_text"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="Followers to set"/>
+            </LinearLayout>
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/user_profile_picture_layout"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="5"
-                android:src="@android:drawable/sym_def_app_icon"
-                android:layout_width="wrap_content" />
-            <!-- Note that the picture is changed in the Java file and will be circular -->
-
-            <ImageView
-                android:id="@+id/user_profile_salt"
+                android:orientation="vertical"
+                android:layout_weight="4"
+                android:weightSum="5"
+                tools:context="gitmad.bitter.fragment.UserProfileFragment">
+                <ImageView
+                    android:id="@+id/user_profile_pic"
+                    android:layout_height="0dp"
+                    android:src="@android:drawable/sym_def_app_icon"
+                    android:layout_weight="4"
+                    android:layout_width="match_parent" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/user_profile_picture_text"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="Username"/>
+            </LinearLayout>
+                <!-- Note that the picture is changed in the Java file and will be circular -->
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/user_profile_salt_layout"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_gravity="start"
+                android:orientation="vertical"
                 android:layout_weight="2"
-                android:src="@android:drawable/sym_def_app_icon" />
+                android:weightSum="3"
+                tools:context="gitmad.bitter.fragment.UserProfileFragment">
+                <ImageView
+                    android:id="@+id/user_profile_salt"
+                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="start"
+                    android:layout_weight="2"
+                    android:src="@android:drawable/sym_def_app_icon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/user_profile_salt_text"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="Salt to set"/>
+            </LinearLayout>
         </LinearLayout>
+
 
     </RelativeLayout>
 </ScrollView>
