@@ -89,8 +89,12 @@ public class FirebaseAuthManager {
         unauth();
 
         SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(KEY_EMAIL);
+        editor.remove(KEY_PASS);
         editor.clear();
         editor.commit();
+
+        assureAccountCreated();
     }
 
     private void assureAccountCreated() {
