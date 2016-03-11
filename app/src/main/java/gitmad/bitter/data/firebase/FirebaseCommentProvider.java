@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.firebase.auth.FirebaseNotAuthenticatedException;
 import gitmad.bitter.model.Comment;
+import gitmad.bitter.model.Post;
 
 import static gitmad.bitter.data.firebase.FirebasePostProvider.getFirebaseUrlForPost;
 
@@ -32,7 +33,7 @@ public class FirebaseCommentProvider implements CommentProvider {
 
     private Firebase commentsFirebaseRef;
 
-    private FirebaseSyncRequester requesterForCheckingPost;
+    private FirebaseSyncRequester<Post> requesterForCheckingPost;
 
     public FirebaseCommentProvider() {
         dataFromCallbackAtomicRef = new AtomicReference<>();
@@ -43,13 +44,13 @@ public class FirebaseCommentProvider implements CommentProvider {
 
     @Override
     public Comment getComment(String commentId) {
-        FirebaseSyncRequester commentRequester = newFirebaseSyncRequesterForComment(commentId);
+        FirebaseSyncRequester<Comment> commentRequester = newFirebaseSyncRequesterForComment(commentId);
 
         if (!commentRequester.exists()) {
             throw new IllegalArgumentException("Comment does not exist");
         }
 
-        return commentRequester.getComment();
+        return commentRequester.get();
     }
 
     @Override
@@ -129,7 +130,7 @@ public class FirebaseCommentProvider implements CommentProvider {
     @Override
     public Comment deleteComment(String commentId) {
         Firebase firebaseCommentRef = newFirebaseRefForComment(commentId);
-        FirebaseSyncRequester commentRequester = new FirebaseSyncRequester(firebaseCommentRef);
+        FirebaseSyncRequester<Comment> commentRequester = new FirebaseSyncRequester<>(firebaseCommentRef, Comment.class);
 
         Comment commentToReturn = null;
 
@@ -153,7 +154,7 @@ public class FirebaseCommentProvider implements CommentProvider {
                 e.printStackTrace();
             }
 
-            commentToReturn = commentRequester.getComment();
+            commentToReturn = commentRequester.get();
         } else {
             throw new IllegalArgumentException("Comment with id " + commentId + " does not exist.");
         }
@@ -164,12 +165,12 @@ public class FirebaseCommentProvider implements CommentProvider {
     @Override
     public Comment downvoteComment(String commentId) {
         Firebase commentFirebaseRef = newFirebaseRefForComment(commentId);
-        FirebaseSyncRequester commentRequester = new FirebaseSyncRequester(commentFirebaseRef);
+        FirebaseSyncRequester<Comment> commentRequester = new FirebaseSyncRequester<>(commentFirebaseRef, Comment.class);
 
         Comment downvotedComment = null;
 
         if (commentRequester.exists()) {
-            downvotedComment = newDownvotedComment(commentRequester.getComment());
+            downvotedComment = newDownvotedComment(commentRequester.get());
             commentFirebaseRef.setValue(newDownvotedComment(downvotedComment));
         } else {
             throw new IllegalArgumentException("Comment with id " + commentId + " does not exist");
@@ -232,7 +233,7 @@ public class FirebaseCommentProvider implements CommentProvider {
      */
     private void startCheckingIfPostExists(String postId) {
         Firebase postBeingCommentedOnRef = new Firebase(getFirebaseUrlForPost(postId));
-        requesterForCheckingPost = new FirebaseSyncRequester(postBeingCommentedOnRef);
+        requesterForCheckingPost = new FirebaseSyncRequester<>(postBeingCommentedOnRef, Post.class);
     }
 
     /**
@@ -249,8 +250,8 @@ public class FirebaseCommentProvider implements CommentProvider {
         return new Firebase(getFirebaseUrlForComment(commentId));
     }
 
-    private FirebaseSyncRequester newFirebaseSyncRequesterForComment(String commentId) {
-        return new FirebaseSyncRequester(newFirebaseRefForComment(commentId));
+    private FirebaseSyncRequester<Comment> newFirebaseSyncRequesterForComment(String commentId) {
+        return new FirebaseSyncRequester<>(newFirebaseRefForComment(commentId), Comment.class);
     }
 
     private void checkAuthentication() {
