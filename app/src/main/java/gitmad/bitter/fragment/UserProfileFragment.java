@@ -84,11 +84,12 @@ public class UserProfileFragment extends Fragment {
         getFirebaseTask asyncTask = new getFirebaseTask();
 
         // TODO change these when we change the user profile layout
-        //User myUser = asyncTask.doInBackground(authenticator.getUid());
 
         MockUserProvider dataSrc = new MockUserProvider();
 
-        User myUser = dataSrc.getUser("me123");
+        User myUser = asyncTask.doInBackground(authenticator.getUid());
+
+        //User myUser = dataSrc.getUser("me123");
 
         TextView userName = (TextView) view.findViewById(R.id.user_profile_username);
         userName.setText(myUser.getName());
