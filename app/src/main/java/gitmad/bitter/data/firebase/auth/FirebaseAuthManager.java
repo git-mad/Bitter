@@ -75,6 +75,28 @@ public class FirebaseAuthManager {
         firebaseUsersRef.unauth();
     }
 
+
+    /**
+     * THIS WILL DELETE THE ACCOUNT YOU ARE LOGGED IN WITH IRRECOVERABLY.
+     * FOR DEVELOPMENT PURPOSES ONLY
+     * @param confirmation
+     */
+    public void resetAuth(String confirmation) {
+        if (!confirmation.equals("I know what I'm doing")) {
+            throw new IllegalArgumentException("You didn't put in the confirmation correctly. Make sure you really want to do this,");
+        }
+
+        unauth();
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(KEY_EMAIL);
+        editor.remove(KEY_PASS);
+        editor.clear();
+        editor.commit();
+
+        assureAccountCreated();
+    }
+
     private void assureAccountCreated() {
         getEmail();
         getPassword();

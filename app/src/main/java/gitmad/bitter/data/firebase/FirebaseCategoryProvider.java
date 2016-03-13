@@ -1,5 +1,9 @@
 package gitmad.bitter.data.firebase;
 
+import com.firebase.client.Firebase;
+
+import java.util.Map;
+
 import gitmad.bitter.data.CategoryProvider;
 
 /**
@@ -7,10 +11,16 @@ import gitmad.bitter.data.CategoryProvider;
  */
 public class FirebaseCategoryProvider implements CategoryProvider {
 
-    public static final String FIREBASE_CATEGORIES_URL = "https://bitter-gitmad.firebaseio.com/comments";
+    public static final String FIREBASE_CATEGORIES_URL = "https://bitter-gitmad.firebaseio.com/postCategories";
 
     @Override
     public String[] getCategories() {
-        return new String[0];
+        Firebase fb = new Firebase(FIREBASE_CATEGORIES_URL);
+
+        FirebaseSyncRequester<Map> categoriesRequester = new FirebaseSyncRequester<>(fb, Map.class);
+
+        Map<String, Boolean> categoryMap = categoriesRequester.get();
+
+        return categoryMap.keySet().toArray(new String[categoryMap.size()]);
     }
 }
