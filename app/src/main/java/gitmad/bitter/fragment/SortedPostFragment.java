@@ -18,8 +18,6 @@ import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
-import gitmad.bitter.data.firebase.FirebasePostProvider;
-import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
@@ -49,9 +47,9 @@ public abstract class SortedPostFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_top_posts, container, false);
+        View view = inflater.inflate(R.layout.fragment_sorted_posts, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.top_posts_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.sorted_posts_recycler_view);
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
@@ -81,19 +79,7 @@ public abstract class SortedPostFragment extends Fragment {
     public void onResume() {
         super.onResume();
         View view = getView();
-        recyclerView = (RecyclerView) view.findViewById(R.id.top_posts_recycler_view);
-        layoutManager = new LinearLayoutManager(this.getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-
-        // FIXME from backend does not work
-        // postProvider = new FirebasePostProvider();
-        // userProvider = new FirebaseUserProvider();
-        postProvider = new MockPostProvider(this.getContext()); //From mock
-        userProvider = new MockUserProvider();
-
         Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
-
-        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
         ArrayList<Post> postList = new ArrayList<>(posts.length);
 
         for (Post p : posts) {
@@ -101,7 +87,9 @@ public abstract class SortedPostFragment extends Fragment {
         }
         Collections.sort(postList, comparator);
 
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider);
+        for(int i = 0; i < postList.size(); i++) {
+            adapter.notifyItemChanged(i, postList.get(i));
+        }
         recyclerView.setAdapter(adapter);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
