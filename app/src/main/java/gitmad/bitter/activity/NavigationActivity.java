@@ -22,6 +22,7 @@ import android.widget.Toast;
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.fragment.FeedFragment;
+import gitmad.bitter.fragment.SettingsFragment;
 import gitmad.bitter.fragment.UserFragment;
 
 public class NavigationActivity extends AppCompatActivity implements
