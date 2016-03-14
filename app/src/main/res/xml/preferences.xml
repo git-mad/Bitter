@@ -5,6 +5,10 @@
         android:title="Acount Info"
         android:key="pref_key_storage_settings" >
         <EditTextPreference
+            android:key="pref_change_username"
+            android:title="Change Username"
+            />
+        <EditTextPreference
             android:key = "pref_change_password"
             android:title="Change Password"
             />
