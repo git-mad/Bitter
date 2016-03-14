@@ -37,6 +37,35 @@
         <item>Literally same</item>
     </array>
 
+    <array name="text_size_options">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </array>
+
+    <array name="theme">
+        <item>Light</item>
+        <item>Dark</item>
+    </array>
+
+    <array name="sounds">
+        <item>Sound</item>
+        <item>Vibration</item>
+        <item>Mute</item>
+    </array>
+
+    <array name="frequency">
+        <item>Every time someone mentions me</item>
+        <item>Every Hour</item>
+        <item>Every 3 Hours</item>
+    </array>
+
+    <array name="donate">
+        <item>$1.00 You are too kind!</item>
+        <item>$5.00 Please, stop! We are blushing!</item>
+        <item>$10.00 Omg, you\'ve made us the happiest team ever!</item>
+    </array>
+
     <string name="title_activity_view_post">View Post Activity</string>
     <string name="title_activity_test">User Information</string>
     <string name="title_activity_navigation">Bitter</string>
