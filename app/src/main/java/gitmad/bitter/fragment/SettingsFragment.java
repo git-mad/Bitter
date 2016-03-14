@@ -1,19 +1,11 @@
 package gitmad.bitter.fragment;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.support.v4.app.Fragment;
-import android.support.v7.preference.CheckBoxPreference;
+import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.SwitchPreferenceCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import gitmad.bitter.R;
 
@@ -40,11 +32,22 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         SharedPreferences.OnSharedPreferenceChangeListener spChanged = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key.equals("pref_note_me")) {
-                    CheckBoxPreference connectionPref =(CheckBoxPreference) findPreference(key);
-                    editor.putBoolean(key,connectionPref.isChecked());
-                    editor.commit();
+                if (key.equals("pref_change_username")) {
+                    EditTextPreference newUserName = (EditTextPreference)findPreference(key);
+                    String nameChange = newUserName.getText();
+                    //TODO: Add Firebase call to set the UserName change
+                    Toast.makeText(getContext(), nameChange, Toast.LENGTH_SHORT).show();
+                    //Clear after text is received
+                    newUserName.setText("");
+                }else if(key.equals("pref_change_password")){
+                    EditTextPreference newPasswordPref = (EditTextPreference)findPreference(key);
+                    String newPassword = newPasswordPref.getText();
+                    //TODO: Add Firebase call to set the UserName change
+                    Toast.makeText(getContext(),newPassword , Toast.LENGTH_SHORT).show();
+                    //Clear after text is received
+                    newPasswordPref.setText("");
                 }
+
 
             }
         };
