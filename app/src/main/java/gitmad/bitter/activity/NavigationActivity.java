@@ -27,7 +27,7 @@ import gitmad.bitter.fragment.UserFragment;
 
 public class NavigationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        AuthorPostDialogFragment.OnPostCreatedListener {
+        AuthorPostDialogFragment.OnPostCreatedListener{
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -140,17 +140,4 @@ public class NavigationActivity extends AppCompatActivity implements
     public void onPostCreated(String postText) {
         Log.d("Bitter", "NavigationView#onPostCreated(" + postText + ")");
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.nav_drawer, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
-    }
 }
-

@@ -3,12 +3,13 @@
     <!-- Base application theme. -->
     <style name="MaterialTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Theme colors -->
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorPrimaryDark">@color/primary_color_dark</item>
         <item name="colorAccent">@color/accent_color</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="colorControlNormal">@color/title_text_color</item>
+        <!-- Theme addd on needed for Settings Fragments-->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="MaterialTheme.Drawer" parent="MaterialTheme">
@@ -19,6 +20,8 @@
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@color/title_text_color</item>
     </style>
+
+
 
     <!-- Not sure if we will ever need these, but just in case...
 
