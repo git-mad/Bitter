@@ -1,8 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/user_profile_fragment"
         android:layout_width="match_parent"
@@ -40,9 +40,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:id="@+id/user_profile_skull_text"
+                    android:layout_marginLeft="10dp"
                     android:gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:text="Followers to set"/>
+                    android:text="Enemies:\n123456"/>
             </LinearLayout>
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
@@ -89,12 +90,47 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginRight="10dp"
                     android:id="@+id/user_profile_salt_text"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="Salt to set"/>
+                    android:text="Salt:\n 123456"/>
             </LinearLayout>
+
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/user_profile_divider99"
+            android:layout_below="@id/user_profile_pic_top_layout"
+            android:layout_height="2dp"
+            android:layout_width="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/accent_color"
+        />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_divider99"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:id="@+id/user_profile_start_date"
+            android:gravity="center_horizontal"
+            android:textSize="20dp"
+            android:text="Been Bitchin since: \t\tmm/dd"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_start_date"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:id="@+id/user_profile_wall_of_hate_title"
+            android:gravity="center_horizontal"
+            android:textSize="20dp"
+            android:text="Wall of Hate"/>
 
 
     </RelativeLayout>
