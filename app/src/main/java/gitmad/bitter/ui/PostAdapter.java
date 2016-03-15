@@ -36,6 +36,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public void add(Post p) {
         posts.add(0, p);
+        this.notifyDataSetChanged();
     }
 
     @Override

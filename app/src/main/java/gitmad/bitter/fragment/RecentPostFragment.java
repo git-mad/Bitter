@@ -9,11 +9,6 @@ import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.Post;
 
 public class RecentPostFragment extends SortedPostFragment {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-
-    private MockPostProvider postProvider;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -25,7 +20,7 @@ public class RecentPostFragment extends SortedPostFragment {
             public int compare(Post lhs, Post rhs) {
                 return Long.compare(lhs.getTimestamp(), rhs.getTimestamp());
             }
-        });
+        }, "RecentPostFragment");
     }
 
     public static RecentPostFragment newInstance() {

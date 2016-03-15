@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +28,11 @@ import gitmad.bitter.ui.PostAdapter;
 //TODO fix downvote issues with recycler view
 
 public abstract class SortedPostFragment extends Fragment {
+    private String name;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private Comparator<Post> comparator;
-
     private PostProvider postProvider;
     private UserProvider userProvider;
 
@@ -41,8 +42,9 @@ public abstract class SortedPostFragment extends Fragment {
      *
      * @param comparator The comparator to be used in sorting the posts
      */
-    public SortedPostFragment(Comparator<Post> comparator) {
+    public SortedPostFragment(Comparator<Post> comparator, String name) {
         this.comparator = comparator;
+        this.name = name;
     }
 
     @Override
@@ -68,7 +70,6 @@ public abstract class SortedPostFragment extends Fragment {
             postList.add(p);
         }
         Collections.sort(postList, comparator);
-
         adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider);
         recyclerView.setAdapter(adapter);
 
@@ -77,21 +78,19 @@ public abstract class SortedPostFragment extends Fragment {
 
     @Override
     public void onResume() {
-        super.onResume();
-        View view = getView();
+        Log.d("Status", "Fragment resumed" + name);
         Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
         ArrayList<Post> postList = new ArrayList<>(posts.length);
-
+        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
         for (Post p : posts) {
             postList.add(p);
         }
         Collections.sort(postList, comparator);
-
-        for(int i = 0; i < postList.size(); i++) {
-            adapter.notifyItemChanged(i, postList.get(i));
-        }
+        recyclerView.invalidate();
+        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider);
         recyclerView.setAdapter(adapter);
         recyclerView.getAdapter().notifyDataSetChanged();
+        super.onResume();
     }
 
     private PostAdapter.FeedInteractionListener newFeedInteractionListener() {
@@ -108,5 +107,17 @@ public abstract class SortedPostFragment extends Fragment {
                 postProvider.downvotePost(p.getId());
             }
         };
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Status", "Fragment is paused" + name);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("Status", "Fragment is destroyed" + name);
     }
 }

@@ -9,12 +9,6 @@ import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.Post;
 
 public class TopPostFragment extends SortedPostFragment {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-
-    private MockPostProvider postProvider;
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -25,7 +19,7 @@ public class TopPostFragment extends SortedPostFragment {
             public int compare(Post lhs, Post rhs) {
                 return lhs.getDownvotes() - rhs.getDownvotes();
             }
-        });
+        }, "TopPostFragment");
     }
 
     public static SortedPostFragment newInstance() {
