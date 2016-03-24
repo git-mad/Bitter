@@ -17,6 +17,7 @@ import java.util.Map;
 
 import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
+import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.mock.MockCommentProvider;
@@ -34,8 +35,10 @@ public abstract class SortedPostFragment extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private Comparator<Post> comparator;
+
     private PostProvider postProvider;
     private UserProvider userProvider;
+    private CommentProvider commentProvider;
 
     /**
      * Provides a way to implement different ways of sorting compactly
@@ -56,11 +59,9 @@ public abstract class SortedPostFragment extends Fragment {
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        // FIXME from backend does not work
-        // postProvider = new FirebasePostProvider();
-        // userProvider = new FirebaseUserProvider();
         postProvider = new MockPostProvider(this.getContext()); //From mock
         userProvider = new MockUserProvider();
+        commentProvider = new MockCommentProvider(this.getContext());
 
         Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
 
@@ -71,7 +72,7 @@ public abstract class SortedPostFragment extends Fragment {
             postList.add(p);
         }
         Collections.sort(postList, comparator);
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, new MockCommentProvider(this.getContext()));
+        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -88,7 +89,7 @@ public abstract class SortedPostFragment extends Fragment {
         }
         Collections.sort(postList, comparator);
         recyclerView.invalidate();
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, new MockCommentProvider(this.getContext()));
+        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
         recyclerView.setAdapter(adapter);
         recyclerView.getAdapter().notifyDataSetChanged();
         super.onResume();
