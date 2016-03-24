@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +79,8 @@ public abstract class SortedPostFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.d("Status", "Fragment resumed" + name);
+//        Log.d("Status", "Fragment resumed" + name);
+        // FIXME do we really want to be doing this? Or do we want a swipe down to refresh?
         Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
         ArrayList<Post> postList = new ArrayList<>(posts.length);
         Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
@@ -114,12 +114,12 @@ public abstract class SortedPostFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("Status", "Fragment is paused" + name);
+//        Log.d("Status", "Fragment is paused" + name);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("Status", "Fragment is destroyed" + name);
+//        Log.d("Status", "Fragment is destroyed" + name);
     }
 }

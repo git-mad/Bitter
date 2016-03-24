@@ -1,11 +1,9 @@
 package gitmad.bitter.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 
 import java.util.Comparator;
 
-import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.Post;
 
 public class FavoritePostFragment extends SortedPostFragment {
@@ -17,8 +15,8 @@ public class FavoritePostFragment extends SortedPostFragment {
         super(new Comparator<Post>() {
             @Override
             public int compare(Post lhs, Post rhs) {
-                // TODO favorite post implementation
-                return Long.compare(lhs.getTimestamp(), rhs.getTimestamp());
+                // TODO favorite post implementation. This is for debugging...
+                return lhs.getText().compareTo(rhs.getText());
             }
         }, "FavoritePostFragment");
     }
