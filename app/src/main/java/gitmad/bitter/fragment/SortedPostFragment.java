@@ -19,6 +19,7 @@ import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.mock.MockCommentProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
@@ -70,7 +71,7 @@ public abstract class SortedPostFragment extends Fragment {
             postList.add(p);
         }
         Collections.sort(postList, comparator);
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider);
+        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, new MockCommentProvider(this.getContext()));
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -87,7 +88,7 @@ public abstract class SortedPostFragment extends Fragment {
         }
         Collections.sort(postList, comparator);
         recyclerView.invalidate();
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider);
+        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, new MockCommentProvider(this.getContext()));
         recyclerView.setAdapter(adapter);
         recyclerView.getAdapter().notifyDataSetChanged();
         super.onResume();

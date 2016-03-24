@@ -153,7 +153,7 @@ public class MockPostProvider implements PostProvider {
         String randomAuthorId = UUID.randomUUID().toString();
         long postCreatedTimestamp = new Date().getTime();
 
-        return new Post(postId, text, postCreatedTimestamp,0, randomAuthorId, "sports");
+        return new Post(postId, text, postCreatedTimestamp, 0, randomAuthorId, "sports");
     }
 
     private Post createPostWithText(String text, String postId, String authorId) {

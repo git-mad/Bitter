@@ -25,6 +25,7 @@ import java.util.Map;
 import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.mock.MockCommentProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
@@ -114,7 +115,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         for (Post p : posts) {
             postList.add(p);
         }
-        adapter = new PostAdapter(postList, postAuthors, newFeedInteractionListener(), postProvider);
+        adapter = new PostAdapter(postList, postAuthors, newFeedInteractionListener(), postProvider, new MockCommentProvider(this.getContext()));
         recyclerView.setAdapter(adapter);
 
         return view;

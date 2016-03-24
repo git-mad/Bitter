@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
@@ -23,15 +25,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> posts;
     private Map<Post, User> postAuthors;
     private PostProvider provider;
+    private CommentProvider commentProvider;
     private int oddEven = 0;
 
     private FeedInteractionListener listener;
 
-    public PostAdapter(List<Post> posts, Map<Post, User> postAuthors, FeedInteractionListener pListener, PostProvider provider) {
+    public PostAdapter(List<Post> posts, Map<Post, User> postAuthors, FeedInteractionListener pListener, PostProvider provider, CommentProvider commentProvider) {
         this.posts = posts;
         this.postAuthors = postAuthors;
         listener = pListener;
         this.provider = provider;
+        this.commentProvider = commentProvider;
     }
 
     public void add(Post p) {
@@ -52,6 +56,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         viewHolder.postText.setText(posts.get(i).getText());
         viewHolder.userText.setText(postAuthors.get(posts.get(i)).getName());
         viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
+        viewHolder.timeText.setText(Long.toString((new Date().getTime()
+                - posts.get(i).getTimestamp()) / 1000) + " sec");
+        viewHolder.repliesText.setText(Integer.toString(commentProvider.getCommentsOnPost(
+                posts.get(i).getId()).length) + " replies");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
