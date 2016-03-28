@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import gitmad.bitter.R;
@@ -89,7 +90,7 @@ public class UserProfileFragment extends Fragment {
         TextView userName = (TextView) view.findViewById(R.id.user_profile_username);
         userName.setText(myUser.getName());
 
-        TextView userSalt = (TextView) view.findViewById(R.id.user_profile_salt);
+        TextView userSalt = (TextView) view.findViewById(R.id.user_profile_salt_text);
         userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
 
         TextView countPosts = (TextView) view.findViewById(R.id.user_profile_posts);
@@ -103,6 +104,13 @@ public class UserProfileFragment extends Fragment {
 
         TextView userSinceDate = (TextView) view.findViewById(R.id.user_profile_user_since);
         userSinceDate.setText("User Since: " + myUser.getUserSince());
+
+        TabHost tabHost = (TabHost) view.findViewById(R.id.user_profile_tabhost);
+
+        // initialize tabs
+        TabHost.TabSpec tab1 = tabHost.newTabSpec(("First tab"));
+        TabHost.TabSpec tab2 = tabHost.newTabSpec(("second tab"));
+        TabHost.TabSpec tab3 = tabHost.newTabSpec(("third tab"));
 
         return view;
     }
