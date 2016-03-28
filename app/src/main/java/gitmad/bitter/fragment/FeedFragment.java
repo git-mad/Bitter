@@ -24,7 +24,10 @@ import java.util.Map;
 
 import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
+import gitmad.bitter.data.CommentProvider;
+import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.mock.MockCommentProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
@@ -39,7 +42,9 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
     private RecyclerView.LayoutManager layoutManager;
     private String imagePath;
 
-    private MockPostProvider postProvider;
+    private PostProvider postProvider;
+    private CommentProvider commentProvider;
+    private UserProvider userProvider;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -103,8 +108,10 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         recyclerView = (RecyclerView) view.findViewById(R.id.feed_recycler_view);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
+
         postProvider = new MockPostProvider(this.getContext());
-        UserProvider userProvider = new MockUserProvider();
+        commentProvider = new MockCommentProvider(this.getContext());
+        userProvider = new MockUserProvider();
 
         // specify an adapter (see also next example)
         Post[] posts = getMockPosts();
@@ -114,7 +121,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         for (Post p : posts) {
             postList.add(p);
         }
-        adapter = new PostAdapter(postList, postAuthors, newFeedInteractionListener());
+        adapter = new PostAdapter(postList, postAuthors, newFeedInteractionListener(), postProvider, commentProvider);
         recyclerView.setAdapter(adapter);
 
         return view;

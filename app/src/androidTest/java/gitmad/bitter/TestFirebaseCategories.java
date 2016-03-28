@@ -49,6 +49,9 @@ public class TestFirebaseCategories extends ApplicationTestCase<BitterApplicatio
 
     @SmallTest
     public void testGetCategories() {
+
+        assertTrue(authManager.isAuthed());
+
         Firebase categoriesRef = new Firebase(FirebaseCategoryProvider.FIREBASE_CATEGORIES_URL);
 
         FirebaseSyncRequester<Map> categoriesRequester = new FirebaseSyncRequester<>(categoriesRef, Map.class);
@@ -58,7 +61,6 @@ public class TestFirebaseCategories extends ApplicationTestCase<BitterApplicatio
         String[] categoriesFromProvider = categoriesProvider.getCategories();
 
         assertEquals("should be same length", categoriesMap.size(), categoriesFromProvider.length);
-
 
         Iterator<String> categoryIterator = categoriesMap.keySet().iterator();
 

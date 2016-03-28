@@ -16,10 +16,10 @@ import java.util.Map;
 
 import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
+import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
-import gitmad.bitter.data.firebase.FirebasePostProvider;
-import gitmad.bitter.data.firebase.FirebaseUserProvider;
+import gitmad.bitter.data.mock.MockCommentProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
@@ -29,6 +29,7 @@ import gitmad.bitter.ui.PostAdapter;
 //TODO fix downvote issues with recycler view
 
 public abstract class SortedPostFragment extends Fragment {
+    private String name;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -36,6 +37,7 @@ public abstract class SortedPostFragment extends Fragment {
 
     private PostProvider postProvider;
     private UserProvider userProvider;
+    private CommentProvider commentProvider;
 
     /**
      * Provides a way to implement different ways of sorting compactly
@@ -43,23 +45,22 @@ public abstract class SortedPostFragment extends Fragment {
      *
      * @param comparator The comparator to be used in sorting the posts
      */
-    public SortedPostFragment(Comparator<Post> comparator) {
+    public SortedPostFragment(Comparator<Post> comparator, String name) {
         this.comparator = comparator;
+        this.name = name;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_top_posts, container, false);
+        View view = inflater.inflate(R.layout.fragment_sorted_posts, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.top_posts_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.sorted_posts_recycler_view);
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        // FIXME from backend does not work
-        // postProvider = new FirebasePostProvider();
-        // userProvider = new FirebaseUserProvider();
         postProvider = new MockPostProvider(this.getContext()); //From mock
         userProvider = new MockUserProvider();
+        commentProvider = new MockCommentProvider(this.getContext());
 
         Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
 
@@ -70,11 +71,28 @@ public abstract class SortedPostFragment extends Fragment {
             postList.add(p);
         }
         Collections.sort(postList, comparator);
-
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener());
+        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+//        Log.d("Status", "Fragment resumed" + name);
+        // FIXME do we really want to be doing this? Or do we want a swipe down to refresh?
+        Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
+        ArrayList<Post> postList = new ArrayList<>(posts.length);
+        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
+        for (Post p : posts) {
+            postList.add(p);
+        }
+        Collections.sort(postList, comparator);
+        recyclerView.invalidate();
+        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
+        recyclerView.setAdapter(adapter);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        super.onResume();
     }
 
     private PostAdapter.FeedInteractionListener newFeedInteractionListener() {
@@ -91,5 +109,17 @@ public abstract class SortedPostFragment extends Fragment {
                 postProvider.downvotePost(p.getId());
             }
         };
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+//        Log.d("Status", "Fragment is paused" + name);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        Log.d("Status", "Fragment is destroyed" + name);
     }
 }
