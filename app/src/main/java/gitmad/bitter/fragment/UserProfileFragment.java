@@ -20,7 +20,6 @@ import android.os.AsyncTask;
 import gitmad.bitter.R;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
-import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.User;
 
 // TODO # of followers + following
@@ -81,45 +80,50 @@ public class UserProfileFragment extends Fragment {
         pic.setImageBitmap(conv_bm);
 
         FirebaseAuthManager authenticator = new FirebaseAuthManager(getActivity());
-        getFirebaseTask asyncTask = new getFirebaseTask();
+        getFirebaseTask asyncTask = new getFirebaseTask(view);
 
         // TODO change these when we change the user profile layout
 
-        MockUserProvider dataSrc = new MockUserProvider();
+        asyncTask.execute(authenticator.getUid());
 
-        User myUser = asyncTask.doInBackground(authenticator.getUid());
-
-        //User myUser = dataSrc.getUser("me123");
-
-        TextView userName = (TextView) view.findViewById(R.id.user_profile_username);
-        userName.setText(myUser.getName());
-
-        TextView userSalt = (TextView) view.findViewById(R.id.user_profile_salt);
-        userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
-
-        TextView countPosts = (TextView) view.findViewById(R.id.user_profile_posts);
-        countPosts.setText("Total Posts: " + String.valueOf(myUser.getPosts()));
-
-        TextView totalVotes = (TextView) view.findViewById(R.id.user_profile_votes);
-        totalVotes.setText("Total Votes: " + String.valueOf(myUser.getTotalVotes()));
-
-        TextView totalComments = (TextView) view.findViewById(R.id.user_profile_comments);
-        totalComments.setText("Total Comments: " + String.valueOf(myUser.getTotalComments()));
-
-        TextView userSinceDate = (TextView) view.findViewById(R.id.user_profile_user_since);
-        userSinceDate.setText("User Since: " + myUser.getUserSince());
 
         return view;
     }
 
     private class getFirebaseTask extends AsyncTask<String, String, User> {
         private User userData;
+        private View view;
+
+        public getFirebaseTask(View view){
+            this.view = view;
+        }
 
         @Override
         protected User doInBackground(String...params){
             FirebaseUserProvider provider = new FirebaseUserProvider();
             userData = provider.getUser(params[0]);
             return userData;
+        }
+
+        protected void onPostExecute(User myUser){
+
+            TextView userName = (TextView) view.findViewById(R.id.user_profile_username);
+            userName.setText(myUser.getName());
+
+            TextView userSalt = (TextView) view.findViewById(R.id.user_profile_salt);
+            userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
+
+            TextView countPosts = (TextView) view.findViewById(R.id.user_profile_posts);
+            countPosts.setText("Total Posts: " + String.valueOf(myUser.getPosts()));
+
+            TextView totalVotes = (TextView) view.findViewById(R.id.user_profile_votes);
+            totalVotes.setText("Total Votes: " + String.valueOf(myUser.getTotalVotes()));
+
+            TextView totalComments = (TextView) view.findViewById(R.id.user_profile_comments);
+            totalComments.setText("Total Comments: " + String.valueOf(myUser.getTotalComments()));
+
+            TextView userSinceDate = (TextView) view.findViewById(R.id.user_profile_user_since);
+            userSinceDate.setText("User Since: " + myUser.getUserSince());
         }
 
 
