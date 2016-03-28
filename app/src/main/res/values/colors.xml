@@ -2,6 +2,7 @@
 <resources>
     <!-- Google Color Palette: Must follow the specifications listed here
     https://www.google.com/design/spec/style/color.html#color-color-palette -->
+    <color name="black">#000000</color>
     <color name="primary_color">#2196F3</color>
     <color name="primary_color_dark">#1565C0</color>
     <color name="accent_color">#F57C00</color>
