@@ -26,7 +26,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private Map<Post, User> postAuthors;
     private PostProvider provider;
     private CommentProvider commentProvider;
-    private int oddEven = 0;
+    private long time;
 
     private FeedInteractionListener listener;
 
@@ -36,6 +36,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         listener = pListener;
         this.provider = provider;
         this.commentProvider = commentProvider;
+        time = new Date().getTime();
     }
 
     public void add(Post p) {
@@ -56,8 +57,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         viewHolder.postText.setText(posts.get(i).getText());
         viewHolder.userText.setText(postAuthors.get(posts.get(i)).getName());
         viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
-        viewHolder.timeText.setText(Long.toString((new Date().getTime()
-                - posts.get(i).getTimestamp()) / 1000) + " sec");
+        viewHolder.timeText.setText(getTime(posts.get(i)));
         viewHolder.repliesText.setText(Integer.toString(commentProvider.getCommentsOnPost(
                 posts.get(i).getId()).length) + " replies");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +77,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
             }
         });
+    }
+
+    public String getTime(Post p) {
+        Long sec = time - p.getTimestamp();
+        int newTime = (int) (sec / 1000);
+        if(newTime > 3600) {
+            return "" + newTime/3600 + " hours";
+        } else if (newTime > 60) {
+            return "" + newTime/60 + " minutes";
+        } else {
+            return "" + newTime + " seconds";
+        }
+    }
+
+    public void resetTime() {
+        time = new Date().getTime();
     }
 
     @Override

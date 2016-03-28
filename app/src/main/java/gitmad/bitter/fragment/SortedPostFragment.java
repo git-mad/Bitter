@@ -3,6 +3,7 @@ package gitmad.bitter.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
@@ -38,6 +40,12 @@ public abstract class SortedPostFragment extends Fragment {
     private PostProvider postProvider;
     private UserProvider userProvider;
     private CommentProvider commentProvider;
+    private SwipeRefreshLayout srl;
+
+
+    private Calendar c;
+    private int currentMinute;
+    private int currentSecond;
 
     /**
      * Provides a way to implement different ways of sorting compactly
@@ -53,8 +61,24 @@ public abstract class SortedPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sorted_posts, container, false);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.sorted_posts_recycler_view);
+        srl = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
+                ArrayList<Post> postList = new ArrayList<>(posts.length);
+                Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
+                for (Post p : posts) {
+                    postList.add(p);
+                }
+                Collections.sort(postList, comparator);
+                adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
+                recyclerView.setAdapter(adapter);
+                recyclerView.invalidate();
+                srl.setRefreshing(false);
+            }
+        });
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
@@ -81,17 +105,17 @@ public abstract class SortedPostFragment extends Fragment {
     public void onResume() {
 //        Log.d("Status", "Fragment resumed" + name);
         // FIXME do we really want to be doing this? Or do we want a swipe down to refresh?
-        Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
-        ArrayList<Post> postList = new ArrayList<>(posts.length);
-        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
-        for (Post p : posts) {
-            postList.add(p);
-        }
-        Collections.sort(postList, comparator);
-        recyclerView.invalidate();
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
-        recyclerView.setAdapter(adapter);
-        recyclerView.getAdapter().notifyDataSetChanged();
+//        Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
+//        ArrayList<Post> postList = new ArrayList<>(posts.length);
+//        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
+//        for (Post p : posts) {
+//            postList.add(p);
+//        }
+//        Collections.sort(postList, comparator);
+//        recyclerView.invalidate();
+//        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.getAdapter().notifyDataSetChanged();
         super.onResume();
     }
 
