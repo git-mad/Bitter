@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
@@ -102,13 +103,51 @@ public class User {
         }
     }
 
-    public User removeEnemy(String userId) {
+    public User removeEnemy(String userId, UserProvider userProvider) {
         if (enemies.remove(userId)) {
             User user = userProvider.getUser(userId);
             return user;
         } else {
             return null;
         }
+    }
+
+    /**
+     * Method returns the top 3 categories based on user's posts
+     * @return a list of the top 3 categories with 0 being the top category
+     * */
+    public List<String> topCategories(String userId, UserProvider userProvider) {
+        List<String> topList = new ArrayList<>(3);
+        Map<String, Integer> categoryCount = userProvider.getPostCategoryCount(userId);
+        //Method will be stable in the case of categories occurring the same number of times
+        String firstCategory = "";
+        int max = 0;
+        for (String category : categoryCount.keySet()) {
+            if (categoryCount.get(category) > max) {
+                max = categoryCount.get(category);
+                firstCategory = category;
+            }
+        }
+        String secondCategory = "";
+        int secondMax = 0;
+        for (String category : categoryCount.keySet()) {
+            if (categoryCount.get(category) > secondMax && categoryCount.get(category) < max) {
+                secondMax = categoryCount.get(category);
+                secondCategory = category;
+            }
+        }
+        String thirdCategory = "";
+        int thirdMax = 0;
+        for (String category : categoryCount.keySet()) {
+            if (categoryCount.get(category) > thirdMax && categoryCount.get(category) < secondMax) {
+                thirdMax = categoryCount.get(category);
+                thirdCategory = category;
+            }
+        }
+        topList.add(firstCategory);
+        topList.add(secondCategory);
+        topList.add(thirdCategory);
+        return topList;
     }
 
     @Override
