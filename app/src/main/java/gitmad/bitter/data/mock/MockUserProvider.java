@@ -14,13 +14,14 @@ import gitmad.bitter.model.User;
  */
 public class MockUserProvider implements UserProvider {
 
-    private static final User locallyLoggedInUser = new User("me123", "asdlfkafd-adf");
+    private static final User locallyLoggedInUser = new User("me123",
+            "asdlfkafd-adf", "TODO");
 
     private static final User[] fakeUsers = {
-            new User("NotGBurdell", "asdf"),
-            new User("ASDF", "fdsa"),
-            new User("George Washington", "fjdlwe-adf"),
-            new User("George Forman", "afdsksd-asdf"),
+            new User("NotGBurdell", "asdf", "TODO"),
+            new User("ASDF", "fdsa", "TODO"),
+            new User("George Washington", "fjdlwe-adf", "TODO"),
+            new User("George Forman", "afdsksd-asdf", "TODO"),
             locallyLoggedInUser
     };
 

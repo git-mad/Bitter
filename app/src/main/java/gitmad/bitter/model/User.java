@@ -28,17 +28,11 @@ public class User {
 
         // FIXME these should be automatically initialized
         userSince = "03/28/16";
-        this.posts = 10;
-        this.salt = 111;
-        this.totalVotes = 11;
-        this.totalComments = 20;
-        this.numEnemies = 50;
-    }
-
-    public User(String name, String userId) {
-        // FIXME set imageId to the id for the default picture
-        this.name = name;
-        this.id = userId;
+        this.posts = 0;
+        this.salt = 0;
+        this.totalVotes = 0;
+        this.totalComments = 0;
+        this.numEnemies = 0;
     }
 
     @Override
@@ -105,6 +99,7 @@ public class User {
     public List<String> topCategories(String userId, UserProvider
             userProvider) {
         // FIXME efficency
+        // FIXME need to figure out how to organize this data
 
         List<String> topList = new ArrayList<>(3);
         Map<String, Integer> categoryCount = userProvider

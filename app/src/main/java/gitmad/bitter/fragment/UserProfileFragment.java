@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.os.AsyncTask;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.User;
@@ -100,7 +101,7 @@ public class UserProfileFragment extends Fragment {
 
         @Override
         protected User doInBackground(String...params){
-            FirebaseUserProvider provider = new FirebaseUserProvider();
+            UserProvider provider = new FirebaseUserProvider();
             userData = provider.getUser(params[0]);
             return userData;
         }

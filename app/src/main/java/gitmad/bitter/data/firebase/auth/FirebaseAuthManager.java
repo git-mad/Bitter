@@ -192,7 +192,7 @@ public class FirebaseAuthManager {
         Map<String, Object> updateMap = new HashMap<>();
 
         Map<String, Object> userMap = new ObjectMapper()
-                .convertValue(new User("temp", userUid), Map.class);
+                .convertValue(new User("temp", userUid, "TODO"), Map.class);
 
         updateMap.put(getUid(), userMap);
 
