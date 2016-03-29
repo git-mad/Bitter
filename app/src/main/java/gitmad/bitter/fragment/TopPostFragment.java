@@ -1,12 +1,9 @@
 package gitmad.bitter.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import gitmad.bitter.model.Post;
 
 import java.util.Comparator;
-
-import gitmad.bitter.data.mock.MockPostProvider;
-import gitmad.bitter.model.Post;
 
 public class TopPostFragment extends SortedPostFragment {
     /**
@@ -19,7 +16,7 @@ public class TopPostFragment extends SortedPostFragment {
             public int compare(Post lhs, Post rhs) {
                 return lhs.getDownvotes() - rhs.getDownvotes();
             }
-        }, "TopPostFragment");
+        });
     }
 
     public static SortedPostFragment newInstance() {

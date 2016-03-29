@@ -1,10 +1,9 @@
 package gitmad.bitter.fragment;
 
 import android.os.Bundle;
+import gitmad.bitter.model.Post;
 
 import java.util.Comparator;
-
-import gitmad.bitter.model.Post;
 
 public class FavoritePostFragment extends SortedPostFragment {
     /**
@@ -18,7 +17,7 @@ public class FavoritePostFragment extends SortedPostFragment {
                 // TODO favorite post implementation. This is for debugging...
                 return lhs.getText().compareTo(rhs.getText());
             }
-        }, "FavoritePostFragment");
+        });
     }
 
     public static FavoritePostFragment newInstance() {

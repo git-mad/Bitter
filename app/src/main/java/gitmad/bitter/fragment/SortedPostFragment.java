@@ -9,13 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
-
 import gitmad.bitter.R;
 import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.CommentProvider;
@@ -28,10 +21,12 @@ import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
 
-//TODO fix downvote issues with recycler view
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
 
 public abstract class SortedPostFragment extends Fragment {
-    private String name;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -42,88 +37,53 @@ public abstract class SortedPostFragment extends Fragment {
     private CommentProvider commentProvider;
     private SwipeRefreshLayout srl;
 
-
-    private Calendar c;
-    private int currentMinute;
-    private int currentSecond;
-
     /**
      * Provides a way to implement different ways of sorting compactly
      * as defined by each subclass
      *
      * @param comparator The comparator to be used in sorting the posts
      */
-    public SortedPostFragment(Comparator<Post> comparator, String name) {
+    public SortedPostFragment(Comparator<Post> comparator) {
         this.comparator = comparator;
-        this.name = name;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sorted_posts, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.sorted_posts_recycler_view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_sorted_posts,
+                container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id
+                .sorted_posts_recycler_view);
+
         srl = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
-                ArrayList<Post> postList = new ArrayList<>(posts.length);
-                Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
-                for (Post p : posts) {
-                    postList.add(p);
-                }
-                Collections.sort(postList, comparator);
-                adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
-                recyclerView.setAdapter(adapter);
+                refreshRecyclerView();
                 recyclerView.invalidate();
                 srl.setRefreshing(false);
             }
         });
+
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        postProvider = new MockPostProvider(this.getContext()); //From mock
+        // TODO change to firebase providers
+        postProvider = new MockPostProvider(this.getContext());
         userProvider = new MockUserProvider();
         commentProvider = new MockCommentProvider(this.getContext());
 
-        Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
-
-        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
-        ArrayList<Post> postList = new ArrayList<>(posts.length);
-
-        for (Post p : posts) {
-            postList.add(p);
-        }
-        Collections.sort(postList, comparator);
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
-        recyclerView.setAdapter(adapter);
+        refreshRecyclerView();
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-//        Log.d("Status", "Fragment resumed" + name);
-        // FIXME do we really want to be doing this? Or do we want a swipe down to refresh?
-//        Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
-//        ArrayList<Post> postList = new ArrayList<>(posts.length);
-//        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
-//        for (Post p : posts) {
-//            postList.add(p);
-//        }
-//        Collections.sort(postList, comparator);
-//        recyclerView.invalidate();
-//        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.getAdapter().notifyDataSetChanged();
-        super.onResume();
     }
 
     private PostAdapter.FeedInteractionListener newFeedInteractionListener() {
         return new PostAdapter.FeedInteractionListener() {
             @Override
             public void onPostClicked(Post p, int index) {
-                Intent intent = new Intent(getActivity(), ViewPostActivity.class);
+                Intent intent = new Intent(getActivity(), ViewPostActivity
+                        .class);
                 intent.putExtra(ViewPostActivity.KEY_POST_ID, p.getId());
                 startActivity(intent);
             }
@@ -135,15 +95,19 @@ public abstract class SortedPostFragment extends Fragment {
         };
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-//        Log.d("Status", "Fragment is paused" + name);
-    }
+    private void refreshRecyclerView() {
+        // TODO pass in posts as an array
+        Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        Log.d("Status", "Fragment is destroyed" + name);
+        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
+        ArrayList<Post> postList = new ArrayList<>(posts.length);
+
+        for (Post p : posts) {
+            postList.add(p);
+        }
+        Collections.sort(postList, comparator);
+        adapter = new PostAdapter(postList, authorsMap,
+                newFeedInteractionListener(), postProvider, commentProvider);
+        recyclerView.setAdapter(adapter);
     }
 }
