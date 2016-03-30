@@ -18,13 +18,12 @@ import gitmad.bitter.data.mock.MockCommentProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
-import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Map;
+import java.util.List;
 
 public abstract class SortedPostFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -97,17 +96,11 @@ public abstract class SortedPostFragment extends Fragment {
 
     private void refreshRecyclerView() {
         // TODO pass in posts as an array
-        Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
-
-        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
-        ArrayList<Post> postList = new ArrayList<>(posts.length);
-
-        for (Post p : posts) {
-            postList.add(p);
-        }
-        Collections.sort(postList, comparator);
-        adapter = new PostAdapter(postList, authorsMap,
-                newFeedInteractionListener(), postProvider, commentProvider);
+        // FIXME limit posts by user
+        List<Post> posts = Arrays.asList(postProvider.getPosts(Integer.MAX_VALUE));
+        Collections.sort(posts, comparator);
+        adapter = new PostAdapter(posts, newFeedInteractionListener(),
+                postProvider, userProvider, commentProvider);
         recyclerView.setAdapter(adapter);
     }
 }
