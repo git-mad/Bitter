@@ -29,11 +29,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 
-public class FeedFragment extends Fragment implements
+public class FeedFragment extends SortedPostFragment implements
         AuthorPostDialogFragment.OnPostCreatedListener {
 
     private RecyclerView recyclerView;
@@ -50,6 +51,13 @@ public class FeedFragment extends Fragment implements
      * fragment (e.g. upon screen orientation changes).
      */
     public FeedFragment() {
+        // TODO comparator/algorithm for this fragment
+        super(new Comparator<Post>() {
+            @Override
+            public int compare(Post lhs, Post rhs) {
+                return lhs.getDownvotes() - rhs.getDownvotes();
+            }
+        });
     }
 
     public static FeedFragment newInstance() {
@@ -143,35 +151,15 @@ public class FeedFragment extends Fragment implements
             }
         });
 
-        recyclerView = (RecyclerView) view.findViewById(R.id
-                .feed_recycler_view);
-        layoutManager = new LinearLayoutManager(this.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        postProvider = new MockPostProvider(this.getContext());
-        commentProvider = new MockCommentProvider(this.getContext());
-        userProvider = new MockUserProvider();
-
-        // TODO implement sorting
-        List<Post> posts = Arrays.asList(postProvider.getPosts(Integer.MAX_VALUE));
-        //Collections.sort(posts, comparator);
-        adapter = new PostAdapter(posts, newFeedInteractionListener(),
-                postProvider, userProvider, commentProvider);
-        recyclerView.setAdapter(adapter);
-
+        super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
 
     @Override
     public void onPostCreated(String postText) {
-
         Post newPost = postProvider.addPostSync(postText);
         ((PostAdapter) adapter).add(newPost);
         recyclerView.swapAdapter(adapter, false);
-    }
-
-    private Post[] getMockPosts() {
-        return postProvider.getPosts(Integer.MAX_VALUE);
     }
 
     private PostAdapter.FeedInteractionListener newFeedInteractionListener() {

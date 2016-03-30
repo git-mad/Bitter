@@ -5,11 +5,10 @@
                 android:layout_height="match_parent"
                 tools:context=".activity.NavigationActivity">
 
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/feed_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+    <include layout="@layout/fragment_sorted_posts"
+             android:id="@+id/sorted_feed_fragment"
+             android:layout_height="match_parent"
+             android:layout_width="match_parent"/>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/camera_fab"
