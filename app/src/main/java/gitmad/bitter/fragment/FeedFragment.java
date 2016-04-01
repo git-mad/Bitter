@@ -8,33 +8,28 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import gitmad.bitter.R;
-import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
-import gitmad.bitter.data.mock.MockCommentProvider;
-import gitmad.bitter.data.mock.MockPostProvider;
-import gitmad.bitter.data.mock.MockUserProvider;
+import gitmad.bitter.fragment.sortedpost.FeedPostFragment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 
-public class FeedFragment extends Fragment implements
-        AuthorPostDialogFragment.OnPostCreatedListener {
+public class FeedFragment extends Fragment implements AuthorPostDialogFragment
+        .OnPostCreatedListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -94,9 +89,9 @@ public class FeedFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_feed, container,
                 false);
-
         final FloatingActionButton createPost = (FloatingActionButton) view
                 .findViewById(R.id.create_post_button);
         final FloatingActionButton takePic = (FloatingActionButton) view
@@ -127,6 +122,7 @@ public class FeedFragment extends Fragment implements
 
             }
         });
+
         final Intent photoOp = new Intent();
         photoOp.setType("image/*");
         photoOp.setAction(Intent.ACTION_VIEW);
@@ -136,6 +132,7 @@ public class FeedFragment extends Fragment implements
                 startActivity(photoOp);
             }
         });
+
         textPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,52 +140,20 @@ public class FeedFragment extends Fragment implements
             }
         });
 
-        recyclerView = (RecyclerView) view.findViewById(R.id
-                .feed_recycler_view);
-        layoutManager = new LinearLayoutManager(this.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        postProvider = new MockPostProvider(this.getContext());
-        commentProvider = new MockCommentProvider(this.getContext());
-        userProvider = new MockUserProvider();
-
-        // TODO implement sorting
-        List<Post> posts = Arrays.asList(postProvider.getPosts(Integer.MAX_VALUE));
-        //Collections.sort(posts, comparator);
-        adapter = new PostAdapter(posts, newFeedInteractionListener(),
-                postProvider, userProvider, commentProvider);
-        recyclerView.setAdapter(adapter);
+        SortedPostFragment sortedPostsFragment = new FeedPostFragment();
+        FragmentTransaction transaction = getChildFragmentManager()
+                .beginTransaction();
+        transaction.add(R.id.fragment_feed_sorted_posts_frame,
+                sortedPostsFragment).commit();
 
         return view;
     }
 
     @Override
     public void onPostCreated(String postText) {
-
         Post newPost = postProvider.addPostSync(postText);
         ((PostAdapter) adapter).add(newPost);
         recyclerView.swapAdapter(adapter, false);
-    }
-
-    private Post[] getMockPosts() {
-        return postProvider.getPosts(Integer.MAX_VALUE);
-    }
-
-    private PostAdapter.FeedInteractionListener newFeedInteractionListener() {
-        return new PostAdapter.FeedInteractionListener() {
-            @Override
-            public void onPostClicked(Post p, int index) {
-                Intent intent = new Intent(getActivity(), ViewPostActivity
-                        .class);
-                intent.putExtra(ViewPostActivity.KEY_POST_ID, p.getId());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onDownvoteClicked(Post p, int index) {
-                postProvider.downvotePost(p.getId());
-            }
-        };
     }
 
     private void showCreatePostDialog() {
@@ -209,7 +174,6 @@ public class FeedFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                ;
                 if (intent.resolveActivity(getContext().getPackageManager())
                         != null) {
                     File file;
