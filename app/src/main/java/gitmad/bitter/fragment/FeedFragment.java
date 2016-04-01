@@ -18,6 +18,7 @@ import gitmad.bitter.R;
 import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.fragment.sortedpost.FeedPostFragment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
@@ -139,8 +140,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
             }
         });
 
-        // TODO different SortedPostFragment for Feed Activity
-        SortedPostFragment sortedPostsFragment = new TopPostFragment();
+        SortedPostFragment sortedPostsFragment = new FeedPostFragment();
         FragmentTransaction transaction = getChildFragmentManager()
                 .beginTransaction();
         transaction.add(R.id.fragment_feed_sorted_posts_frame,
