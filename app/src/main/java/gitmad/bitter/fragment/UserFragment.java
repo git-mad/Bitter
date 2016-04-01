@@ -14,8 +14,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import gitmad.bitter.R;
+import gitmad.bitter.fragment.sortedpost.FavoritePostFragment;
+import gitmad.bitter.fragment.sortedpost.RecentPostFragment;
+import gitmad.bitter.fragment.sortedpost.TopPostFragment;
 
 public class UserFragment extends Fragment {
 

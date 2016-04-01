@@ -1,16 +1,15 @@
-package gitmad.bitter.fragment;
+package gitmad.bitter.fragment.sortedpost;
 
 import android.os.Bundle;
+import gitmad.bitter.fragment.SortedPostFragment;
 import gitmad.bitter.model.Post;
 
 import java.util.Comparator;
 
+/**
+ * Sorted Post Fragment that sorts posts by the time the post was created.
+ */
 public class RecentPostFragment extends SortedPostFragment {
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public RecentPostFragment() {
         super(new Comparator<Post>() {
             @Override

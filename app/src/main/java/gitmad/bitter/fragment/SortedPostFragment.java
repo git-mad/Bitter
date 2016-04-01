@@ -49,6 +49,7 @@ public abstract class SortedPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_sorted_posts,
                 container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id
@@ -64,7 +65,7 @@ public abstract class SortedPostFragment extends Fragment {
             }
         });
 
-        layoutManager = new LinearLayoutManager(this.getActivity());
+        layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         // TODO change to firebase providers
