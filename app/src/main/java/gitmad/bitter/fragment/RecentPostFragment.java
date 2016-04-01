@@ -1,19 +1,11 @@
 package gitmad.bitter.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import gitmad.bitter.model.Post;
 
 import java.util.Comparator;
 
-import gitmad.bitter.data.mock.MockPostProvider;
-import gitmad.bitter.model.Post;
-
 public class RecentPostFragment extends SortedPostFragment {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-
-    private MockPostProvider postProvider;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
