@@ -1,11 +1,9 @@
 package gitmad.bitter.data.firebase;
 
-import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 
 import java.util.concurrent.CountDownLatch;
@@ -107,7 +105,7 @@ public class FirebaseSyncRequester <T> {
 
         @Override
         public void onCancelled(FirebaseError firebaseError) {
-            Log.e("Bitter", "Connection problem with Firebase FirebaseSyncRequester");
+            throw firebaseError.toException();
         }
     }
 }
