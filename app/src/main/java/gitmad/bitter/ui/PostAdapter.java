@@ -9,13 +9,12 @@ import android.widget.TextView;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import gitmad.bitter.R;
 import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.model.Post;
-import gitmad.bitter.model.User;
 
 /**
  * Adapter for displaying cardviews that present posts in a RecyclerView.
@@ -23,19 +22,22 @@ import gitmad.bitter.model.User;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private List<Post> posts;
-    private Map<Post, User> postAuthors;
-    private PostProvider provider;
+    private PostProvider postProvider;
+    private UserProvider userProvider;
     private CommentProvider commentProvider;
-    private int oddEven = 0;
+    private long time;
 
     private FeedInteractionListener listener;
 
-    public PostAdapter(List<Post> posts, Map<Post, User> postAuthors, FeedInteractionListener pListener, PostProvider provider, CommentProvider commentProvider) {
+    public PostAdapter(List<Post> posts, FeedInteractionListener pListener,
+                       PostProvider postProvider, UserProvider userProvider,
+                       CommentProvider commentProvider) {
         this.posts = posts;
-        this.postAuthors = postAuthors;
         listener = pListener;
-        this.provider = provider;
+        this.postProvider = postProvider;
+        this.userProvider = userProvider;
         this.commentProvider = commentProvider;
+        time = new Date().getTime();
     }
 
     public void add(Post p) {
@@ -54,10 +56,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         viewHolder.postText.setText(posts.get(i).getText());
-        viewHolder.userText.setText(postAuthors.get(posts.get(i)).getName());
+        viewHolder.userText.setText(userProvider.getAuthorOfPost(posts.get(i)
+                ).getName());
         viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
-        viewHolder.timeText.setText(Long.toString((new Date().getTime()
-                - posts.get(i).getTimestamp()) / 1000) + " sec");
+        viewHolder.timeText.setText(getTime(posts.get(i)));
         viewHolder.repliesText.setText(Integer.toString(commentProvider.getCommentsOnPost(
                 posts.get(i).getId()).length) + " replies");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -72,11 +74,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 listener.onDownvoteClicked(posts.get(i), i);
-                Post p  = provider.getPost(posts.get(i).getId());
+                Post p  = postProvider.getPost(posts.get(i).getId());
                 posts.set(i, p);
                 viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
             }
         });
+    }
+
+    public String getTime(Post p) {
+        Long sec = time - p.getTimestamp();
+        int newTime = (int) (sec / 1000);
+        if(newTime > 3600) {
+            return "" + newTime/3600 + " hours";
+        } else if (newTime > 60) {
+            return "" + newTime/60 + " minutes";
+        } else {
+            return "" + newTime + " seconds";
+        }
+    }
+
+    public void resetTime() {
+        time = new Date().getTime();
     }
 
     @Override

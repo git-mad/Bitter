@@ -15,9 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TabHost;
-import android.widget.TextView;
-
 import gitmad.bitter.R;
+import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.User;
 
@@ -33,13 +32,6 @@ public class UserProfileFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public UserProfileFragment() {
-    }
-
-    public static UserProfileFragment newInstance() {
-        UserProfileFragment fragment = new UserProfileFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     public static Bitmap getRoundedRectBitmap(Bitmap bmp, int radius) {
@@ -60,7 +52,8 @@ public class UserProfileFragment extends Fragment {
         paint.setDither(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(Color.parseColor("#BAB399"));
-        canvas.drawCircle(sbmp.getWidth() / 2 + 0.7f, sbmp.getHeight() / 2 + 0.7f,
+        canvas.drawCircle(sbmp.getWidth() / 2 + 0.7f, sbmp.getHeight() / 2 +
+                        0.7f,
                 sbmp.getWidth() / 2 + 0.1f, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(sbmp, rect, rect, paint);
@@ -68,44 +61,60 @@ public class UserProfileFragment extends Fragment {
         return output;
     }
 
+    public static UserProfileFragment newInstance() {
+        UserProfileFragment fragment = new UserProfileFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_user_profile,
+                container, false);
 
         // FIXME get the image from the user object
         ImageView pic = (ImageView) view.findViewById(R.id.user_profile_pic);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.tejunareddy);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap
+                .tejunareddy);
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
-       /* ImageView enemyPic = (ImageView) view.findViewById(R.id.);
-        Bitmap skull = BitmapFactory.decodeResource(getResources(), R.mipmap.skull);
-        Bitmap conv_skull = getRoundedRectBitmap(skull, 100);
-*/
-        MockUserProvider dataSrc = new MockUserProvider();
+        UserProvider userProvider = new MockUserProvider();
 
         // TODO change these when we change the user profile layout
-        User myUser = dataSrc.getUser("me123");
+        User myUser = userProvider.getUser("me123");
 
-        TextView userName = (TextView) view.findViewById(R.id.user_profile_username);
-        userName.setText(myUser.getName());
+//        TextView userName = (TextView) view.findViewById(
+//                R.id.user_profile_username);
+//        userName.setText(myUser.getName());
+//
+//        TextView userSalt = (TextView) view.findViewById(
+//                R.id.user_profile_salt);
+//        userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
+//
+//        TextView countPosts = (TextView) view.findViewById(R.id
+//                .user_profile_posts);
+//        countPosts.setText("Total Posts: " + String.valueOf(myUser.getPosts
+// ()));
+//
+//        TextView totalVotes = (TextView) view.findViewById(R.id
+//                .user_profile_votes);
+//        totalVotes.setText("Total Votes: " + String.valueOf(myUser
+//                .getTotalVotes()));
+//
+//        TextView totalComments = (TextView) view.findViewById(R.id
+//                .user_profile_comments);
+//        totalComments.setText("Total Comments: " + String.valueOf(myUser
+//                .getTotalComments()));
+//
+//        TextView userSinceDate = (TextView) view.findViewById(R.id
+//                .user_profile_user_since);
+//        userSinceDate.setText("User Since: " + myUser.getUserSince());
 
-        TextView userSalt = (TextView) view.findViewById(R.id.user_profile_salt_text);
-        userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
-
-        TextView countPosts = (TextView) view.findViewById(R.id.user_profile_posts);
-        countPosts.setText("Total Posts: " + String.valueOf(myUser.getPosts()));
-
-        TextView totalVotes = (TextView) view.findViewById(R.id.user_profile_votes);
-        totalVotes.setText("Total Votes: " + String.valueOf(myUser.getTotalVotes()));
-
-        TextView totalComments = (TextView) view.findViewById(R.id.user_profile_comments);
-        totalComments.setText("Total Comments: " + String.valueOf(myUser.getTotalComments()));
-
-        TextView userSinceDate = (TextView) view.findViewById(R.id.user_profile_user_since);
-        userSinceDate.setText("User Since: " + myUser.getUserSince());
-
-        TabHost tabHost = (TabHost) view.findViewById(R.id.user_profile_tabhost);
+        TabHost tabHost = (TabHost) view.findViewById(R.id
+                .user_profile_tabhost);
 
         // initialize tabs
         TabHost.TabSpec tab1 = tabHost.newTabSpec(("First tab"));
