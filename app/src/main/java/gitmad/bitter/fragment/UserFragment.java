@@ -14,10 +14,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Comparator;
+
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.sortedpost.FavoritePostFragment;
 import gitmad.bitter.fragment.sortedpost.RecentPostFragment;
 import gitmad.bitter.fragment.sortedpost.TopPostFragment;
+import gitmad.bitter.model.Post;
 
 public class UserFragment extends Fragment {
 
@@ -117,11 +121,27 @@ public class UserFragment extends Fragment {
                 case 0:
                     return UserProfileFragment.newInstance();
                 case 1:
-                    return RecentPostFragment.newInstance();
+                    return new SortedPostFragment(new Comparator<Post>() {
+                        @Override
+                        public int compare(Post lhs, Post rhs) {
+                            return Long.compare(lhs.getTimestamp(), rhs.getTimestamp());
+                        }
+                    });
                 case 2:
-                    return TopPostFragment.newInstance();
+                    return new SortedPostFragment(new Comparator<Post>() {
+                        @Override
+                        public int compare(Post lhs, Post rhs) {
+                            return lhs.getDownvotes() - rhs.getDownvotes();
+                        }
+                    });
                 case 3:
-                    return FavoritePostFragment.newInstance();
+                    return new SortedPostFragment(new Comparator<Post>() {
+                        @Override
+                        public int compare(Post lhs, Post rhs) {
+                            // TODO favorite post algorithm implementation
+                            return lhs.getText().compareTo(rhs.getText());
+                        }
+                    });
             }
             return null;
         }

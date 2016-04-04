@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class SortedPostFragment extends Fragment {
+public class SortedPostFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -44,7 +44,16 @@ public abstract class SortedPostFragment extends Fragment {
     private CommentProvider commentProvider;
     private SwipeRefreshLayout srl;
 
-    private boolean manAddPost = false; //TODO: Remove this eventually, along with first constructor
+    //TODO: Remove this eventually, along with first constructor, along with associated if statement
+    private boolean manAddPost = true;
+
+
+    /**
+     * Required default constructor?
+     */
+    public SortedPostFragment() {
+        this.manAddPost = true;
+    }
 
     /**
      * Provides a way to implement different ways of sorting compactly
@@ -60,7 +69,7 @@ public abstract class SortedPostFragment extends Fragment {
     }
 
     /**
-     * Alternate comparator
+     * Alternate comparator, to switch to?
      * @param comparator
      * @param posts
      */
