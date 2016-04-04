@@ -85,6 +85,7 @@ public class UserProfileFragment extends Fragment {
 
         FirebaseAuthManager authenticator = new FirebaseAuthManager(
                 getActivity());
+        authenticator.authenticate();
         getFirebaseTask asyncTask = new getFirebaseTask(view);
         asyncTask.execute(authenticator.getUid());
 

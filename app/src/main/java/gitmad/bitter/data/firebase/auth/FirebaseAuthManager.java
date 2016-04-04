@@ -2,18 +2,16 @@ package gitmad.bitter.data.firebase.auth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
+import gitmad.bitter.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-
-import gitmad.bitter.data.firebase.FirebaseUserProvider;
-import gitmad.bitter.model.User;
 
 /**
  * Created by brian on 2/18/16.

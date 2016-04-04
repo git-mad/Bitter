@@ -35,6 +35,10 @@ public class User {
         this.numEnemies = 0;
     }
 
+    public User() {
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof User)) {
