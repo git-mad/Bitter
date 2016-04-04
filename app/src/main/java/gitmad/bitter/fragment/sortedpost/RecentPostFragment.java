@@ -1,26 +1,22 @@
-package gitmad.bitter.fragment;
+package gitmad.bitter.fragment.sortedpost;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import gitmad.bitter.fragment.SortedPostFragment;
+import gitmad.bitter.model.Post;
 
 import java.util.Comparator;
 
-import gitmad.bitter.data.mock.MockPostProvider;
-import gitmad.bitter.model.Post;
-
+/**
+ * Sorted Post Fragment that sorts posts by the time the post was created.
+ */
 public class RecentPostFragment extends SortedPostFragment {
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public RecentPostFragment() {
         super(new Comparator<Post>() {
             @Override
             public int compare(Post lhs, Post rhs) {
                 return Long.compare(lhs.getTimestamp(), rhs.getTimestamp());
             }
-        }, "RecentPostFragment");
+        });
     }
 
     public static RecentPostFragment newInstance() {

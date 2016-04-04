@@ -1,24 +1,23 @@
-package gitmad.bitter.fragment;
+package gitmad.bitter.fragment.sortedpost;
 
 import android.os.Bundle;
+import gitmad.bitter.fragment.SortedPostFragment;
+import gitmad.bitter.model.Post;
 
 import java.util.Comparator;
 
-import gitmad.bitter.model.Post;
-
+/**
+ * Sorted Post Fragment that sorts posts by ____ algorithm.
+ */
 public class FavoritePostFragment extends SortedPostFragment {
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public FavoritePostFragment() {
         super(new Comparator<Post>() {
             @Override
             public int compare(Post lhs, Post rhs) {
-                // TODO favorite post implementation. This is for debugging...
+                // TODO favorite post algorithm implementation
                 return lhs.getText().compareTo(rhs.getText());
             }
-        }, "FavoritePostFragment");
+        });
     }
 
     public static FavoritePostFragment newInstance() {

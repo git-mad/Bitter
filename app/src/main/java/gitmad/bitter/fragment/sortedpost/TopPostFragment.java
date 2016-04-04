@@ -1,25 +1,23 @@
-package gitmad.bitter.fragment;
+package gitmad.bitter.fragment.sortedpost;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import gitmad.bitter.fragment.SortedPostFragment;
+import gitmad.bitter.model.Post;
 
 import java.util.Comparator;
 
-import gitmad.bitter.data.mock.MockPostProvider;
-import gitmad.bitter.model.Post;
-
+/**
+ * Sorted Post Fragment that sorts posts by the number of downvotes the post
+ * has.
+ */
 public class TopPostFragment extends SortedPostFragment {
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public TopPostFragment() {
         super(new Comparator<Post>() {
             @Override
             public int compare(Post lhs, Post rhs) {
                 return lhs.getDownvotes() - rhs.getDownvotes();
             }
-        }, "TopPostFragment");
+        });
     }
 
     public static SortedPostFragment newInstance() {
