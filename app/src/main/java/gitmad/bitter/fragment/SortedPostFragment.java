@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import gitmad.bitter.R;
@@ -39,23 +40,50 @@ public abstract class SortedPostFragment extends Fragment {
 
     private PostProvider postProvider;
     private UserProvider userProvider;
+    private List<Post> posts;
     private CommentProvider commentProvider;
     private SwipeRefreshLayout srl;
-
-
-    private Calendar c;
-    private int currentMinute;
-    private int currentSecond;
 
     /**
      * Provides a way to implement different ways of sorting compactly
      * as defined by each subclass
      *
      * @param comparator The comparator to be used in sorting the posts
+     * @parma name the name of this post
      */
     public SortedPostFragment(Comparator<Post> comparator, String name) {
         this.comparator = comparator;
         this.name = name;
+
+        postProvider = new MockPostProvider(this.getContext()); //From mock
+        userProvider = new MockUserProvider();
+        commentProvider = new MockCommentProvider(this.getContext());
+
+        Post[] postArray = postProvider.getPosts(Integer.MAX_VALUE);
+
+        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(postArray);
+
+        for (Post p : postArray) {
+            posts.add(p);
+        }
+        Collections.sort(posts, comparator);
+        adapter = new PostAdapter(posts, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
+        recyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * Alternate comparator
+     * @param comparator
+     * @param posts
+     * @param authorsMap
+     */
+    public SortedPostFragment(Comparator<Post> comparator, List<Post> posts, Map<Post, User> authorsMap) {
+        this.comparator = comparator;
+        this.posts = posts;
+        this.name = "";
+        Collections.sort(posts, comparator);
+        adapter = new PostAdapter(posts, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -82,21 +110,7 @@ public abstract class SortedPostFragment extends Fragment {
         layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        postProvider = new MockPostProvider(this.getContext()); //From mock
-        userProvider = new MockUserProvider();
-        commentProvider = new MockCommentProvider(this.getContext());
 
-        Post[] posts = postProvider.getPosts(Integer.MAX_VALUE);
-
-        Map<Post, User> authorsMap = userProvider.getAuthorsOfPosts(posts);
-        ArrayList<Post> postList = new ArrayList<>(posts.length);
-
-        for (Post p : posts) {
-            postList.add(p);
-        }
-        Collections.sort(postList, comparator);
-        adapter = new PostAdapter(postList, authorsMap, newFeedInteractionListener(), postProvider, commentProvider);
-        recyclerView.setAdapter(adapter);
 
         return view;
     }
