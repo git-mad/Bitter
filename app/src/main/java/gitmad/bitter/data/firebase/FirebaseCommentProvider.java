@@ -15,7 +15,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import gitmad.bitter.data.CommentProvider;
+import gitmad.bitter.data.firebase.auth.FirebaseNotAuthenticatedException;
 import gitmad.bitter.model.Comment;
+import gitmad.bitter.model.Post;
 
 import static gitmad.bitter.data.firebase.FirebasePostProvider.getFirebaseUrlForPost;
 
@@ -31,7 +33,7 @@ public class FirebaseCommentProvider implements CommentProvider {
 
     private Firebase commentsFirebaseRef;
 
-    private FirebaseSyncRequester requesterForCheckingPost;
+    private FirebaseSyncRequester<Post> requesterForCheckingPost;
 
     public FirebaseCommentProvider() {
         dataFromCallbackAtomicRef = new AtomicReference<>();
@@ -42,13 +44,13 @@ public class FirebaseCommentProvider implements CommentProvider {
 
     @Override
     public Comment getComment(String commentId) {
-        FirebaseSyncRequester commentRequester = newFirebaseSyncRequesterForComment(commentId);
+        FirebaseSyncRequester<Comment> commentRequester = newFirebaseSyncRequesterForComment(commentId);
 
         if (!commentRequester.exists()) {
             throw new IllegalArgumentException("Comment does not exist");
         }
 
-        return commentRequester.getComment();
+        return commentRequester.get();
     }
 
     @Override
@@ -66,7 +68,7 @@ public class FirebaseCommentProvider implements CommentProvider {
     }
 
     @Override
-    public Comment addComment(String commentText, String postId) {
+    public Comment addCommentAsync(String commentText, String postId) {
 
         startCheckingIfPostExists(postId);
 
@@ -90,15 +92,69 @@ public class FirebaseCommentProvider implements CommentProvider {
     }
 
     @Override
+    public Comment addCommentSync(String commentText, String postId) {
+
+        startCheckingIfPostExists(postId);
+
+        Firebase newCommentRef = commentsFirebaseRef.push();
+
+        if (!finishCheckingIfPostExists()) {
+            newCommentRef.removeValue();
+
+            throw new IllegalArgumentException("Post being commented on does not exist.");
+        }
+
+        String newCommentId = newCommentRef.getKey();
+        long timestamp = new Date().getTime();
+        int zeroDownvotes = 0;
+
+        Comment newComment = new Comment(newCommentId, postId, getLoggedInUserId(), commentText, timestamp, zeroDownvotes);
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        newCommentRef.setValue(newComment, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return newComment;
+    }
+
+    @Override
     public Comment deleteComment(String commentId) {
         Firebase firebaseCommentRef = newFirebaseRefForComment(commentId);
-        FirebaseSyncRequester commentRequester = new FirebaseSyncRequester(firebaseCommentRef);
+        FirebaseSyncRequester<Comment> commentRequester = new FirebaseSyncRequester<>(firebaseCommentRef, Comment.class);
 
         Comment commentToReturn = null;
 
         if (commentRequester.exists()) {
-            firebaseCommentRef.removeValue();
-            commentToReturn = commentRequester.getComment();
+            final CountDownLatch latch = new CountDownLatch(1);
+
+            firebaseCommentRef.removeValue(new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                    if (firebaseError != null) {
+                        throw firebaseError.toException();
+                    }
+
+                    latch.countDown();
+                }
+            });
+
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            commentToReturn = commentRequester.get();
         } else {
             throw new IllegalArgumentException("Comment with id " + commentId + " does not exist.");
         }
@@ -109,12 +165,12 @@ public class FirebaseCommentProvider implements CommentProvider {
     @Override
     public Comment downvoteComment(String commentId) {
         Firebase commentFirebaseRef = newFirebaseRefForComment(commentId);
-        FirebaseSyncRequester commentRequester = new FirebaseSyncRequester(commentFirebaseRef);
+        FirebaseSyncRequester<Comment> commentRequester = new FirebaseSyncRequester<>(commentFirebaseRef, Comment.class);
 
         Comment downvotedComment = null;
 
         if (commentRequester.exists()) {
-            downvotedComment = newDownvotedComment(commentRequester.getComment());
+            downvotedComment = newDownvotedComment(commentRequester.get());
             commentFirebaseRef.setValue(newDownvotedComment(downvotedComment));
         } else {
             throw new IllegalArgumentException("Comment with id " + commentId + " does not exist");
@@ -152,7 +208,8 @@ public class FirebaseCommentProvider implements CommentProvider {
         Comment[] comments = new Comment[(int) commentCallbackData.getChildrenCount()];
 
         Iterator<DataSnapshot> userDataIterator = commentCallbackData.getChildren().iterator();
-        for (int i = 0; userDataIterator.hasNext(); i++) {
+
+        for (int i = comments.length - 1; userDataIterator.hasNext(); i--) {
             comments[i] = userDataIterator.next().getValue(Comment.class);
         }
         return comments;
@@ -176,7 +233,7 @@ public class FirebaseCommentProvider implements CommentProvider {
      */
     private void startCheckingIfPostExists(String postId) {
         Firebase postBeingCommentedOnRef = new Firebase(getFirebaseUrlForPost(postId));
-        requesterForCheckingPost = new FirebaseSyncRequester(postBeingCommentedOnRef);
+        requesterForCheckingPost = new FirebaseSyncRequester<>(postBeingCommentedOnRef, Post.class);
     }
 
     /**
@@ -193,8 +250,8 @@ public class FirebaseCommentProvider implements CommentProvider {
         return new Firebase(getFirebaseUrlForComment(commentId));
     }
 
-    private FirebaseSyncRequester newFirebaseSyncRequesterForComment(String commentId) {
-        return new FirebaseSyncRequester(newFirebaseRefForComment(commentId));
+    private FirebaseSyncRequester<Comment> newFirebaseSyncRequesterForComment(String commentId) {
+        return new FirebaseSyncRequester<>(newFirebaseRefForComment(commentId), Comment.class);
     }
 
     private void checkAuthentication() {

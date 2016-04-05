@@ -31,7 +31,7 @@ public interface UserProvider {
      * @param posts the posts in question
      * @return the map of all the posts and their authors.
      */
-    Map<Post, User> getAuthorsOfPosts(Post... posts);
+    Map<Post, User> getAuthorsOfPosts(Post[] posts);
 
     /**
      * retrieves the User that created the Comment
@@ -46,11 +46,19 @@ public interface UserProvider {
      * @param comments comments in question
      * @return the map of the comments and their authors
      */
-    Map<Comment, User> getAuthorsOfComments(Comment... comments);
+    Map<Comment, User> getAuthorsOfComments(Comment[] comments);
 
     /**
      * retrieves the User that is currently logged in to the app
      * @return the current user, or null if none is logged in.
      */
     User getLoggedInUser();
+
+    /**
+     * retrieves a map that contains each of the post categories, mapped to the number
+     * of posts the user has made in each category
+     * @param userUid the id of the user whose category counts should be retrieved.
+     * @return
+     */
+    Map<String, Integer> getPostCategoryCount(String userUid);
 }

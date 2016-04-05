@@ -16,6 +16,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.firebase.auth.FirebaseNotAuthenticatedException;
 import gitmad.bitter.model.Post;
 
 /**
@@ -33,7 +34,7 @@ public class FirebasePostProvider implements PostProvider {
     private CountDownLatch countDownLatch;
     private AtomicReference<DataSnapshot> dataFromCallback;
 
-    private Post[] currentPostsInFeed;
+//    private Post[] currentPostsInFeed;
     private List<PostsChangedListener> postsChangedListeners;
 
     public FirebasePostProvider() {
@@ -45,13 +46,25 @@ public class FirebasePostProvider implements PostProvider {
 
         postsChangedListeners = new LinkedList<>();
 
-        setFirebaseListener();
+//        setFirebaseListener();
     }
 
     @Override
     public Post[] getPosts(int numPosts) {
-        int lengthOfArrayToReturn = Math.min(numPosts, currentPostsInFeed.length);
-        return Arrays.copyOf(currentPostsInFeed, lengthOfArrayToReturn);
+        Query query = firebasePostsRef.orderByChild("timestamp").limitToLast(numPosts);
+
+        countDownLatch = new CountDownLatch(1);
+
+        ValueEventListener callbackListener = newValueEventListenerForSynchronizingCallback();
+        query.addListenerForSingleValueEvent(callbackListener);
+
+        waitForCallback();
+
+        if (dataFromCallback != null) {
+            return parsePostsFromDataSnapshot(dataFromCallback.get());
+        } else {
+            return new Post[0];
+        }
     }
 
     @Override
@@ -60,27 +73,57 @@ public class FirebasePostProvider implements PostProvider {
 
         String firebaseUrl = getFirebaseUrlForPost(id);
 
-        FirebaseSyncRequester firebaseSyncRequester = new FirebaseSyncRequester(firebasePostRef);
+        FirebaseSyncRequester<Post> firebaseSyncRequester = new FirebaseSyncRequester<>(firebasePostRef, Post.class);
 
         if (!firebaseSyncRequester.exists()) {
             throw new IllegalArgumentException("Post with id " + id + " does not exist.");
         }
 
-        return firebaseSyncRequester.getPost();
+        return firebaseSyncRequester.get();
     }
 
     @Override
-    public Post addPost(String postText) {
+    public Post addPostAsync(String postText) { //TODO should pass in post, rather than text
         Firebase newPostRef = firebasePostsRef.push();
 
         String newPostId = newPostRef.getKey();
         long timestamp = millisSinceEpoch();
         final int zeroDownvotes = 0;
 
-        Post post = new Post(newPostId, postText, timestamp, zeroDownvotes, getLoggedInUserId());
+        Post post = new Post(newPostId, postText, timestamp, zeroDownvotes, getLoggedInUserId(), "sports");
 
         newPostRef.setValue(post);
 
+        return post;
+    }
+
+    public Post addPostSync(String postText) { //TODO should pass in post, rather than text
+        Firebase newPostRef = firebasePostsRef.push();
+
+        String newPostId = newPostRef.getKey();
+        long timestamp = millisSinceEpoch();
+        final int zeroDownvotes = 0;
+
+        Post post = new Post(newPostId, postText, timestamp, zeroDownvotes, getLoggedInUserId(), "sports");
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        newPostRef.setValue(post, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    throw firebaseError.toException();
+                }
+
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return post;
     }
 
@@ -106,13 +149,13 @@ public class FirebasePostProvider implements PostProvider {
     public Post downvotePost(String postId) {
         Firebase firebasePostRef = new Firebase(getFirebaseUrlForPost(postId));
 
-        FirebaseSyncRequester postRequester = new FirebaseSyncRequester(firebasePostRef);
+        FirebaseSyncRequester<Post> postRequester = new FirebaseSyncRequester<>(firebasePostRef, Post.class);
 
         if (!postRequester.exists()) {
             throw new IllegalArgumentException("Post to downvote does not exist");
         }
 
-        Post downvotedPost = newDownvotedPost(postRequester.getPost());
+        Post downvotedPost = newDownvotedPost(postRequester.get());
 
         firebasePostRef.setValue(downvotedPost);
 
@@ -123,16 +166,32 @@ public class FirebasePostProvider implements PostProvider {
     public Post deletePost(String postId) {
         Firebase firebasePostRef = new Firebase(getFirebaseUrlForPost(postId));
 
-        FirebaseSyncRequester postRequester = new FirebaseSyncRequester(firebasePostRef);
+        FirebaseSyncRequester<Post> postRequester = new FirebaseSyncRequester(firebasePostRef, Post.class);
 
         if (!postRequester.exists()) {
             throw new IllegalArgumentException("Post to delete does not exist");
         }
 
-        Post postToDelete = postRequester.getPost();
+        Post postToDelete = postRequester.get();
 
-        firebasePostRef.removeValue();
+        final CountDownLatch latch = new CountDownLatch(1);
 
+        firebasePostRef.removeValue(new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    throw firebaseError.toException();
+                }
+
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return postToDelete;
     }
 
@@ -143,13 +202,15 @@ public class FirebasePostProvider implements PostProvider {
      * @param listener listener to receive updates
      */
     public void addPostsChangedListener(PostsChangedListener listener) {
-        postsChangedListeners.add(listener);
+        throw new UnsupportedOperationException();
+//        postsChangedListeners.add(listener);
 
-        listener.onPostsChanged(currentPostsInFeed);
+//        listener.onPostsChanged(currentPostsInFeed);
     }
 
     public void removePostsChangedListener(PostsChangedListener listener) {
-        postsChangedListeners.remove(listener);
+        throw new UnsupportedOperationException();
+//        postsChangedListeners.remove(listener);
     }
 
     private void checkAuthentication() {
@@ -158,34 +219,36 @@ public class FirebasePostProvider implements PostProvider {
         }
     }
 
-    private void setFirebaseListener() {
-        Query postsQuery = firebasePostsRef.limitToFirst(numberOfPostsToRetrieve);
-
-        countDownLatch = new CountDownLatch(1);
-
-        postsQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                currentPostsInFeed = parsePostsFromDataSnapshot(dataSnapshot);
-
-                countDownLatch.countDown();
-
-                invokePostChangedListeners();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.e("Bitter", "Firebase could not connect");
-            }
-        });
-
-        waitForCallback();
-    }
+//    private void setFirebaseListener() {
+//        Query postsQuery = firebasePostsRef
+//                .orderByChild("timestamp")
+//                .limitToLast(numberOfPostsToRetrieve);
+//
+//        countDownLatch = new CountDownLatch(1);
+//
+//        postsQuery.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                currentPostsInFeed = parsePostsFromDataSnapshot(dataSnapshot);
+//
+//                countDownLatch.countDown();
+//
+//                invokePostChangedListeners();
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//                Log.e("Bitter", "Firebase could not connect");
+//            }
+//        });
+//
+//        waitForCallback();
+//    }
 
     private void invokePostChangedListeners() {
-        for (PostsChangedListener postsChangedListener : postsChangedListeners) {
-            postsChangedListener.onPostsChanged(currentPostsInFeed);
-        }
+//        for (PostsChangedListener postsChangedListener : postsChangedListeners) {
+//            postsChangedListener.onPostsChanged(currentPostsInFeed);
+//        }
     }
 
     private String getLoggedInUserId() {
@@ -224,7 +287,7 @@ public class FirebasePostProvider implements PostProvider {
         List<Post> postsList = new LinkedList<>();
 
         for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-            postsList.add(postSnapshot.getValue(Post.class));
+            postsList.add(0, postSnapshot.getValue(Post.class));
         }
 
         return postsList.toArray(new Post[postsList.size()]);
@@ -235,6 +298,16 @@ public class FirebasePostProvider implements PostProvider {
     }
 
     private static Post newDownvotedPost(Post post) {
-        return new Post(post.getId(), post.getText(), post.getTimestamp(), post.getDownvotes() - 1, post.getAuthorId());
+        return new Post(post.getId(), post.getText(), post.getTimestamp(), post.getDownvotes() - 1, post.getAuthorId(), post.getCategory());
     }
+
+//    private Post[] getMostRecent(int numberOfPostsToRetrieve) {
+//        Post[] toReturn = new Post[numberOfPostsToRetrieve];
+//
+//        for (int i = currentPostsInFeed.length - 1, j = 0; i >= currentPostsInFeed.length - numberOfPostsToRetrieve; i--, j++) {
+//            toReturn[j] = currentPostsInFeed[i];
+//        }
+//
+//        return toReturn;
+//    }
 }

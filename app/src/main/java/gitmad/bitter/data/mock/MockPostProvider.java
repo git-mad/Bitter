@@ -25,7 +25,7 @@ import gitmad.bitter.model.Post;
 public class MockPostProvider implements PostProvider {
 
     private Context context;
-    private Map<String, Post> posts;
+    private static Map<String, Post> posts;
 
     private boolean isLoggingEnabled;
 
@@ -34,6 +34,7 @@ public class MockPostProvider implements PostProvider {
     public MockPostProvider(Context context) {
         this.context = context;
 
+        if (posts == null)
         initializeMockPosts();
 
         setLoggingEnabled(true);
@@ -70,13 +71,18 @@ public class MockPostProvider implements PostProvider {
     }
 
     @Override
-    public Post addPost(String postText) {
+    public Post addPostSync(String postText) {
         logMessageIfEnabled(String.format("MockPostProvider#addPost(%s)", postText));
 
         String nextId = Integer.toString(getNextId());
         Post newPost = createPostWithText(postText, nextId, getMockLoggedInUserId());
         posts.put(nextId, newPost);
         return newPost;
+    }
+
+    @Override
+    public Post addPostAsync(String postText) {
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
@@ -103,7 +109,7 @@ public class MockPostProvider implements PostProvider {
         Post p = getPost(postId);
 
         Post downvotedPost = new Post(p.getId(), p.getText(), p.getTimestamp(),
-                p.getDownvotes() - 1, p.getAuthorId());
+                p.getDownvotes() - 1, p.getAuthorId(), "sports");
 
         posts.put(downvotedPost.getId(), downvotedPost);
 
@@ -147,13 +153,13 @@ public class MockPostProvider implements PostProvider {
         String randomAuthorId = UUID.randomUUID().toString();
         long postCreatedTimestamp = new Date().getTime();
 
-        return new Post(postId, text, postCreatedTimestamp, getRandomDownvoteCount(), randomAuthorId);
+        return new Post(postId, text, postCreatedTimestamp, 0, randomAuthorId, "sports");
     }
 
     private Post createPostWithText(String text, String postId, String authorId) {
         long postCreatedTimestamp = new Date().getTime();
         final int zeroDownvotes = 0;
-        return new Post(postId, text, postCreatedTimestamp, zeroDownvotes, authorId);
+        return new Post(postId, text, postCreatedTimestamp, zeroDownvotes, authorId, "sports");
     }
 
     public static int getRandomDownvoteCount() {
