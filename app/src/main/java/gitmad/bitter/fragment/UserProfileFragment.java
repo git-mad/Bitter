@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,7 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import gitmad.bitter.R;
 import gitmad.bitter.data.UserProvider;
-import gitmad.bitter.data.mock.MockUserProvider;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
+import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.User;
 
 // TODO # of followers + following
@@ -81,39 +83,59 @@ public class UserProfileFragment extends Fragment {
         Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
         pic.setImageBitmap(conv_bm);
 
-        UserProvider userProvider = new MockUserProvider();
-
-        // TODO change these when we change the user profile layout
-        User myUser = userProvider.getUser("me123");
-
-        TextView userName = (TextView) view.findViewById(R.id
-                .user_profile_username);
-        userName.setText(myUser.getName());
-
-        TextView userSalt = (TextView) view.findViewById(R.id
-                .user_profile_salt);
-        userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
-
-        TextView countPosts = (TextView) view.findViewById(R.id
-                .user_profile_posts);
-        countPosts.setText("Total Posts: " + String.valueOf(myUser.getPosts()));
-
-        TextView totalVotes = (TextView) view.findViewById(R.id
-                .user_profile_votes);
-        totalVotes.setText("Total Votes: " + String.valueOf(myUser
-                .getTotalVotes()));
-
-        TextView totalComments = (TextView) view.findViewById(R.id
-                .user_profile_comments);
-        totalComments.setText("Total Comments: " + String.valueOf(myUser
-                .getTotalComments()));
-
-        TextView userSinceDate = (TextView) view.findViewById(R.id
-                .user_profile_user_since);
-        userSinceDate.setText("User Since: " + myUser.getUserSince());
+        FirebaseAuthManager authenticator = new FirebaseAuthManager(
+                getActivity());
+        authenticator.authenticate();
+        getFirebaseTask asyncTask = new getFirebaseTask(view);
+        asyncTask.execute(authenticator.getUid());
 
         return view;
     }
 
+    private class getFirebaseTask extends AsyncTask<String, String, User> {
+        private User userData;
+        private View view;
+
+        public getFirebaseTask(View view) {
+            this.view = view;
+        }
+
+        @Override
+        protected User doInBackground(String... params) {
+            UserProvider provider = new FirebaseUserProvider();
+            userData = provider.getUser(params[0]);
+            return userData;
+        }
+
+        protected void onPostExecute(User myUser) {
+            // FIXME change these when we change the user profile layout
+            TextView userName = (TextView) view.findViewById(R.id
+                    .user_profile_username);
+            userName.setText(myUser.getName());
+
+            TextView userSalt = (TextView) view.findViewById(R.id
+                    .user_profile_salt);
+            userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
+
+            TextView countPosts = (TextView) view.findViewById(R.id
+                    .user_profile_posts);
+            countPosts.setText("Total Posts: " + String.valueOf(myUser
+                    .getPosts()));
+
+            TextView totalVotes = (TextView) view.findViewById(R.id
+                    .user_profile_votes);
+            totalVotes.setText("Total Votes: " + String.valueOf(myUser
+                    .getTotalVotes()));
+
+            TextView totalComments = (TextView) view.findViewById(R.id
+                    .user_profile_comments);
+            totalComments.setText("Total Comments: " + String.valueOf(myUser
+                    .getTotalComments()));
+
+            TextView userSinceDate = (TextView) view.findViewById(R.id
+                    .user_profile_user_since);
+            userSinceDate.setText("User Since: " + myUser.getUserSince());
+        }
+    }
 
 }
