@@ -2,12 +2,7 @@ package gitmad.bitter.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,48 +12,17 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import gitmad.bitter.R;
 import gitmad.bitter.data.UserProvider;
-import gitmad.bitter.data.mock.MockUserProvider;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
+import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
+import gitmad.bitter.model.FirebaseImage;
 import gitmad.bitter.model.User;
-
-// TODO # of followers + following
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class UserProfileFragment extends Fragment {
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public UserProfileFragment() {
-    }
-
-    public static Bitmap getRoundedRectBitmap(Bitmap bmp, int radius) {
-        Bitmap sbmp;
-        if (bmp.getWidth() != radius || bmp.getHeight() != radius)
-            sbmp = Bitmap.createScaledBitmap(bmp, radius, radius, false);
-        else
-            sbmp = bmp;
-        Bitmap output = Bitmap.createBitmap(sbmp.getWidth(),
-                sbmp.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, sbmp.getWidth(), sbmp.getHeight());
-
-        paint.setAntiAlias(true);
-        paint.setFilterBitmap(true);
-        paint.setDither(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(Color.parseColor("#BAB399"));
-        canvas.drawCircle(sbmp.getWidth() / 2 + 0.7f, sbmp.getHeight() / 2 +
-                        0.7f,
-                sbmp.getWidth() / 2 + 0.1f, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(sbmp, rect, rect, paint);
-
-        return output;
+        // Mandatory empty constructor for the UserProfile Fragment Manager
     }
 
     public static UserProfileFragment newInstance() {
@@ -74,17 +38,41 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile,
                 container, false);
 
-        // FIXME get the image from the user object
-        ImageView pic = (ImageView) view.findViewById(R.id.user_profile_pic);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap
-                .tejunareddy);
-        Bitmap conv_bm = getRoundedRectBitmap(bm, 500);
-        pic.setImageBitmap(conv_bm);
+        FirebaseAuthManager authenticator = new FirebaseAuthManager(
+                getActivity());
+        authenticator.authenticate();
+        getFirebaseTask asyncTask = new getFirebaseTask(view);
+        asyncTask.execute(authenticator.getUid());
 
-        UserProvider userProvider = new MockUserProvider();
 
-        // TODO change these when we change the user profile layout
-        User myUser = userProvider.getUser("me123");
+        return view;
+    }
+
+    private class getFirebaseTask extends AsyncTask<String, String, User> {
+        private User userData;
+        private View view;
+
+        public getFirebaseTask(View view) {
+            this.view = view;
+        }
+
+        @Override
+        protected User doInBackground(String... params) {
+            UserProvider provider = new FirebaseUserProvider();
+            userData = provider.getUser(params[0]);
+            return userData;
+        }
+
+        protected void onPostExecute(User myUser) {
+            // FIXME get the image from the user object
+            ImageView pic = (ImageView) view.findViewById(R.id
+                    .user_profile_pic);
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap
+                    .tejunareddy);
+            Bitmap conv_bm = FirebaseImage.toRoundedRectBitmap(bm, 500);
+            pic.setImageBitmap(conv_bm);
+
+            // TODO change these when we change the user profile layout
 
 //        TextView userName = (TextView) view.findViewById(
 //                R.id.user_profile_username);
@@ -113,16 +101,14 @@ public class UserProfileFragment extends Fragment {
 //                .user_profile_user_since);
 //        userSinceDate.setText("User Since: " + myUser.getUserSince());
 
-        TabHost tabHost = (TabHost) view.findViewById(R.id
-                .user_profile_tabhost);
+            TabHost tabHost = (TabHost) view.findViewById(R.id
+                    .user_profile_tabhost);
 
-        // initialize tabs
-        TabHost.TabSpec tab1 = tabHost.newTabSpec(("First tab"));
-        TabHost.TabSpec tab2 = tabHost.newTabSpec(("second tab"));
-        TabHost.TabSpec tab3 = tabHost.newTabSpec(("third tab"));
-
-        return view;
+            // initialize tabs
+            TabHost.TabSpec tab1 = tabHost.newTabSpec(("First tab"));
+            TabHost.TabSpec tab2 = tabHost.newTabSpec(("second tab"));
+            TabHost.TabSpec tab3 = tabHost.newTabSpec(("third tab"));
+        }
     }
-
 
 }
