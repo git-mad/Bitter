@@ -20,31 +20,44 @@ import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class SortedPostFragment extends Fragment {
+public class SortedPostFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    // Must be passed in as a bundle
     private Comparator<Post> comparator;
+    private List<Post> posts;
 
     private PostProvider postProvider;
     private UserProvider userProvider;
     private CommentProvider commentProvider;
     private SwipeRefreshLayout srl;
 
-    /**
-     * Provides a way to implement different ways of sorting compactly
-     * as defined by each subclass
-     *
-     * @param comparator The comparator to be used in sorting the posts
-     */
-    public SortedPostFragment(Comparator<Post> comparator) {
-        this.comparator = comparator;
+    public SortedPostFragment() {
+        // Required default constructor for the Fragment Manager to
+        // instantiate a Sorted Post Fragment
     }
+
+    // TODO post and comparator args
+    public static SortedPostFragment newInstance(Comparator<Post>
+                                                         postComparator,
+                                                 List<Post> posts) {
+        SortedPostFragment fragment = new SortedPostFragment();
+
+        // FIXME use Bundle instead of setters and getters
+        fragment.comparator = postComparator;
+        fragment.posts = posts;
+
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +88,11 @@ public abstract class SortedPostFragment extends Fragment {
 
         refreshRecyclerView();
 
+        Collections.sort(posts, comparator);
+        adapter = new PostAdapter(posts, newFeedInteractionListener(),
+                postProvider, userProvider, commentProvider);
+        recyclerView.setAdapter(adapter);
+
         return view;
     }
 
@@ -96,12 +114,39 @@ public abstract class SortedPostFragment extends Fragment {
     }
 
     private void refreshRecyclerView() {
-        // TODO pass in posts as an array
-        // FIXME limit posts by user
-        List<Post> posts = Arrays.asList(postProvider.getPosts(Integer.MAX_VALUE));
         Collections.sort(posts, comparator);
         adapter = new PostAdapter(posts, newFeedInteractionListener(),
                 postProvider, userProvider, commentProvider);
         recyclerView.setAdapter(adapter);
+    }
+
+    public static class TopPostComparator implements Comparator<Post> {
+        @Override
+        public int compare(Post lhs, Post rhs) {
+            return lhs.getDownvotes() - rhs.getDownvotes();
+        }
+    }
+
+    public static class RecentPostComparator implements Comparator<Post> {
+        @Override
+        public int compare(Post lhs, Post rhs) {
+            return Long.compare(lhs.getTimestamp(), rhs.getTimestamp());
+        }
+    }
+
+    public static class FeedPostComparator implements Comparator<Post> {
+        @Override
+        public int compare(Post lhs, Post rhs) {
+            // TODO feed post algorithm implementation
+            return lhs.getDownvotes() - rhs.getDownvotes();
+        }
+    }
+
+    public static class FavoritePostComparator implements Comparator<Post> {
+        @Override
+        public int compare(Post lhs, Post rhs) {
+            // TODO favorite post algorithm implementation
+            return lhs.getText().compareTo(rhs.getText());
+        }
     }
 }
