@@ -44,8 +44,15 @@ public class SortedPostFragment extends Fragment {
     }
 
     // TODO post and comparator args
-    public static SortedPostFragment newInstance() {
+    public static SortedPostFragment newInstance(Comparator<Post>
+                                                         postComparator,
+                                                 List<Post> posts) {
         SortedPostFragment fragment = new SortedPostFragment();
+
+        // FIXME use Bundle instead of setters and getters
+        fragment.comparator = postComparator;
+        fragment.posts = posts;
+
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -113,21 +120,21 @@ public class SortedPostFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    public class TopPostComparator implements Comparator<Post> {
+    public static class TopPostComparator implements Comparator<Post> {
         @Override
         public int compare(Post lhs, Post rhs) {
             return lhs.getDownvotes() - rhs.getDownvotes();
         }
     }
 
-    public class RecentPostComparator implements Comparator<Post> {
+    public static class RecentPostComparator implements Comparator<Post> {
         @Override
         public int compare(Post lhs, Post rhs) {
             return Long.compare(lhs.getTimestamp(), rhs.getTimestamp());
         }
     }
 
-    public class FeedPostComparator implements Comparator<Post> {
+    public static class FeedPostComparator implements Comparator<Post> {
         @Override
         public int compare(Post lhs, Post rhs) {
             // TODO feed post algorithm implementation
@@ -135,7 +142,7 @@ public class SortedPostFragment extends Fragment {
         }
     }
 
-    public class FavoritePostComparator implements Comparator<Post> {
+    public static class FavoritePostComparator implements Comparator<Post> {
         @Override
         public int compare(Post lhs, Post rhs) {
             // TODO favorite post algorithm implementation

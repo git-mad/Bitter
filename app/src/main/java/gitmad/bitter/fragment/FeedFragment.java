@@ -15,16 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import gitmad.bitter.R;
-import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
-import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 
 public class FeedFragment extends Fragment implements AuthorPostDialogFragment
@@ -36,8 +37,6 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
     private String imagePath;
 
     private PostProvider postProvider;
-    private CommentProvider commentProvider;
-    private UserProvider userProvider;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -139,8 +138,14 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
             }
         });
 
+        // TODO change to FireBase
+        postProvider = new MockPostProvider(this.getContext());
+        List<Post> postList = Arrays.asList(postProvider.getPosts(Integer
+                .MAX_VALUE));
+
         SortedPostFragment sortedPostsFragment = SortedPostFragment
-                .newInstance();
+                .newInstance(new SortedPostFragment.FeedPostComparator(),
+                        postList);
         FragmentTransaction transaction = getChildFragmentManager()
                 .beginTransaction();
         transaction.add(R.id.fragment_feed_sorted_posts_frame,

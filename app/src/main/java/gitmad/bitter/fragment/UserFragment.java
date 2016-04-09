@@ -15,14 +15,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import gitmad.bitter.R;
+import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.mock.MockPostProvider;
+import gitmad.bitter.model.Post;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class UserFragment extends Fragment {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
+
+    private PostProvider postProvider;
+    private List<Post> postList;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -80,6 +86,13 @@ public class UserFragment extends Fragment {
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(mViewPager);
 
+
+        // TODO change to FireBase
+        postProvider = new MockPostProvider(this.getContext());
+        // FIXME change to get posts by user
+        //postList = Arrays.asList(postProvider.getPostsByUser(params[0]));
+        postList = Arrays.asList(postProvider.getPosts(Integer.MAX_VALUE));
+
         return view;
     }
 
@@ -128,11 +141,14 @@ public class UserFragment extends Fragment {
                 case 0:
                     return UserProfileFragment.newInstance();
                 case 1:
-                    return SortedPostFragment.newInstance();
+                    return SortedPostFragment.newInstance(new SortedPostFragment
+                            .RecentPostComparator(), postList);
                 case 2:
-                    return SortedPostFragment.newInstance();
+                    return SortedPostFragment.newInstance(new SortedPostFragment
+                            .TopPostComparator(), postList);
                 case 3:
-                    return SortedPostFragment.newInstance();
+                    return SortedPostFragment.newInstance(new SortedPostFragment
+                            .FavoritePostComparator(), postList);
             }
             return null;
         }
