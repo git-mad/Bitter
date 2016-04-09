@@ -1,52 +1,42 @@
 package gitmad.bitter.model;
 
+import gitmad.bitter.data.UserProvider;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Models a user
  */
 public class User {
     private String id;
-    private String imageId;
     private String name;
-    private int numEnemies;
+    private String imageId;
+
+    private String userSince;
     private int posts;
     private int salt;
-    private int totalComments;
     private int totalVotes;
-    private String userSince;
+    private int totalComments;
+    private int numEnemies;
 
-    public User(String name, String imageId, String id, int numEnemies, int posts, int salt, int totalComments, int totalVotes, String userSince) {
+    public User(String name, String userId, String imageId) {
+        this.id = userId;
         this.name = name;
         this.imageId = imageId;
-        this.id = id;
-        this.numEnemies = numEnemies;
-        this.posts = posts;
-        this.salt = salt;
-        this.totalComments = totalComments;
-        this.totalVotes = totalVotes;
-        this.userSince = userSince;
+
+        // FIXME these should be automatically initialized
+        userSince = "03/28/16";
+        this.posts = 0;
+        this.salt = 0;
+        this.totalVotes = 0;
+        this.totalComments = 0;
+        this.numEnemies = 0;
     }
 
     public User() {
-    }
 
-    public User(String temp, String userUid) {
-        this.name = temp;
-        this.id = userUid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
     }
 
     @Override
@@ -57,11 +47,24 @@ public class User {
 
         User other = (User) o;
 
-        return other.getId().equals(getId());
+        return other.id.equals(id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getImageId() {
         return imageId;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getNumEnemies() {
@@ -86,5 +89,59 @@ public class User {
 
     public String getUserSince() {
         return userSince;
+    }
+
+    public void updateUserInfo() {
+        // TODO automatically update all variables that must be set internally
+    }
+
+    /**
+     * Method returns the top 3 categories based on user's posts
+     *
+     * @return a list of the top 3 categories with 0 being the top category
+     */
+    public List<String> topCategories(String userId, UserProvider
+            userProvider) {
+        // FIXME efficency
+        // FIXME need to figure out how to organize this data
+
+        List<String> topList = new ArrayList<>(3);
+        Map<String, Integer> categoryCount = userProvider
+                .getPostCategoryCount(userId);
+
+        //Method will be stable in the case of categories occurring the same
+        // number of times
+        String firstCategory = "";
+        int max = 0;
+        for (String category : categoryCount.keySet()) {
+            if (categoryCount.get(category) > max) {
+                max = categoryCount.get(category);
+                firstCategory = category;
+            }
+        }
+
+        String secondCategory = "";
+        int secondMax = 0;
+        for (String category : categoryCount.keySet()) {
+            if (categoryCount.get(category) > secondMax && categoryCount.get
+                    (category) < max) {
+                secondMax = categoryCount.get(category);
+                secondCategory = category;
+            }
+        }
+
+        String thirdCategory = "";
+        int thirdMax = 0;
+        for (String category : categoryCount.keySet()) {
+            if (categoryCount.get(category) > thirdMax && categoryCount.get
+                    (category) < secondMax) {
+                thirdMax = categoryCount.get(category);
+                thirdCategory = category;
+            }
+        }
+        topList.add(firstCategory);
+        topList.add(secondCategory);
+        topList.add(thirdCategory);
+        return topList;
     }
 }

@@ -200,7 +200,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView
-                        android:id="@+id/user_profile_replies"
+                        android:id="@+id/user_profile_comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/user_profile_posts"
@@ -208,14 +208,14 @@
                         android:layout_gravity="center_horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
-                        android:text="Total Replies: To Set"
+                        android:text="Total Comments: To Set"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView
                         android:id="@+id/user_profile_votes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/user_profile_replies"
+                        android:layout_below="@id/user_profile_comments"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center_horizontal"
                         android:paddingBottom="10dp"

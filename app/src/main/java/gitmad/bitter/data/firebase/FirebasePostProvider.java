@@ -73,38 +73,38 @@ public class FirebasePostProvider implements PostProvider {
 
         String firebaseUrl = getFirebaseUrlForPost(id);
 
-        FirebaseSyncRequester firebaseSyncRequester = new FirebaseSyncRequester(firebasePostRef);
+        FirebaseSyncRequester<Post> firebaseSyncRequester = new FirebaseSyncRequester<>(firebasePostRef, Post.class);
 
         if (!firebaseSyncRequester.exists()) {
             throw new IllegalArgumentException("Post with id " + id + " does not exist.");
         }
 
-        return firebaseSyncRequester.getPost();
+        return firebaseSyncRequester.get();
     }
 
     @Override
-    public Post addPostAsync(String postText) {
+    public Post addPostAsync(String postText) { //TODO should pass in post, rather than text
         Firebase newPostRef = firebasePostsRef.push();
 
         String newPostId = newPostRef.getKey();
         long timestamp = millisSinceEpoch();
         final int zeroDownvotes = 0;
 
-        Post post = new Post(newPostId, postText, timestamp, zeroDownvotes, getLoggedInUserId());
+        Post post = new Post(newPostId, postText, timestamp, zeroDownvotes, getLoggedInUserId(), "sports");
 
         newPostRef.setValue(post);
 
         return post;
     }
 
-    public Post addPostSync(String postText) {
+    public Post addPostSync(String postText) { //TODO should pass in post, rather than text
         Firebase newPostRef = firebasePostsRef.push();
 
         String newPostId = newPostRef.getKey();
         long timestamp = millisSinceEpoch();
         final int zeroDownvotes = 0;
 
-        Post post = new Post(newPostId, postText, timestamp, zeroDownvotes, getLoggedInUserId());
+        Post post = new Post(newPostId, postText, timestamp, zeroDownvotes, getLoggedInUserId(), "sports");
 
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -149,13 +149,13 @@ public class FirebasePostProvider implements PostProvider {
     public Post downvotePost(String postId) {
         Firebase firebasePostRef = new Firebase(getFirebaseUrlForPost(postId));
 
-        FirebaseSyncRequester postRequester = new FirebaseSyncRequester(firebasePostRef);
+        FirebaseSyncRequester<Post> postRequester = new FirebaseSyncRequester<>(firebasePostRef, Post.class);
 
         if (!postRequester.exists()) {
             throw new IllegalArgumentException("Post to downvote does not exist");
         }
 
-        Post downvotedPost = newDownvotedPost(postRequester.getPost());
+        Post downvotedPost = newDownvotedPost(postRequester.get());
 
         firebasePostRef.setValue(downvotedPost);
 
@@ -166,13 +166,13 @@ public class FirebasePostProvider implements PostProvider {
     public Post deletePost(String postId) {
         Firebase firebasePostRef = new Firebase(getFirebaseUrlForPost(postId));
 
-        FirebaseSyncRequester postRequester = new FirebaseSyncRequester(firebasePostRef);
+        FirebaseSyncRequester<Post> postRequester = new FirebaseSyncRequester(firebasePostRef, Post.class);
 
         if (!postRequester.exists()) {
             throw new IllegalArgumentException("Post to delete does not exist");
         }
 
-        Post postToDelete = postRequester.getPost();
+        Post postToDelete = postRequester.get();
 
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -298,7 +298,7 @@ public class FirebasePostProvider implements PostProvider {
     }
 
     private static Post newDownvotedPost(Post post) {
-        return new Post(post.getId(), post.getText(), post.getTimestamp(), post.getDownvotes() - 1, post.getAuthorId());
+        return new Post(post.getId(), post.getText(), post.getTimestamp(), post.getDownvotes() - 1, post.getAuthorId(), post.getCategory());
     }
 
 //    private Post[] getMostRecent(int numberOfPostsToRetrieve) {
