@@ -7,6 +7,8 @@ import com.firebase.client.Firebase;
 import java.util.HashMap;
 import java.util.Map;
 
+import gitmad.bitter.data.CategoryProvider;
+import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.Post;
@@ -22,13 +24,13 @@ public class FirebaseUserProvider implements UserProvider {
     public User getUser(String userId) {
         Firebase userFirebaseRef = newFirebaseRefForUser(userId);
 
-        FirebaseSyncRequester userRequester = new FirebaseSyncRequester(userFirebaseRef);
+        FirebaseSyncRequester<User> userRequester = new FirebaseSyncRequester(userFirebaseRef, User.class);
 
         if (!userRequester.exists()) {
             throw new IllegalArgumentException("User does not exist");
         }
 
-        return userRequester.getUser();
+        return userRequester.get();
     }
 
     @Override
@@ -40,12 +42,12 @@ public class FirebaseUserProvider implements UserProvider {
     public Map<Post, User> getAuthorsOfPosts(Post... posts) {
         String[] authorIds = getPostAuthorIds(posts);
 
-        FirebaseSyncRequester[] userRequesters = startRequestersForUsers(authorIds);
+        FirebaseSyncRequester<User>[] userRequesters = startRequestersForUsers(authorIds);
 
         Map<Post, User> authorsMap = new HashMap<>();
 
         for (int i = 0; i < posts.length; i++) {
-            authorsMap.put(posts[i], userRequesters[i].getUser());
+            authorsMap.put(posts[i], userRequesters[i].get());
         }
 
         return authorsMap;
@@ -61,12 +63,12 @@ public class FirebaseUserProvider implements UserProvider {
 
         String[] authorIds = getCommentAuthorIds(comments);
 
-        FirebaseSyncRequester[] userRequesters = startRequestersForUsers(authorIds);
+        FirebaseSyncRequester<User>[] userRequesters = startRequestersForUsers(authorIds);
 
         Map<Comment, User> authorsMap = new HashMap<>();
 
         for (int i = 0; i < comments.length; i++) {
-            authorsMap.put(comments[i], userRequesters[i].getUser());
+            authorsMap.put(comments[i], userRequesters[i].get());
         }
 
         return authorsMap;
@@ -79,13 +81,41 @@ public class FirebaseUserProvider implements UserProvider {
         return getUser(firebaseUsersRef.getAuth().getUid());
     }
 
+    @Override
+    public Map<String, Integer> getPostCategoryCount(String userUid) {
+        PostProvider postProvider = new FirebasePostProvider();
+
+        Map<String, Integer> postCategoryCounts = initCategoryMap();
+
+        Post[] allUserPosts = postProvider.getPostsByUser(userUid);
+
+        for (Post post : allUserPosts) {
+            String category = post.getCategory();
+            postCategoryCounts.put(category, postCategoryCounts.get(category) + 1);
+        }
+
+        return postCategoryCounts;
+    }
+
     @NonNull
-    private static FirebaseSyncRequester[] startRequestersForUsers(String[] userIds) {
+    private Map<String, Integer> initCategoryMap() {
+        Map<String, Integer> postCategoryCounts = new HashMap<>();
+
+        CategoryProvider categoryProvider = new FirebaseCategoryProvider();
+
+        for (String category : categoryProvider.getCategories()) {
+            postCategoryCounts.put(category, 0);
+        }
+        return postCategoryCounts;
+    }
+
+    @NonNull
+    private static FirebaseSyncRequester<User>[] startRequestersForUsers(String[] userIds) {
         FirebaseSyncRequester[] userRequesters = new FirebaseSyncRequester[userIds.length];
 
         for (int i = 0; i < userIds.length; i++) {
             Firebase authorRef = newFirebaseRefForUser(userIds[i]);
-            FirebaseSyncRequester userRequester = new FirebaseSyncRequester(authorRef);
+            FirebaseSyncRequester<User> userRequester = new FirebaseSyncRequester<>(authorRef, User.class);
 
             userRequesters[i] = userRequester;
         }

@@ -51,6 +51,7 @@ public class TestFirebaseAuthManager extends ApplicationTestCase<FirebaseApplica
 
         // this is the same as is used in FirebaseAuthManager
         prefs = application.getSharedPreferences(AUTH_PREFS, Context.MODE_PRIVATE);
+//        Log.d("Prefs", prefs.getAll().keySet().toString());
 
         usersFirebaseRef = new Firebase(FirebaseUserProvider.FIREBASE_USERS_URL);
 

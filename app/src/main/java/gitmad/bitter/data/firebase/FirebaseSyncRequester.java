@@ -1,26 +1,20 @@
 package gitmad.bitter.data.firebase;
 
-import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
-
-import gitmad.bitter.model.Comment;
-import gitmad.bitter.model.Post;
-import gitmad.bitter.model.User;
 
 /**
  * Provides synchronous method calls for Firebase data being updated by asynchronous
  * callbacks.
  *
  */
-public class FirebaseSyncRequester {
+public class FirebaseSyncRequester <T> {
 
     private Firebase firebaseRef;
     private RequesterValueEventListener firebaseListener;
@@ -29,9 +23,13 @@ public class FirebaseSyncRequester {
 
     private CountDownLatch countDownLatch;
 
+    private Class<T> dataType;
 
-    public FirebaseSyncRequester(Firebase pFirebaseRef) {
+
+    public FirebaseSyncRequester(Firebase pFirebaseRef, Class<T> genericType) {
         firebaseRef = pFirebaseRef;
+
+        dataType = genericType;
 
         currentDataSnapshot = new AtomicReference<>();
 
@@ -55,23 +53,12 @@ public class FirebaseSyncRequester {
      * Waits until data is present, and then returns
      * @return the data contained by at the firebase url contained by this FirebaseSyncRequester
      */
-    public Post getPost() {
+    public T get() {
         whenReady();
 
-        return currentDataSnapshot.get().getValue(Post.class);
+        return currentDataSnapshot.get().getValue(dataType);
     }
 
-    public Comment getComment() {
-        whenReady();
-
-        return currentDataSnapshot.get().getValue(Comment.class);
-    }
-
-    public User getUser() {
-        whenReady();
-
-        return currentDataSnapshot.get().getValue(User.class);
-    }
     /**
      * Waits until this requester has data, and then returns a reference to this
      * requester
@@ -118,7 +105,7 @@ public class FirebaseSyncRequester {
 
         @Override
         public void onCancelled(FirebaseError firebaseError) {
-            Log.e("Bitter", "Connection problem with Firebase FirebaseSyncRequester");
+            throw firebaseError.toException();
         }
     }
 }

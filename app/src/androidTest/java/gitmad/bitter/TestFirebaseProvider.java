@@ -1,16 +1,10 @@
 package gitmad.bitter;
 
-import android.app.Application;
 import android.support.annotation.NonNull;
 import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
-import android.util.Log;
-
-import com.firebase.client.Firebase;
-import com.firebase.client.authentication.AuthenticationManager;
 
 import org.junit.After;
-import org.junit.Before;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -66,6 +60,11 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
     }
 
     @SmallTest
+    public void addUsers() {
+
+    }
+
+    @SmallTest
     public void testGettingPosts() {
         final int numPosts = 10;
         Post[] posts = postProvider.getPosts(numPosts);
@@ -85,7 +84,7 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
                 newPostsStack.size(), postsFromFirebase.length);
 
 
-        for (Post postFromFirebase: postsFromFirebase) {
+        for (Post postFromFirebase : postsFromFirebase) {
             assertEquals("Post not correctly added or not in correct order\n"
                             + "posts from Firebase: " + Arrays.toString(postsFromFirebase)
                             + "\n" + "posts before sending: " + newPostsStack.toString(),
