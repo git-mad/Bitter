@@ -118,7 +118,7 @@
             android:layout_marginTop="10dp"
             android:id="@+id/user_profile_start_date"
             android:gravity="center_horizontal"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:text="Been Bitchin since: \t\tmm/dd"/>
 
         <TextView
@@ -129,52 +129,34 @@
             android:layout_marginTop="10dp"
             android:id="@+id/user_profile_wall_of_hate_title"
             android:gravity="center_horizontal"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:text="Wall of Hate"/>
 
-        <TabHost
+        <android.support.v4.app.FragmentTabHost
             android:layout_width="match_parent"
             android:layout_margin="20dp"
             android:layout_height="match_parent"
             android:layout_below="@id/user_profile_wall_of_hate_title"
             android:id="@+id/user_profile_tabhost">
 
+            <TabWidget android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+
+            </TabWidget>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TabWidget
-                    android:id="@android:id/tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></TabWidget>
-
                 <FrameLayout
-                    android:id="@android:id/tabcontent"
+                    android:id="@+id/user_profile_sorted_post_fragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"></LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"></LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"></LinearLayout>
                 </FrameLayout>
             </LinearLayout>
-        </TabHost>
-
+        </android.support.v4.app.FragmentTabHost>
 
     </RelativeLayout>
 </ScrollView>

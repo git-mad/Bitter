@@ -19,6 +19,7 @@ import gitmad.bitter.data.firebase.FirebasePostProvider;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.Comment;
+import gitmad.bitter.model.FirebaseImage;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 import gitmad.bitter.ui.CommentAdapter;
@@ -115,11 +116,10 @@ public class ViewPostFragment extends Fragment {
             userTextView.setText(post.getAuthorId());
 
             // FIXME temp profile pic, get pic from variable instead of
-            // hardcoded id
             ImageView pic = (ImageView) view.findViewById(R.id.posterPic);
             Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap
                     .ic_launcher);
-            Bitmap conv_bm = UserProfileFragment.getRoundedRectBitmap(bm, 500);
+            Bitmap conv_bm = FirebaseImage.toRoundedRectBitmap(bm, 500);
             pic.setImageBitmap(conv_bm);
 
             final TextInputLayout commentWrapper = (TextInputLayout) view
