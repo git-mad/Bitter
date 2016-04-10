@@ -41,18 +41,18 @@ public class UserProfileFragment extends Fragment {
         FirebaseAuthManager authenticator = new FirebaseAuthManager(
                 getActivity());
         authenticator.authenticate();
-        getFirebaseTask asyncTask = new getFirebaseTask(view);
+        GetUserFirebaseTask asyncTask = new GetUserFirebaseTask(view);
         asyncTask.execute(authenticator.getUid());
 
 
         return view;
     }
 
-    private class getFirebaseTask extends AsyncTask<String, String, User> {
+    private class GetUserFirebaseTask extends AsyncTask<String, String, User> {
         private User userData;
         private View view;
 
-        public getFirebaseTask(View view) {
+        public GetUserFirebaseTask(View view) {
             this.view = view;
         }
 
