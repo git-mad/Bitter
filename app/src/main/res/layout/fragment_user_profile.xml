@@ -132,31 +132,11 @@
             android:textSize="20sp"
             android:text="Wall of Hate"/>
 
-        <android.support.v4.app.FragmentTabHost
-            android:layout_width="match_parent"
-            android:layout_margin="20dp"
-            android:layout_height="match_parent"
-            android:layout_below="@id/user_profile_wall_of_hate_title"
-            android:id="@+id/user_profile_tabhost">
-
-            <TabWidget android:layout_width="match_parent"
-                       android:layout_height="wrap_content">
-
-            </TabWidget>
-
-            <LinearLayout
+        <FrameLayout
+                android:id="@+id/user_profile_tab_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:id="@+id/user_profile_sorted_post_fragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </FrameLayout>
-            </LinearLayout>
-        </android.support.v4.app.FragmentTabHost>
+        android:layout_below="@+id/user_profile_wall_of_hate_title"/>
 
     </RelativeLayout>
 </ScrollView>

@@ -43,25 +43,10 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile,
                 container, false);
 
-        // Tabhost setup
-//        final FragmentTabH1
-
-//        tabHost.addTab(tabHost.newTabSpec("fragmentA").setIndicator
-//                        ("Fragment A"), SortedPostFragment.class, new Bundle());
-//        tabHost.setCurrentTab(0);
-//
-//        tabHost.getTabWidget().getChildAt(0).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                SortedPostFragment sortedPostsFragment = SortedPostFragment
-//                        .newInstance(new SortedPostFragment.FeedPostComparator(),
-//                                new ArrayList<Post>());
-//                FragmentTransaction transaction = getChildFragmentManager()
-//                        .beginTransaction();
-//                transaction.add(R.id.fragment_feed_sorted_posts_frame,
-//                        sortedPostsFragment).commit();
-//            }
-//        });
+//        TabFragment tabFragment = TabFragment.newInstance();
+//        FragmentTransaction transaction = getChildFragmentManager()
+//                .beginTransaction();
+//        transaction.add(R.id.user_profile_tab_frame, tabFragment).commit();
 
         FirebaseAuthManager authenticator = new FirebaseAuthManager(
                 getActivity());
