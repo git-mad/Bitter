@@ -6,15 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.Date;
-import java.util.List;
-
 import gitmad.bitter.R;
 import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.model.Post;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Adapter for displaying cardviews that present posts in a RecyclerView.
@@ -45,6 +44,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         this.notifyDataSetChanged();
     }
 
+    public String getTime(Post p) {
+        Long sec = time - p.getTimestamp();
+        int newTime = (int) (sec / 1000);
+        if (newTime > 3600) {
+            return "" + newTime / 3600 + " hours";
+        } else if (newTime > 60) {
+            return "" + newTime / 60 + " minutes";
+        } else {
+            return "" + newTime + " seconds";
+        }
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
@@ -57,10 +68,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         viewHolder.postText.setText(posts.get(i).getText());
         viewHolder.userText.setText(userProvider.getAuthorOfPost(posts.get(i)
-                ).getName());
-        viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
+        ).getName());
+        viewHolder.downvoteText.setText(Integer.toString(posts.get(i)
+                .getDownvotes()));
         viewHolder.timeText.setText(getTime(posts.get(i)));
-        viewHolder.repliesText.setText(Integer.toString(commentProvider.getCommentsOnPost(
+        viewHolder.repliesText.setText(Integer.toString(commentProvider
+                .getCommentsOnPost(
                 posts.get(i).getId()).length) + " replies");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,32 +87,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 listener.onDownvoteClicked(posts.get(i), i);
-                Post p  = postProvider.getPost(posts.get(i).getId());
+                Post p = postProvider.getPost(posts.get(i).getId());
                 posts.set(i, p);
-                viewHolder.downvoteText.setText(Integer.toString(posts.get(i).getDownvotes()));
+                viewHolder.downvoteText.setText(Integer.toString(posts.get(i)
+                        .getDownvotes()));
             }
         });
     }
 
-    public String getTime(Post p) {
-        Long sec = time - p.getTimestamp();
-        int newTime = (int) (sec / 1000);
-        if(newTime > 3600) {
-            return "" + newTime/3600 + " hours";
-        } else if (newTime > 60) {
-            return "" + newTime/60 + " minutes";
-        } else {
-            return "" + newTime + " seconds";
-        }
+    @Override
+    public int getItemCount() {
+        return posts.size();
     }
 
     public void resetTime() {
         time = new Date().getTime();
     }
 
-    @Override
-    public int getItemCount() {
-        return posts.size();
+    public interface FeedInteractionListener {
+        void onDownvoteClicked(Post p, int index);
+
+        void onPostClicked(Post p, int index);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -118,13 +126,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             timeText = (TextView) postLayout.findViewById(R.id.time_posted);
             repliesText = (TextView) postLayout.findViewById(R.id.post_replies);
 
-            downvoteImage = (ImageView) postLayout.findViewById(R.id.downvote_button);
-            downvoteText = (TextView) postLayout.findViewById(R.id.downvote_counter);
+            downvoteImage = (ImageView) postLayout.findViewById(R.id
+                    .downvote_button);
+            downvoteText = (TextView) postLayout.findViewById(R.id
+                    .downvote_counter);
         }
-    }
-
-    public interface FeedInteractionListener {
-        void onPostClicked(Post p, int index);
-        void onDownvoteClicked(Post p, int index);
     }
 }

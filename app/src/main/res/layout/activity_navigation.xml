@@ -1,43 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/MaterialTheme">
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/MaterialTheme">
 
-        <include layout="@layout/material_toolbar" />
+        <include layout="@layout/material_toolbar"/>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".activity.NavigationActivity">
+    <android.support.v4.widget.DrawerLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".activity.NavigationActivity">
 
         <FrameLayout
-            android:id="@+id/mainFrameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                android:id="@+id/mainFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
         </FrameLayout>
 
         <android.support.design.widget.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="@dimen/nav_drawer_width"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:itemIconTint="@color/nav_drawer_selector"
-            app:itemTextColor="@color/nav_drawer_selector"
-            app:menu="@menu/nav_drawer"
-            app:theme="@style/MaterialTheme.Drawer" />
+                android:id="@+id/nav_view"
+                android:layout_width="@dimen/nav_drawer_width"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                app:itemIconTint="@color/nav_drawer_selector"
+                app:itemTextColor="@color/nav_drawer_selector"
+                app:menu="@menu/nav_drawer"
+                app:theme="@style/MaterialTheme.Drawer"/>
 
     </android.support.v4.widget.DrawerLayout>
 

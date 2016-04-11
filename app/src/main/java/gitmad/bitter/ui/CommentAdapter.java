@@ -6,12 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import java.util.Map;
-
 import gitmad.bitter.R;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.User;
+
+import java.util.Map;
 
 /**
  * Created by prabh on 10/19/2015.
@@ -21,7 +20,8 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
     private Comment[] comments;
     private Map<Comment, User> commentAuthors;
 
-    public CommentAdapter(Context context, Comment[] comments, Map<Comment, User> commentAuthors) {
+    public CommentAdapter(Context context, Comment[] comments, Map<Comment,
+            User> commentAuthors) {
         super(context, 0, comments); // TODO is the zero here correct?
 
         this.comments = comments;
@@ -32,11 +32,13 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         Comment comment = comments[position];
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_comment, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout
+                    .view_comment, parent, false);
         }
 
         TextView userText = (TextView) convertView.findViewById(R.id.user_text);
-        TextView commentText = (TextView) convertView.findViewById(R.id.comment_text);
+        TextView commentText = (TextView) convertView.findViewById(R.id
+                .comment_text);
 
         userText.setText(commentAuthors.get(comment).getName());
         commentText.setText(comment.getText());
