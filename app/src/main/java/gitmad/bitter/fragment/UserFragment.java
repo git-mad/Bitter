@@ -28,6 +28,7 @@ import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.FirebaseImage;
 import gitmad.bitter.model.Post;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -94,6 +95,8 @@ public class UserFragment extends Fragment {
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(mViewPager);
+
+        postList = new ArrayList<>();
 
         return view;
     }
