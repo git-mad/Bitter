@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import org.junit.After;
 
 import java.util.Arrays;
 import java.util.LinkedList;
