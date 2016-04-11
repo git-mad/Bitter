@@ -115,15 +115,29 @@ public class UserProfileFragment extends Fragment {
             Bitmap conv_bm = FirebaseImage.toRoundedRectBitmap(bm, 500);
             pic.setImageBitmap(conv_bm);
 
-            // TODO change these when we change the user profile layout
+            // ENEMIES PIC
+            ImageView skullImage = (ImageView) view.findViewById(R.id
+                    .user_profile_skull);
+            Bitmap skullBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                    .skull);
+            Bitmap conv_skull = FirebaseImage.toRoundedRectBitmap(skullBM, 400);
+            skullImage.setImageBitmap(conv_skull);
 
-        TextView userName = (TextView) view.findViewById(
+            // SALT PIC
+            ImageView saltImage = (ImageView) view.findViewById(R.id
+                    .user_profile_salt);
+            Bitmap saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                    .salt15);
+            Bitmap conv_salt = FirebaseImage.toRoundedRectBitmap(saltBM, 400);
+            saltImage.setImageBitmap(conv_salt);
+
+            TextView userName = (TextView) view.findViewById(
                 R.id.user_profile_picture_text);
-        userName.setText(myUser.getName());
+            userName.setText(myUser.getName());
 
-        TextView userSalt = (TextView) view.findViewById(
+            TextView userSalt = (TextView) view.findViewById(
                 R.id.user_profile_salt_text);
-        userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
+            userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
 
 //        TextView countPosts = (TextView) view.findViewById(R.id
 //                .user_profile_posts);
