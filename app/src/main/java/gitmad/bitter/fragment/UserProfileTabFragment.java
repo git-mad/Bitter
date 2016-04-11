@@ -13,13 +13,13 @@ import gitmad.bitter.model.Post;
 
 import java.util.ArrayList;
 
-public class TabFragment extends Fragment {
-    public TabFragment() {
+public class UserProfileTabFragment extends Fragment {
+    public UserProfileTabFragment() {
         // Mandatory empty constructor for the UserProfile Fragment Manager
     }
 
-    public static TabFragment newInstance() {
-        TabFragment fragment = new TabFragment();
+    public static UserProfileTabFragment newInstance() {
+        UserProfileTabFragment fragment = new UserProfileTabFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -28,20 +28,26 @@ public class TabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_user_profile_tabs, container, false);
+
         // Tabhost setup
-        FragmentTabHost tabHost = new FragmentTabHost(getContext());
+        FragmentTabHost tabHost = (FragmentTabHost) view.findViewById(R.id
+                .user_profile_tabhost);
         tabHost.setup(getContext(), getChildFragmentManager(), R.id
                 .realTabContent);
 
         // Tab setup
-        TabHost.TabSpec tab1 = tabHost.newTabSpec("fragmentA").setIndicator
-                ("Fragment A");
-        TabHost.TabSpec tab2 = tabHost.newTabSpec("fragmentB").setIndicator
-                ("Fragment B");
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("cat1").setIndicator
+                ("Category 1");
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("cat2").setIndicator
+                ("Category 2");
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("cat3").setIndicator
+                ("Category 3");
 
         tabHost.addTab(tab1, SortedPostFragment.class, new Bundle());
         tabHost.addTab(tab2, SortedPostFragment.class, new Bundle());
-        tabHost.setCurrentTab(1);
+        tabHost.addTab(tab3, SortedPostFragment.class, new Bundle());
+        tabHost.setCurrentTab(0);
 
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
@@ -52,11 +58,11 @@ public class TabFragment extends Fragment {
                                 new ArrayList<Post>());
                 FragmentTransaction transaction = getChildFragmentManager()
                         .beginTransaction();
-                transaction.add(R.id.fragment_feed_sorted_posts_frame,
+                transaction.add(R.id.realTabContent,
                         sortedPostsFragment).commit();
             }
         });
 
-        return tabHost;
+        return view;
     }
 }
