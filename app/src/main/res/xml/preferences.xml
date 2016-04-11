@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="Acount Info"
+        android:key="pref_key_storage_settings" >
+        <EditTextPreference
+            android:key="pref_change_username"
+            android:title="Change Username"
+            />
+        <EditTextPreference
+            android:key = "pref_change_password"
+            android:title="Change Password"
+            />
+        <SwitchPreferenceCompat
+            android:key = "pref_remember_me"
+            android:title="Remember Me"
+            android:defaultValue="true"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Display"
+        android:key="pref_key_storage_settings" />
+        <ListPreference
+            android:key="pref_text_size"
+            android:title="Text Size"
+            android:entries="@array/text_size_options"
+            android:entryValues="@array/text_size_options"
+            />
+        <ListPreference
+            android:key="pref_theme"
+            android:title="Theme"
+            android:entries="@array/theme"
+            android:entryValues="@array/theme"
+            />
+    <PreferenceCategory
+        android:title="Notifications"
+        android:key="pref_key_storage_settings" />
+        <CheckBoxPreference
+            android:key="pref_note_me"
+            android:title="Notify me when muted or blocked"
+            />
+        <ListPreference
+            android:key="pref_sounds"
+            android:title="Sound"
+            android:entries="@array/sounds"
+            android:entryValues="@array/sounds"
+            />
+        <ListPreference
+            android:key="pref_freq"
+            android:title="Frequency"
+            android:entries="@array/frequency"
+            android:entryValues="@array/frequency"
+            />
+
+    <PreferenceCategory
+        android:title="Title"
+        android:key="pref_key_storage_settings" />
+    <PreferenceCategory
+        android:title="Data Options"
+        android:key="pref_key_storage_settings" />
+    <PreferenceCategory
+        android:title="Now let's talk about us.."
+        android:key="pref_key_storage_settings" />
+        <ListPreference
+            android:key="pref_doneate_us"
+            android:title="Donate"
+            android:entries="@array/donate"
+            android:entryValues="@array/donate"
+            />
+
+    <PreferenceScreen
+        android:key="button_voicemail_category_key"
+        android:title="Test"
+        >
+        <ListPreference
+            android:key="pref_syncConnectionType"
+            android:title="List"
+            android:dialogTitle="List Choices"
+            android:entries="@array/mock_comments"
+            android:entryValues="@array/mock_comments"
+            />
+    </PreferenceScreen>
+
+</PreferenceScreen>
