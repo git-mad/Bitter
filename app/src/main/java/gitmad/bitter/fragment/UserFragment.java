@@ -4,9 +4,13 @@ package gitmad.bitter.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,9 +18,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import gitmad.bitter.R;
 import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.firebase.FirebasePostProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
+import gitmad.bitter.model.FirebaseImage;
 import gitmad.bitter.model.Post;
 
 import java.util.Arrays;
@@ -86,13 +95,6 @@ public class UserFragment extends Fragment {
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(mViewPager);
 
-
-        // TODO change to FireBase
-        postProvider = new MockPostProvider(this.getContext());
-        // FIXME change to get posts by user
-        //postList = Arrays.asList(postProvider.getPostsByUser(params[0]));
-        postList = Arrays.asList(postProvider.getPosts(Integer.MAX_VALUE));
-
         return view;
     }
 
@@ -161,6 +163,18 @@ public class UserFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().findViewById(R.id.appBar).setElevation(0);
             System.out.println("Elevation is 0!");
+        }
+    }
+
+    private class GetPostFirebaseTask extends AsyncTask<String, String,
+            List<Post>> {
+
+        protected List<Post> doInBackground(String... params) {
+            FirebasePostProvider firebasePostProvider = new
+                    FirebasePostProvider();
+            postList = Arrays.asList(firebasePostProvider.getPostsByUser
+                    (params[0]));
+            return postList;
         }
     }
 }
