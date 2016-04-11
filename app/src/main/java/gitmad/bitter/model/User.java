@@ -20,6 +20,8 @@ public class User {
     private int totalComments;
     private int numEnemies;
 
+    public User(){}
+
     public User(String name, String userId, String imageId) {
         this.id = userId;
         this.name = name;
@@ -34,9 +36,6 @@ public class User {
         this.numEnemies = 0;
     }
 
-    public User() {
-
-    }
 
     @Override
     public boolean equals(Object o) {
