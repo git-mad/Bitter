@@ -5,17 +5,22 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import gitmad.bitter.R;
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.FirebaseImage;
+import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
+
+import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -38,10 +43,38 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile,
                 container, false);
 
-        UserProfileTabFragment tabFragment = UserProfileTabFragment.newInstance();
-        FragmentTransaction transaction = getChildFragmentManager()
-                .beginTransaction();
-        transaction.add(R.id.user_profile_tab_frame, tabFragment).commit();
+        // Tabhost setup
+        FragmentTabHost tabHost = (FragmentTabHost) view.findViewById(R.id
+                .user_profile_tabhost);
+        tabHost.setup(getContext(), getChildFragmentManager(), R.id
+                .realTabContent);
+
+        // Tab setup
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("cat1").setIndicator
+                ("Category 1");
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("cat2").setIndicator
+                ("Category 2");
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("cat3").setIndicator
+                ("Category 3");
+
+        tabHost.addTab(tab1, SortedPostFragment.class, new Bundle());
+        tabHost.addTab(tab2, SortedPostFragment.class, new Bundle());
+        tabHost.addTab(tab3, SortedPostFragment.class, new Bundle());
+        tabHost.setCurrentTab(0);
+
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                SortedPostFragment sortedPostsFragment = SortedPostFragment
+                        .newInstance(new SortedPostFragment
+                                        .FeedPostComparator(),
+                                new ArrayList<Post>());
+                FragmentTransaction transaction = getChildFragmentManager()
+                        .beginTransaction();
+                transaction.add(R.id.realTabContent,
+                        sortedPostsFragment).commit();
+            }
+        });
 
         FirebaseAuthManager authenticator = new FirebaseAuthManager(
                 getActivity());
