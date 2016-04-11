@@ -50,6 +50,7 @@ public class UserProfileFragment extends Fragment {
                 .realTabContent);
 
         // Tab setup
+        // TODO change category names after retrieving post array
         TabHost.TabSpec tab1 = tabHost.newTabSpec("cat1").setIndicator
                 ("Category 1");
         TabHost.TabSpec tab2 = tabHost.newTabSpec("cat2").setIndicator
@@ -57,14 +58,17 @@ public class UserProfileFragment extends Fragment {
         TabHost.TabSpec tab3 = tabHost.newTabSpec("cat3").setIndicator
                 ("Category 3");
 
+        // Add tabs to tab host
         tabHost.addTab(tab1, SortedPostFragment.class, new Bundle());
         tabHost.addTab(tab2, SortedPostFragment.class, new Bundle());
         tabHost.addTab(tab3, SortedPostFragment.class, new Bundle());
         tabHost.setCurrentTab(0);
 
+        // FIXME call this on initial setup
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
+                // FIXME pass in actual category-post array
                 SortedPostFragment sortedPostsFragment = SortedPostFragment
                         .newInstance(new SortedPostFragment
                                         .FeedPostComparator(),
