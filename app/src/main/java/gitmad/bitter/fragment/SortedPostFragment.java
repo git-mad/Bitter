@@ -15,6 +15,8 @@ import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.firebase.FirebasePostProvider;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.mock.MockCommentProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.data.mock.MockUserProvider;
@@ -32,13 +34,9 @@ public class SortedPostFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
 
     // Must be passed in as a bundle, so here are some default values
-    private Comparator<Post> comparator = new Comparator<Post>() {
-        @Override
-        public int compare(Post lhs, Post rhs) {
-            return 0;
-        }
-    };
-    private List<Post> posts = new ArrayList<>();
+    private Comparator<Post> comparator;
+    private List<Post> posts;
+    private List<String> authorNames;
 
     private PostProvider postProvider;
     private UserProvider userProvider;
@@ -53,15 +51,14 @@ public class SortedPostFragment extends Fragment {
     // TODO post and comparator args
     public static SortedPostFragment newInstance(Comparator<Post>
                                                          postComparator,
-                                                 List<Post> posts) {
+                                                 List<Post> posts, List<String> authorNames) {
         SortedPostFragment fragment = new SortedPostFragment();
 
         // FIXME use Bundle instead of setters and getters
         fragment.comparator = postComparator;
         fragment.posts = posts;
+        fragment.authorNames = authorNames;
 
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -89,15 +86,14 @@ public class SortedPostFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // TODO change to firebase providers
-        postProvider = new MockPostProvider(this.getContext());
-        userProvider = new MockUserProvider();
+        postProvider = new FirebasePostProvider();
+        userProvider = new FirebaseUserProvider();
         commentProvider = new MockCommentProvider(this.getContext());
 
         refreshRecyclerView();
 
         Collections.sort(posts, comparator);
-        adapter = new PostAdapter(posts, newFeedInteractionListener(),
-                postProvider, userProvider, commentProvider);
+        adapter = new PostAdapter(posts, authorNames, newFeedInteractionListener(), commentProvider);
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -123,8 +119,7 @@ public class SortedPostFragment extends Fragment {
 
     private void refreshRecyclerView() {
         Collections.sort(posts, comparator);
-        adapter = new PostAdapter(posts, newFeedInteractionListener(),
-                postProvider, userProvider, commentProvider);
+        adapter = new PostAdapter(posts, authorNames, newFeedInteractionListener(), commentProvider);
         recyclerView.setAdapter(adapter);
     }
 

@@ -3,6 +3,7 @@ package gitmad.bitter.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -16,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import gitmad.bitter.R;
 import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.firebase.FirebasePostProvider;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
@@ -37,6 +41,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
     private String imagePath;
 
     private PostProvider postProvider;
+    private UserProvider userProvider;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -138,18 +143,10 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
             }
         });
 
-        // TODO change to FireBase
-        postProvider = new MockPostProvider(this.getContext());
-        List<Post> postList = Arrays.asList(postProvider.getPosts(Integer
-                .MAX_VALUE));
-
-        SortedPostFragment sortedPostsFragment = SortedPostFragment
-                .newInstance(new SortedPostFragment.FeedPostComparator(),
-                        postList);
-        FragmentTransaction transaction = getChildFragmentManager()
-                .beginTransaction();
-        transaction.add(R.id.fragment_feed_sorted_posts_frame,
-                sortedPostsFragment).commit();
+        postProvider = new FirebasePostProvider();
+        userProvider = new FirebaseUserProvider();
+        GetPostsAsyncTask task = new GetPostsAsyncTask();
+        task.execute(50);
 
         return view;
     }
@@ -196,5 +193,44 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
                 }
             }
         });
+    }
+
+    private class GetPostsAsyncTask extends AsyncTask<Integer, Void, Post[]> {
+
+        String[] authorNames;
+
+        @Override
+        protected Post[] doInBackground(Integer... params) {
+            int numPostsToRetrieve = params[0];
+            Post[] posts = postProvider.getPosts(numPostsToRetrieve);
+
+            authorNames = new String[numPostsToRetrieve];
+
+            for (int i = 0; i < posts.length; i++) {
+                authorNames[i] = userProvider.getAuthorOfPost(posts[i]).getName();
+            }
+
+            return posts;
+        }
+
+        @Override
+        protected void onPostExecute(Post[] posts) {
+            super.onPostExecute(posts);
+            final List<Post> postList = Arrays.asList(posts);
+            final List<String> authorNamesList = Arrays.asList(authorNames);
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    SortedPostFragment sortedPostsFragment = SortedPostFragment
+                            .newInstance(new SortedPostFragment.FeedPostComparator(),
+                                    postList, authorNamesList);
+                    FragmentTransaction transaction = getChildFragmentManager()
+                            .beginTransaction();
+                    transaction.add(R.id.fragment_feed_sorted_posts_frame,
+                            sortedPostsFragment).commit();
+                }
+            });
+        }
     }
 }

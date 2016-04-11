@@ -4,18 +4,23 @@ package gitmad.bitter.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import gitmad.bitter.R;
 import gitmad.bitter.data.PostProvider;
+import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.firebase.FirebasePostProvider;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
 import gitmad.bitter.model.Post;
 
@@ -28,6 +33,7 @@ public class UserFragment extends Fragment {
     private ViewPager mViewPager;
 
     private PostProvider postProvider;
+    private UserProvider userProvider;
     private List<Post> postList;
 
     /**
@@ -88,7 +94,8 @@ public class UserFragment extends Fragment {
 
 
         // TODO change to FireBase
-        postProvider = new MockPostProvider(this.getContext());
+        postProvider = new FirebasePostProvider();
+        userProvider = new FirebaseUserProvider();
         // FIXME change to get posts by user
         //postList = Arrays.asList(postProvider.getPostsByUser(params[0]));
         postList = Arrays.asList(postProvider.getPosts(Integer.MAX_VALUE));
@@ -140,15 +147,15 @@ public class UserFragment extends Fragment {
             switch (position) {
                 case 0:
                     return UserProfileFragment.newInstance();
-                case 1:
-                    return SortedPostFragment.newInstance(new SortedPostFragment
-                            .RecentPostComparator(), postList);
-                case 2:
-                    return SortedPostFragment.newInstance(new SortedPostFragment
-                            .TopPostComparator(), postList);
-                case 3:
-                    return SortedPostFragment.newInstance(new SortedPostFragment
-                            .FavoritePostComparator(), postList);
+//                case 1:
+//                    return SortedPostFragment.newInstance(new SortedPostFragment
+//                            .RecentPostComparator(), postList);
+//                case 2:
+//                    return SortedPostFragment.newInstance(new SortedPostFragment
+//                            .TopPostComparator(), postList);
+//                case 3:
+//                    return SortedPostFragment.newInstance(new SortedPostFragment
+//                            .FavoritePostComparator(), postList);
             }
             return null;
         }
@@ -161,6 +168,45 @@ public class UserFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().findViewById(R.id.appBar).setElevation(0);
             System.out.println("Elevation is 0!");
+        }
+    }
+
+    private class GetPostsAsyncTask extends AsyncTask<Integer, Void, Post[]> {
+
+        String[] authorNames;
+
+        @Override
+        protected Post[] doInBackground(Integer... params) {
+            int numPostsToRetrieve = params[0];
+            Post[] posts = postProvider.getPosts(numPostsToRetrieve);
+
+            authorNames = new String[numPostsToRetrieve];
+
+            for (int i = 0; i < posts.length; i++) {
+                authorNames[i] = userProvider.getAuthorOfPost(posts[i]).getName();
+            }
+
+            return posts;
+        }
+
+        @Override
+        protected void onPostExecute(Post[] posts) {
+            super.onPostExecute(posts);
+            final List<Post> postList = Arrays.asList(posts);
+            final List<String> authorNamesList = Arrays.asList(authorNames);
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    SortedPostFragment sortedPostsFragment = SortedPostFragment
+                            .newInstance(new SortedPostFragment.FeedPostComparator(),
+                                    postList, authorNamesList);
+                    FragmentTransaction transaction = getChildFragmentManager()
+                            .beginTransaction();
+                    transaction.add(R.id.fragment_feed_sorted_posts_frame,
+                            sortedPostsFragment).commit();
+                }
+            });
         }
     }
 }
