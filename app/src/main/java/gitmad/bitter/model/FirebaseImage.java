@@ -73,7 +73,7 @@ public class FirebaseImage {
     }
 
     private Bitmap getImageDataAsBitmap() {
-        byte [] encodeByte = Base64.decode(imageData, Base64.DEFAULT);
+        byte[] encodeByte = Base64.decode(imageData, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         return bitmap;
     }
