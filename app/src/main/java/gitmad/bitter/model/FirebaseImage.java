@@ -2,6 +2,12 @@ package gitmad.bitter.model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.util.Base64;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -59,34 +65,6 @@ public class FirebaseImage {
         canvas.drawBitmap(sbmp, rect, rect, paint);
 
         return output;
-        byte[] byteArray = stream.toByteArray();
-
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-
-    public String getUid() {
-        return uid;
-    }
-
-    public String getOwnerUid() {
-        return ownerUid;
-    }
-
-    public String getImageData() {
-        return imageData;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-
-    public Bitmap getBitmap() {
-        if (bitmap == null) {
-            bitmap = getImageDataAsBitmap();
-        }
-        return bitmap;
     }
 
     private Bitmap getImageDataAsBitmap() {
@@ -133,13 +111,6 @@ public class FirebaseImage {
 
     public String getUid() {
         return uid;
-    }
-
-    private Bitmap getImageDataAsBitmap() {
-        byte[] encodeByte = Base64.decode(imageData, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0,
-                encodeByte.length);
-        return bitmap;
     }
 
     private String getImageDataAsString() {

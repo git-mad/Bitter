@@ -76,18 +76,6 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            final int resultOk = -1;
-            if (resultCode == resultOk) {
-                Toast.makeText(getActivity(), "Image saved.",
-                        Toast.LENGTH_LONG).show();
-                //image should be accessed here using filename imagePath
-            }
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -194,10 +182,10 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
         takePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getContext().getPackageManager())
-                        != null) {
-                    File file;
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                if (intent.resolveActivity(getContext().getPackageManager())
+//                        != null) {
+//                    File file;
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                 if (intent.resolveActivity(getContext().getPackageManager()) != null) {
