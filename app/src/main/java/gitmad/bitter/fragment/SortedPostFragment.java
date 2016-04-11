@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,7 @@ public class SortedPostFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), ViewPostActivity
                         .class);
                 intent.putExtra(ViewPostActivity.KEY_POST_ID, p.getId());
+                Log.d("POST_ID", p.getId());
                 startActivity(intent);
             }
 
