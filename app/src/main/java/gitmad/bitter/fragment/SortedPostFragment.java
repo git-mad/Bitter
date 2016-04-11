@@ -21,6 +21,7 @@ import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -30,9 +31,14 @@ public class SortedPostFragment extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    // Must be passed in as a bundle
-    private Comparator<Post> comparator;
-    private List<Post> posts;
+    // Must be passed in as a bundle, so here are some default values
+    private Comparator<Post> comparator = new Comparator<Post>() {
+        @Override
+        public int compare(Post lhs, Post rhs) {
+            return 0;
+        }
+    };
+    private List<Post> posts = new ArrayList<>();
 
     private PostProvider postProvider;
     private UserProvider userProvider;
