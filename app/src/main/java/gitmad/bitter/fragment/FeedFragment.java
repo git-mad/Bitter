@@ -11,8 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,17 +30,24 @@ import java.util.Date;
 import java.util.Map;
 
 import gitmad.bitter.R;
+import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.activity.ViewPostActivity;
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.firebase.FirebaseImageProvider;
 import gitmad.bitter.data.mock.MockPostProvider;
-import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Post;
-import gitmad.bitter.model.User;
 import gitmad.bitter.ui.PostAdapter;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
-public class FeedFragment extends Fragment implements AuthorPostDialogFragment.OnPostCreatedListener {
+
+public class FeedFragment extends Fragment implements AuthorPostDialogFragment
+        .OnPostCreatedListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -51,7 +57,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
     private String selectedImagePath;
     private static final int SELECT_PICTURE = 2;
 
-    private MockPostProvider postProvider;
+    private PostProvider postProvider;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -67,14 +73,34 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_feed, container, false);
 
-        final FloatingActionButton createPost = (FloatingActionButton) view.findViewById(R.id.create_post_button);
-        final FloatingActionButton takePic = (FloatingActionButton) view.findViewById(R.id.camera_fab);
-        final FloatingActionButton picFromGallery = (FloatingActionButton) view.findViewById(R.id.gallery_fab);
-        final FloatingActionButton textPost = (FloatingActionButton) view.findViewById(R.id.text_fab);
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            final int resultOk = -1;
+            if (resultCode == resultOk) {
+                Toast.makeText(getActivity(), "Image saved.",
+                        Toast.LENGTH_LONG).show();
+                //image should be accessed here using filename imagePath
+            }
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        final View view = inflater.inflate(R.layout.fragment_feed, container,
+                false);
+        final FloatingActionButton createPost = (FloatingActionButton) view
+                .findViewById(R.id.create_post_button);
+        final FloatingActionButton takePic = (FloatingActionButton) view
+                .findViewById(R.id.camera_fab);
+        final FloatingActionButton picFromGallery = (FloatingActionButton)
+                view.findViewById(R.id.gallery_fab);
+        final FloatingActionButton textPost = (FloatingActionButton) view
+                .findViewById(R.id.text_fab);
 
         takePic.hide();
         picFromGallery.hide();
@@ -82,7 +108,8 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (takePic.isShown() && picFromGallery.isShown() && takePic.isShown()) {
+                if (takePic.isShown() && picFromGallery.isShown() && takePic
+                        .isShown()) {
                     takePic.hide();
                     picFromGallery.hide();
                     textPost.hide();
@@ -96,6 +123,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
 
             }
         });
+
         final Intent photoOp = new Intent();
         photoOp.setType("image/*");
         photoOp.setAction(Intent.ACTION_VIEW);
@@ -118,6 +146,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
 
 
 
+
         textPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,57 +154,34 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
             }
         });
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.feed_recycler_view);
-        layoutManager = new LinearLayoutManager(this.getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        // TODO change to FireBase
         postProvider = new MockPostProvider(this.getContext());
-        UserProvider userProvider = new MockUserProvider();
+        List<Post> postList = Arrays.asList(postProvider.getPosts(Integer
+                .MAX_VALUE));
 
-        // specify an adapter (see also next example)
-        Post[] posts = getMockPosts();
-        Map<Post, User> postAuthors = userProvider.getAuthorsOfPosts(posts);
-        ArrayList<Post> postList = new ArrayList<>(posts.length);
-
-        for (Post p : posts) {
-            postList.add(p);
-        }
-        adapter = new PostAdapter(postList, postAuthors, newFeedInteractionListener());
-        recyclerView.setAdapter(adapter);
+        SortedPostFragment sortedPostsFragment = SortedPostFragment
+                .newInstance(new SortedPostFragment.FeedPostComparator(),
+                        postList);
+        FragmentTransaction transaction = getChildFragmentManager()
+                .beginTransaction();
+        transaction.add(R.id.fragment_feed_sorted_posts_frame,
+                sortedPostsFragment).commit();
 
         return view;
     }
 
-    private PostAdapter.FeedInteractionListener newFeedInteractionListener() {
-        return new PostAdapter.FeedInteractionListener() {
-            @Override
-            public void onPostClicked(Post p, int index) {
-                Intent intent = new Intent(getActivity(), ViewPostActivity.class);
-                intent.putExtra(ViewPostActivity.KEY_POST_ID, p.getId());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onDownvoteClicked(Post p, int index) {
-                postProvider.downvotePost(p.getId());
-            }
-        };
-    }
-
-    private Post[] getMockPosts() {
-        return postProvider.getPosts(Integer.MAX_VALUE);
-    }
-
     @Override
     public void onPostCreated(String postText) {
-
         Post newPost = postProvider.addPostSync(postText);
         ((PostAdapter) adapter).add(newPost);
         recyclerView.swapAdapter(adapter, false);
     }
 
     private void showCreatePostDialog() {
-        AuthorPostDialogFragment authorPostDialogFragment = AuthorPostDialogFragment.newInstance();
-        authorPostDialogFragment.show(getActivity().getSupportFragmentManager(), AuthorPostDialogFragment.AUTHOR_POST_DIALOG_FRAG_TAG);
+        AuthorPostDialogFragment authorPostDialogFragment =
+                AuthorPostDialogFragment.newInstance();
+        authorPostDialogFragment.show(getActivity().getSupportFragmentManager
+                (), AuthorPostDialogFragment.AUTHOR_POST_DIALOG_FRAG_TAG);
     }
 
     /**
@@ -188,6 +194,10 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment.O
         takePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (intent.resolveActivity(getContext().getPackageManager())
+                        != null) {
+                    File file;
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                 if (intent.resolveActivity(getContext().getPackageManager()) != null) {

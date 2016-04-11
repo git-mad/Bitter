@@ -1,228 +1,166 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/user_profile_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="1"
-            tools:context="gitmad.bitter.fragment.UserProfileFragment">
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-            <ImageView
-                android:id="@+id/user_profile_pic"
-                android:layout_width="fill_parent"
-                android:layout_height="250dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:paddingBottom="20dp"
-                android:paddingTop="50dp"
-                android:src="@android:drawable/sym_def_app_icon" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/user_profile_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:context="gitmad.bitter.fragment.UserProfileFragment">
+
+        <!-- Top bar layout -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      xmlns:tools="http://schemas.android.com/tools"
+                      android:id="@+id/user_profile_pic_top_layout"
+                      android:layout_width="match_parent"
+                      android:layout_height="230dp"
+                      android:weightSum="8"
+                      android:layout_alignParentTop="true"
+                      android:orientation="horizontal"
+                      tools:context="gitmad.bitter.fragment.UserProfileFragment">
+            <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/user_profile_skull_layout"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_weight="2"
+                    android:weightSum="3"
+                    tools:context="gitmad.bitter.fragment.UserProfileFragment">
+                <ImageView
+                        android:id="@+id/user_profile_skull"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_weight="2"
+                        android:src="@android:drawable/sym_def_app_icon"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/user_profile_skull_text"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:text="Enemies:\n123456"/>
+            </LinearLayout>
+            <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/user_profile_picture_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="4"
+                    android:weightSum="5"
+                    tools:context="gitmad.bitter.fragment.UserProfileFragment">
+                <ImageView
+                        android:id="@+id/user_profile_pic"
+                        android:layout_height="0dp"
+                        android:src="@android:drawable/sym_def_app_icon"
+                        android:layout_weight="4"
+                        android:layout_width="match_parent"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/user_profile_picture_text"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:text="Username"/>
+            </LinearLayout>
             <!-- Note that the picture is changed in the Java file and will be circular -->
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/user_profile_basic_info_card"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/user_profile_pic"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginBottom="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                card_view:cardCornerRadius="8dp"
-                card_view:cardElevation="5dp">
-
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
-                    android:layout_width="match_parent"
+                    android:id="@+id/user_profile_salt_layout"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:id="@+id/user_profile_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="User Name"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                    <View
-                        android:id="@+id/user_profile_divider1"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignBottom="@id/user_profile_username"
-                        android:background="@color/accent_color" />
-
-                    <TextView
+                    android:layout_weight="2"
+                    android:weightSum="3"
+                    tools:context="gitmad.bitter.fragment.UserProfileFragment">
+                <ImageView
                         android:id="@+id/user_profile_salt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/user_profile_divider1"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="Salt: To Set"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_gravity="start"
+                        android:layout_weight="2"
+                        android:src="@android:drawable/sym_def_app_icon"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/user_profile_salt_text"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="Salt:\n 123456"/>
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/user_profile_user_since"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/user_profile_salt"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="User Since: To Set"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+        </LinearLayout>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/user_profile_about_me_card"
-                android:layout_width="fill_parent"
+        <ImageView
+                android:id="@+id/user_profile_divider99"
+                android:layout_below="@id/user_profile_pic_top_layout"
+                android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/accent_color"
+        />
+
+        <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/user_profile_basic_info_card"
+                android:layout_below="@id/user_profile_divider99"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginBottom="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                card_view:cardCornerRadius="8dp"
-                card_view:cardElevation="5dp">
+                android:layout_marginTop="10dp"
+                android:id="@+id/user_profile_start_date"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:text="Been Bitchin since: \t\tmm/dd"/>
 
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools"
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_profile_start_date"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:id="@+id/user_profile_wall_of_hate_title"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:text="Wall of Hate"/>
+
+        <android.support.v4.app.FragmentTabHost
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:layout_height="match_parent"
+                android:id="@+id/user_profile_tabhost"
+                android:layout_below="@+id/user_profile_wall_of_hate_title">
+
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:weightSum="1">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/user_profile_about_me_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="About Me"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                <TabWidget android:id="@+id/user_profile_tabs"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:orientation="horizontal"/>
 
-                    <View
-                        android:id="@+id/user_profile_divider2"
+                <FrameLayout
+                        android:id="@android:id/tabcontent"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignBottom="@id/user_profile_about_me_label"
-                        android:background="@color/accent_color" />
+                        android:layout_height="match_parent"/>
 
-                    <TextView
-                        android:id="@+id/user_profile_custom_bio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/user_profile_divider2"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center_horizontal"
-                        android:maxLines="4"
-                        android:minLines="1"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="Custom Bio: To Set"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/user_profile_stats_card"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/user_profile_about_me_card"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginBottom="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                card_view:cardCornerRadius="8dp"
-                card_view:cardElevation="5dp">
-
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:id="@+id/user_profile_user_stats_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="User Statistics"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                    <View
-                        android:id="@+id/user_profile_divider3"
+                <FrameLayout
+                        android:id="@+id/realTabContent"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignBottom="@id/user_profile_user_stats_label"
-                        android:background="@color/accent_color" />
+                        android:layout_height="match_parent"/>
+            </LinearLayout>
+        </android.support.v4.app.FragmentTabHost>
 
-                    <TextView
-                        android:id="@+id/user_profile_posts"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/user_profile_divider3"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="Total Posts: To Set"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/user_profile_replies"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/user_profile_posts"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="Total Replies: To Set"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/user_profile_votes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/user_profile_replies"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="Total Votes: To Set"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-        </RelativeLayout>
+    </RelativeLayout>
 </ScrollView>

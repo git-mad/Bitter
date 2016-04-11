@@ -2,18 +2,16 @@ package gitmad.bitter.data.firebase.auth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
+import gitmad.bitter.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-
-import gitmad.bitter.data.firebase.FirebaseUserProvider;
-import gitmad.bitter.model.User;
 
 /**
  * Created by brian on 2/18/16.
@@ -73,6 +71,28 @@ public class FirebaseAuthManager {
 
     public void unauth() {
         firebaseUsersRef.unauth();
+    }
+
+
+    /**
+     * THIS WILL DELETE THE ACCOUNT YOU ARE LOGGED IN WITH IRRECOVERABLY.
+     * FOR DEVELOPMENT PURPOSES ONLY
+     * @param confirmation
+     */
+    public void resetAuth(String confirmation) {
+        if (!confirmation.equals("I know what I'm doing")) {
+            throw new IllegalArgumentException("You didn't put in the confirmation correctly. Make sure you really want to do this,");
+        }
+
+        unauth();
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(KEY_EMAIL);
+        editor.remove(KEY_PASS);
+        editor.clear();
+        editor.commit();
+
+        assureAccountCreated();
     }
 
     private void assureAccountCreated() {
@@ -170,7 +190,7 @@ public class FirebaseAuthManager {
         Map<String, Object> updateMap = new HashMap<>();
 
         Map<String, Object> userMap = new ObjectMapper()
-                .convertValue(new User("temp", userUid), Map.class);
+                .convertValue(new User("temp", userUid, "TODO"), Map.class);
 
         updateMap.put(getUid(), userMap);
 

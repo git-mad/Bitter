@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
 import gitmad.bitter.R;
 
 public class AuthorPostDialogFragment extends DialogFragment {
@@ -31,26 +30,6 @@ public class AuthorPostDialogFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_author_post_dialog, container, false);
-
-        final EditText bitchEditText = (EditText) root.findViewById(R.id.postTextEditText);
-
-        root.findViewById(R.id.bitch_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String postText = bitchEditText.getText().toString();
-
-                mListener.onPostCreated(postText);
-                AuthorPostDialogFragment.this.dismiss();
-            }
-        });
-
-        return root;
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -67,6 +46,29 @@ public class AuthorPostDialogFragment extends DialogFragment {
         mListener = null;
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_author_post_dialog,
+                container, false);
+
+        final EditText bitchEditText = (EditText) root.findViewById(R.id
+                .postTextEditText);
+
+        root.findViewById(R.id.bitch_button).setOnClickListener(new View
+                .OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String postText = bitchEditText.getText().toString();
+
+                mListener.onPostCreated(postText);
+                AuthorPostDialogFragment.this.dismiss();
+            }
+        });
+
+        return root;
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -74,7 +76,8 @@ public class AuthorPostDialogFragment extends DialogFragment {
      * activity.
      * <p/>
      * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * "http://developer.android.com/training/basics/fragments/communicating
+     * .html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnPostCreatedListener {

@@ -28,6 +28,9 @@ local.properties
 /.idea/gradle.xml
 /.idea/runConfigurations.xml
 .idea/vcs.xml
+.idea
+.idea/
+/.idea
 *.iml
 app/app.iml
 
