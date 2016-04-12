@@ -2,7 +2,7 @@ package gitmad.bitter;
 
 import android.test.InstrumentationTestCase;
 
-import org.junit.Before;
+//import org.junit.Before;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class TestMockDataProvider extends InstrumentationTestCase {
     private PostProvider postProvider;
     private CommentProvider commentProvider;
 
-    @Before
+//    @Before
     public void setUp() {
         userProvider = new MockUserProvider();
         postProvider = new MockPostProvider(getInstrumentation().getTargetContext());

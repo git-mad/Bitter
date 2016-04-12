@@ -215,7 +215,7 @@ public class TestFirebaseProvider extends ApplicationTestCase<BitterApplication>
         return addedComments;
     }
 
-    @After
+//    @After
     public void takeDown() {
         List<Post> fakePosts = getFakePosts();
 
