@@ -67,6 +67,12 @@ public class FirebaseImage {
         return output;
     }
 
+    private Bitmap getImageDataAsBitmap() {
+        byte[] encodeByte = Base64.decode(imageData, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        return bitmap;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof FirebaseImage)) {
@@ -105,13 +111,6 @@ public class FirebaseImage {
 
     public String getUid() {
         return uid;
-    }
-
-    private Bitmap getImageDataAsBitmap() {
-        byte[] encodeByte = Base64.decode(imageData, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0,
-                encodeByte.length);
-        return bitmap;
     }
 
     private String getImageDataAsString() {

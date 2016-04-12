@@ -5,7 +5,6 @@ A Twitter-like app that takes seriously the social networking platform's essenti
 - [Google Drive](https://drive.google.com/open?id=0B8owjiWtLB9UflpWQkxKUTJnVUNMVVNUeDRRVjlGT0E4dE9ZM0NRNTdBblk3eHo1MWlKN3M)
 - [Facebook](https://www.facebook.com/gitmad)
 - [AirWatch Android UI Patterns Presentation](https://drive.google.com/file/d/0B8owjiWtLB9UR1gxLS1WSjBqRFU/view?usp=sharing)
-
 ## To Contribute
 First and foremost, use the issue tracker. It's the tab over to the side that says "Issues" --->
 Find an issue that doesn't have an assignee, and assign yourself. If there's a job to be done, but that
