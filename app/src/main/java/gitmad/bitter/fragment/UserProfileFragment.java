@@ -126,8 +126,28 @@ public class UserProfileFragment extends Fragment {
             // SALT PIC
             ImageView saltImage = (ImageView) view.findViewById(R.id
                     .user_profile_salt);
-            Bitmap saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
-                    .salt15);
+            int salt = myUser.getSalt();
+            Bitmap saltBM =BitmapFactory.decodeResource(getResources(), R.drawable
+                    .nosalt);
+            if(salt <= 5) {
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .nosalt);
+            } else if(salt >= 6 && salt <=15){
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt15);
+            } else if(salt >= 16 && salt <=25){
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt25);
+            }else if(salt >= 26 && salt <=35){
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt35);
+            } else if(salt >= 36 && salt <=45){
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                    .salt35);
+            }   else if(salt >= 46){
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt45);
+            }
             Bitmap conv_salt = FirebaseImage.toRoundedRectBitmap(saltBM, 400);
             saltImage.setImageBitmap(conv_salt);
 
