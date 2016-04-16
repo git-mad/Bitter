@@ -277,8 +277,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
                 public void run() {
                     SortedPostFragment sortedPostsFragment = SortedPostFragment
                             .newInstance(new SortedPostFragment
-                                    .FeedPostComparator(),
-                                    postList, authorNamesList);
+                                    .FeedPostComparator(), postList);
                     FragmentTransaction transaction = getChildFragmentManager()
                             .beginTransaction();
                     transaction.add(R.id.fragment_feed_sorted_posts_frame,

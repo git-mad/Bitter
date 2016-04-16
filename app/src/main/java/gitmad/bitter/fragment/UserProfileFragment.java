@@ -73,7 +73,7 @@ public class UserProfileFragment extends Fragment {
                 SortedPostFragment sortedPostsFragment = SortedPostFragment
                         .newInstance(new SortedPostFragment
                                         .FeedPostComparator(),
-                                new ArrayList<Post>(), new ArrayList<String>());
+                                new ArrayList<Post>());
                 FragmentTransaction transaction = getChildFragmentManager()
                         .beginTransaction();
                 transaction.add(R.id.realTabContent,
