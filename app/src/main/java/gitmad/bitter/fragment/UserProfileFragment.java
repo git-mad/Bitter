@@ -120,18 +120,18 @@ public class UserProfileFragment extends Fragment {
                     .user_profile_skull);
             Bitmap skullBM = BitmapFactory.decodeResource(getResources(), R.drawable
                     .skull);
-            Bitmap conv_skull = FirebaseImage.toRoundedRectBitmap(skullBM, 400);
-            skullImage.setImageBitmap(conv_skull);
+//            Bitmap conv_skull = FirebaseImage.toRoundedRectBitmap(skullBM, 400);
+            skullImage.setImageBitmap(skullBM);
 
             // SALT PIC
             ImageView saltImage = (ImageView) view.findViewById(R.id
                     .user_profile_salt);
             int salt = myUser.getSalt();
             Bitmap saltBM =BitmapFactory.decodeResource(getResources(), R.drawable
-                    .nosalt);
+                    .salt0);
             if(salt <= 5) {
                 saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
-                        .nosalt);
+                        .salt0);
             } else if(salt >= 6 && salt <=15){
                 saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
                         .salt15);
@@ -148,8 +148,8 @@ public class UserProfileFragment extends Fragment {
                 saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
                         .salt45);
             }
-            Bitmap conv_salt = FirebaseImage.toRoundedRectBitmap(saltBM, 400);
-            saltImage.setImageBitmap(conv_salt);
+//            Bitmap conv_salt = FirebaseImage.toRoundedRectBitmap(saltBM, 400);
+            saltImage.setImageBitmap(saltBM);
 
             TextView userName = (TextView) view.findViewById(
                 R.id.user_profile_picture_text);
