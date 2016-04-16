@@ -21,20 +21,19 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private List<Post> posts;
-    private PostProvider postProvider;
-    private UserProvider userProvider;
+    private List<String> authorNames;
     private CommentProvider commentProvider;
     private long time;
 
     private FeedInteractionListener listener;
 
-    public PostAdapter(List<Post> posts, FeedInteractionListener pListener,
-                       PostProvider postProvider, UserProvider userProvider,
+    public PostAdapter(List<Post> posts, List<String> authorNames, FeedInteractionListener pListener,
                        CommentProvider commentProvider) {
         this.posts = posts;
+        this.authorNames = authorNames;
         listener = pListener;
-        this.postProvider = postProvider;
-        this.userProvider = userProvider;
+//        this.postProvider = postProvider;
+//        this.userProvider = userProvider;
         this.commentProvider = commentProvider;
         time = new Date().getTime();
     }
@@ -67,8 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         viewHolder.postText.setText(posts.get(i).getText());
-        viewHolder.userText.setText(userProvider.getAuthorOfPost(posts.get(i)
-        ).getName());
+        viewHolder.userText.setText(authorNames.get(i));
         viewHolder.downvoteText.setText(Integer.toString(posts.get(i)
                 .getDownvotes()));
         viewHolder.timeText.setText(getTime(posts.get(i)));
@@ -87,7 +85,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 listener.onDownvoteClicked(posts.get(i), i);
-                Post p = postProvider.getPost(posts.get(i).getId());
+                Post p = posts.get(i);
                 posts.set(i, p);
                 viewHolder.downvoteText.setText(Integer.toString(posts.get(i)
                         .getDownvotes()));
