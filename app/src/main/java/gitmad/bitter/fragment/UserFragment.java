@@ -4,13 +4,10 @@ package gitmad.bitter.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -18,17 +15,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import gitmad.bitter.R;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.firebase.FirebasePostProvider;
-import gitmad.bitter.data.mock.MockPostProvider;
-import gitmad.bitter.model.FirebaseImage;
+import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.Post;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +39,7 @@ public class UserFragment extends Fragment {
     public UserFragment() {
     }
 
+    @SuppressWarnings("unused")
     public static UserFragment newInstance() {
         UserFragment fragment = new UserFragment();
         Bundle args = new Bundle();
@@ -84,19 +77,11 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(this
-                .getChildFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) view.findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(mViewPager);
-
-        postList = new ArrayList<>();
+        FirebaseAuthManager authenticator = new FirebaseAuthManager(
+                getActivity());
+        authenticator.authenticate();
+        GetPostFirebaseTask asyncTask = new GetPostFirebaseTask(view);
+        asyncTask.execute(authenticator.getUid());
 
         return view;
     }
@@ -159,18 +144,13 @@ public class UserFragment extends Fragment {
         }
     }
 
-    /*
-     * Called when the fragment attaches to the context
-     */
-    protected void onAttachToContext(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getActivity().findViewById(R.id.appBar).setElevation(0);
-            System.out.println("Elevation is 0!");
-        }
-    }
-
     private class GetPostFirebaseTask extends AsyncTask<String, String,
             List<Post>> {
+        View view;
+
+        public GetPostFirebaseTask(View view) {
+            this.view = view;
+        }
 
         protected List<Post> doInBackground(String... params) {
             FirebasePostProvider firebasePostProvider = new
@@ -178,6 +158,31 @@ public class UserFragment extends Fragment {
             postList = Arrays.asList(firebasePostProvider.getPostsByUser
                     (params[0]));
             return postList;
+        }
+
+        protected void onPostExecute(List<Post> posts) {
+            // Create the adapter that will return a fragment for each of the
+            // three
+            // primary sections of the activity.
+            mSectionsPagerAdapter = new SectionsPagerAdapter
+                    (getChildFragmentManager());
+
+            // Set up the ViewPager with the sections adapter.
+            mViewPager = (ViewPager) view.findViewById(R.id.container);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
+
+            TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+            tabLayout.setupWithViewPager(mViewPager);
+        }
+    }
+
+    /*
+     * Called when the fragment attaches to the context
+     */
+    protected void onAttachToContext(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().findViewById(R.id.appBar).setElevation(0);
+            System.out.println("Elevation is 0!");
         }
     }
 }
