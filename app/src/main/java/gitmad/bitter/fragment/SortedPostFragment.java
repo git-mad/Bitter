@@ -106,17 +106,17 @@ public class SortedPostFragment extends Fragment {
     private PostAdapter.FeedInteractionListener newFeedInteractionListener() {
         return new PostAdapter.FeedInteractionListener() {
             @Override
+            public void onDownvoteClicked(Post p, int index) {
+                postProvider.downvotePost(p.getId());
+            }
+
+            @Override
             public void onPostClicked(Post p, int index) {
                 Intent intent = new Intent(getActivity(), ViewPostActivity
                         .class);
                 intent.putExtra(ViewPostActivity.KEY_POST_ID, p.getId());
                 Log.d("POST_ID", p.getId());
                 startActivity(intent);
-            }
-
-            @Override
-            public void onDownvoteClicked(Post p, int index) {
-                postProvider.downvotePost(p.getId());
             }
         };
     }

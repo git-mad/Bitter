@@ -74,7 +74,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         viewHolder.timeText.setText(getTime(posts.get(i)));
         viewHolder.repliesText.setText(Integer.toString(commentProvider
                 .getCommentsOnPost(
-                posts.get(i).getId()).length) + " replies");
+                        posts.get(i).getId()).length) + " replies");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

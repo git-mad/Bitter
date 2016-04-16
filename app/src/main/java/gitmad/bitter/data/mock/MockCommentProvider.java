@@ -27,9 +27,34 @@ public class MockCommentProvider implements CommentProvider {
     }
 
     @Override
+    public Comment addCommentAsync(String commentText, String postId) {
+        throw new UnsupportedOperationException("Not implemented on mock data" +
+                " provider");
+    }
+
+    @Override
+    public Comment addCommentSync(String commentText, String postId) {
+        throw new UnsupportedOperationException("Not implemented on mock data" +
+                " provider");
+    }
+
+    @Override
+    public Comment deleteComment(String commentId) {
+        throw new UnsupportedOperationException("Not implemented on mock data" +
+                " provider");
+    }
+
+    @Override
+    public Comment downvoteComment(String commentId) {
+        throw new UnsupportedOperationException("Not implemented on mock data" +
+                " provider");
+    }
+
+    @Override
     public Comment getComment(String commentId) {
         int commentIndex = Integer.parseInt(commentId);
-        return createRandomCommentOnPost(commentsText[commentIndex], commentId, IMPOSSIBLE_POST_ID);
+        return createRandomCommentOnPost(commentsText[commentIndex],
+                commentId, IMPOSSIBLE_POST_ID);
     }
 
     @Override
@@ -37,7 +62,8 @@ public class MockCommentProvider implements CommentProvider {
         Comment[] comments = new Comment[commentsText.length];
 
         for (int i = 0; i < commentsText.length; i++) {
-            comments[i] = createRandomCommentByUser(commentsText[i], Integer.toString(i), userId);
+            comments[i] = createRandomCommentByUser(commentsText[i], Integer
+                    .toString(i), userId);
         }
 
         return comments;
@@ -48,47 +74,34 @@ public class MockCommentProvider implements CommentProvider {
         Comment[] comments = new Comment[commentsText.length];
 
         for (int i = 0; i < commentsText.length; i++) {
-            comments[i] = createRandomCommentOnPost(commentsText[i], Integer.toString(i), postId);
+            comments[i] = createRandomCommentOnPost(commentsText[i], Integer
+                    .toString(i), postId);
         }
 
         return comments;
     }
 
-    @Override
-    public Comment addCommentSync(String commentText, String postId) {
-        throw new UnsupportedOperationException("Not implemented on mock data provider");
+    private Comment createRandomCommentByUser(String text, String commentId,
+                                              String userId) {
+        long commentCreatedTimestamp = new Date().getTime();
+
+        return new Comment(commentId, IMPOSSIBLE_POST_ID, userId, text,
+                commentCreatedTimestamp, MockPostProvider
+                .getRandomDownvoteCount());
     }
 
-    @Override
-    public Comment addCommentAsync(String commentText, String postId) {
-        throw new UnsupportedOperationException("Not implemented on mock data provider");
-    }
+    private Comment createRandomCommentOnPost(String text, String commentId,
+                                              String postId) {
+        String randomAuthorId = UUID.randomUUID().toString();
+        long commentCreatedTimestamp = new Date().getTime();
 
-    @Override
-    public Comment deleteComment(String commentId) {
-        throw new UnsupportedOperationException("Not implemented on mock data provider");
-    }
-
-    @Override
-    public Comment downvoteComment(String commentId) {
-        throw new UnsupportedOperationException("Not implemented on mock data provider");
+        return new Comment(commentId, postId, randomAuthorId, text,
+                commentCreatedTimestamp, MockPostProvider
+                .getRandomDownvoteCount());
     }
 
     private String[] readMockCommentTextFromResource(int arrayResource) {
         return context.getResources().getStringArray(arrayResource);
-    }
-
-    private Comment createRandomCommentOnPost(String text, String commentId, String postId) {
-        String randomAuthorId = UUID.randomUUID().toString();
-        long commentCreatedTimestamp = new Date().getTime();
-
-        return new Comment(commentId, postId, randomAuthorId, text, commentCreatedTimestamp, MockPostProvider.getRandomDownvoteCount());
-    }
-
-    private Comment createRandomCommentByUser(String text, String commentId, String userId) {
-        long commentCreatedTimestamp = new Date().getTime();
-
-        return new Comment(commentId, IMPOSSIBLE_POST_ID, userId, text, commentCreatedTimestamp, MockPostProvider.getRandomDownvoteCount());
     }
 
 

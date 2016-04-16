@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.fragment.FeedFragment;
@@ -30,51 +29,6 @@ public class NavigationActivity extends AppCompatActivity implements
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private MenuItem previousMI;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            /**
-             * Called when a drawer has settled in a completely closed state.
-             */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                setTitle(previousMI.getTitle());
-            }
-
-            /**
-             * Called when a drawer has settled in a completely open state.
-             */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                setTitle(R.string.toolbar_app_name);
-            }
-        };
-        drawer.setDrawerListener(toggle);
-        drawer.setStatusBarBackgroundColor(Color.BLUE);
-        toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        previousMI = navigationView.getMenu().getItem(0);
-        previousMI.setChecked(true);
-        setTitle(previousMI.getTitle());
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, FeedFragment.newInstance()).commit();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.primary_color_dark));
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -110,14 +64,16 @@ public class NavigationActivity extends AppCompatActivity implements
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
             System.out.println("FRAGMENT NOT SET or NOT A PROPER FRAGMENT");
-            Toast.makeText(this, "Fragment not set or not a proper fragment", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Fragment not set or not a proper fragment",
+                    Toast.LENGTH_SHORT).show();
             e.printStackTrace();
             return false;
         }
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.mainFrameLayout, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.mainFrameLayout,
+                fragment).commit();
 
         previousMI.setChecked(false);
         previousMI = item;
@@ -136,5 +92,54 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onPostCreated(String postText) {
         Log.d("Bitter", "NavigationView#onPostCreated(" + postText + ")");
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_navigation);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R
+                .string.navigation_drawer_close) {
+            /**
+             * Called when a drawer has settled in a completely open state.
+             */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                setTitle(R.string.toolbar_app_name);
+            }
+
+            /**
+             * Called when a drawer has settled in a completely closed state.
+             */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                setTitle(previousMI.getTitle());
+            }
+        };
+        drawer.setDrawerListener(toggle);
+        drawer.setStatusBarBackgroundColor(Color.BLUE);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        previousMI = navigationView.getMenu().getItem(0);
+        previousMI.setChecked(true);
+        setTitle(previousMI.getTitle());
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.mainFrameLayout,
+                FeedFragment.newInstance()).commit();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams
+                    .FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color
+                    .primary_color_dark));
+        }
     }
 }

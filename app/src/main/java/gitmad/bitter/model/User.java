@@ -20,7 +20,8 @@ public class User {
     private int totalComments;
     private int numEnemies;
 
-    public User(){}
+    public User() {
+    }
 
     public User(String name, String userId, String imageId) {
         this.id = userId;

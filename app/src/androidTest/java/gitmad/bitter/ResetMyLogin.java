@@ -1,7 +1,6 @@
 package gitmad.bitter;
 
 import android.test.ApplicationTestCase;
-
 import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 
 /**
@@ -13,16 +12,17 @@ public class ResetMyLogin extends ApplicationTestCase<BitterApplication> {
         super(BitterApplication.class);
     }
 
+    public void testButNotReally() {
+
+        FirebaseAuthManager authManager = new FirebaseAuthManager
+                (getApplication());
+
+        authManager.resetAuth("I know what I'm doing");
+    }
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         createApplication();
-    }
-
-    public void testButNotReally() {
-
-        FirebaseAuthManager authManager = new FirebaseAuthManager(getApplication());
-
-        authManager.resetAuth("I know what I'm doing");
     }
 }

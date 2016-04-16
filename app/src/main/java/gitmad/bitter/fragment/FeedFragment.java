@@ -100,7 +100,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
                 new FirebaseImageProvider().addImageAsync(image);
 
             }
-        } else if (requestCode == SELECT_PICTURE && (resultCode == -1) && 
+        } else if (requestCode == SELECT_PICTURE && (resultCode == -1) &&
                 data != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -108,7 +108,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
             // Get the cursor
             Cursor cursor = getContext().getContentResolver().query
                     (selectedImage,
-                    filePathColumn, null, null, null);
+                            filePathColumn, null, null, null);
             // Move to first row
             cursor.moveToFirst();
 
@@ -204,7 +204,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
         ((PostAdapter) adapter).add(newPost);
         recyclerView.swapAdapter(adapter, false);
     }
-    
+
     private void showCreatePostDialog() {
         AuthorPostDialogFragment authorPostDialogFragment =
                 AuthorPostDialogFragment.newInstance();
@@ -228,7 +228,7 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
 //                    File file;
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                if (intent.resolveActivity(getContext().getPackageManager()) 
+                if (intent.resolveActivity(getContext().getPackageManager())
                         != null) {
                     try {
                         takePicPath = createFile();
