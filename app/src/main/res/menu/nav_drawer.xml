@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group
-        android:id="@+id/menu_actions_group"
-        android:checkableBehavior="none"
-        android:title="Actions">
+            android:id="@+id/menu_actions_group"
+            android:checkableBehavior="none"
+            android:title="Actions">
 
         <item
-            android:id="@+id/nav_feed"
-            android:icon="@drawable/ic_speaker_notes_black_24dp"
-            android:title="Main Feed" />
+                android:id="@+id/nav_feed"
+                android:icon="@drawable/ic_speaker_notes_black_24dp"
+                android:title="Main Feed"/>
         <item
-            android:id="@+id/nav_user"
-            android:icon="@drawable/ic_contacts_black_24dp"
-            android:title="User Profile" />
+                android:id="@+id/nav_user"
+                android:icon="@drawable/ic_contacts_black_24dp"
+                android:title="User Profile"/>
         <item
-            android:id="@+id/nav_friends"
-            android:icon="@drawable/ic_people_black_24dp"
-            android:title="Friends" />
+                android:id="@+id/nav_friends"
+                android:icon="@drawable/ic_people_black_24dp"
+                android:title="Friends"/>
     </group>
 
     <group
-        android:id="@+id/menu_other_group"
-        android:checkableBehavior="none"
-        android:title="Other">
+            android:id="@+id/menu_other_group"
+            android:checkableBehavior="none"
+            android:title="Other">
         <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Settings" />
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="Settings"/>
         <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_info_black_24dp"
-            android:title="About" />
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="About"/>
     </group>
 </menu>

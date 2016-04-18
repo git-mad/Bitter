@@ -20,6 +20,9 @@ public class User {
     private int totalComments;
     private int numEnemies;
 
+    public User() {
+    }
+
     public User(String name, String userId, String imageId) {
         this.id = userId;
         this.name = name;
@@ -34,9 +37,6 @@ public class User {
         this.numEnemies = 0;
     }
 
-    public User() {
-
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -147,12 +147,12 @@ public class User {
                     topPost1 = userPosts[i];
                 }
             }
+
             for (int j = 0; j < userPosts.length; j++) {
                 if (userPosts[j].getCategory().equals(firstCategory)
                         && userPosts[j].getDownvotes() < topPost1
                         .getDownvotes()) {
-                    if (secondPost1 != null && userPosts[j].getDownvotes() >
-                            secondPost1.getDownvotes()) {
+                    if (userPosts[j].getDownvotes() > ((secondPost1 == null) ? -1 : secondPost1.getDownvotes())) {
                         secondPost1 = userPosts[j];
                     }
                 }
@@ -179,8 +179,7 @@ public class User {
                 if (userPosts[j].getCategory().equals(secondCategory)
                         && userPosts[j].getDownvotes() < topPost2
                         .getDownvotes()) {
-                    if (secondPost2 != null && userPosts[j].getDownvotes() >
-                            secondPost2.getDownvotes()) {
+                    if (userPosts[j].getDownvotes() > ((secondPost2 == null) ? -1 : secondPost2.getDownvotes())) {
                         secondPost2 = userPosts[j];
                     }
                 }
@@ -207,8 +206,7 @@ public class User {
                 if (userPosts[j].getCategory().equals(thirdCategory)
                         && userPosts[j].getDownvotes() < topPost3
                         .getDownvotes()) {
-                    if (secondPost3 != null && userPosts[j].getDownvotes() >
-                            secondPost3.getDownvotes()) {
+                    if (userPosts[j].getDownvotes() > ((secondPost3 == null) ? -1 : secondPost3.getDownvotes())) {
                         secondPost3 = userPosts[j];
                     }
                 }

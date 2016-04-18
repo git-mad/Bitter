@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TextView;
 import gitmad.bitter.R;
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
@@ -113,34 +114,66 @@ public class UserProfileFragment extends Fragment {
             Bitmap conv_bm = FirebaseImage.toRoundedRectBitmap(bm, 500);
             pic.setImageBitmap(conv_bm);
 
-            // TODO change these when we change the user profile layout
+            // ENEMIES PIC
+            ImageView skullImage = (ImageView) view.findViewById(R.id
+                    .user_profile_skull);
+            Bitmap skullBM = BitmapFactory.decodeResource(getResources(), R
+                    .drawable.skull);
+            skullImage.setImageBitmap(skullBM);
 
-//        TextView userName = (TextView) view.findViewById(
-//                R.id.user_profile_username);
-//        userName.setText(myUser.getName());
-//
-//        TextView userSalt = (TextView) view.findViewById(
-//                R.id.user_profile_salt);
-//        userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
-//
+            // SALT PIC
+            ImageView saltImage = (ImageView) view.findViewById(R.id
+                    .user_profile_salt);
+            int salt = myUser.getSalt();
+            Bitmap saltBM = BitmapFactory.decodeResource(getResources(), R
+                    .drawable.salt0);
+            if (salt <= 5) {
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt0);
+            } else if (salt >= 6 && salt <= 15) {
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt15);
+            } else if (salt >= 16 && salt <= 25) {
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt25);
+            } else if (salt >= 26 && salt <= 35) {
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt35);
+            } else if (salt >= 36 && salt <= 45) {
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt35);
+            } else if (salt >= 46) {
+                saltBM = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .salt45);
+            }
+            saltImage.setImageBitmap(saltBM);
+
+            TextView userName = (TextView) view.findViewById(
+                    R.id.user_profile_picture_text);
+            userName.setText(myUser.getName());
+
+            TextView userSalt = (TextView) view.findViewById(
+                    R.id.user_profile_salt_text);
+            userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
+
 //        TextView countPosts = (TextView) view.findViewById(R.id
 //                .user_profile_posts);
 //        countPosts.setText("Total Posts: " + String.valueOf(myUser.getPosts
 // ()));
 //
-//        TextView totalVotes = (TextView) view.findViewById(R.id
-//                .user_profile_votes);
-//        totalVotes.setText("Total Votes: " + String.valueOf(myUser
-//                .getTotalVotes()));
+            TextView totalEnemies = (TextView) view.findViewById(R.id
+                    .user_profile_skull_text);
+            totalEnemies.setText("Enemies: " + String.valueOf(myUser
+                    .getTotalVotes()));
 //
 //        TextView totalComments = (TextView) view.findViewById(R.id
 //                .user_profile_comments);
 //        totalComments.setText("Total Comments: " + String.valueOf(myUser
 //                .getTotalComments()));
 //
-//        TextView userSinceDate = (TextView) view.findViewById(R.id
-//                .user_profile_user_since);
-//        userSinceDate.setText("User Since: " + myUser.getUserSince());
+            TextView userSinceDate = (TextView) view.findViewById(R.id
+                    .user_profile_start_date);
+            userSinceDate.setText("User Since: " + myUser.getUserSince());
         }
     }
 

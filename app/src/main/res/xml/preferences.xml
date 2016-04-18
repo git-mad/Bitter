@@ -53,12 +53,15 @@
             android:entryValues="@array/frequency"
             />
 
-    <PreferenceCategory
-        android:title="Title"
-        android:key="pref_key_storage_settings" />
+
     <PreferenceCategory
         android:title="Data Options"
         android:key="pref_key_storage_settings" />
+        <SwitchPreferenceCompat
+            android:key = "pref_remember_me"
+            android:title="Use Wifi to view pictures."
+            android:defaultValue="true"
+            />
     <PreferenceCategory
         android:title="Now let's talk about us.."
         android:key="pref_key_storage_settings" />

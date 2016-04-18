@@ -2,7 +2,11 @@ package gitmad.bitter.fragment;
 
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -16,7 +20,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import gitmad.bitter.R;
 import gitmad.bitter.data.PostProvider;
-import gitmad.bitter.data.mock.MockPostProvider;
+import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.firebase.FirebaseImageProvider;
+import gitmad.bitter.data.firebase.FirebasePostProvider;
+import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.ui.PostAdapter;
 
@@ -31,12 +38,15 @@ import java.util.List;
 public class FeedFragment extends Fragment implements AuthorPostDialogFragment
         .OnPostCreatedListener {
 
+    private static final int SELECT_PICTURE = 2;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private String imagePath;
-
+    private File takePicPath;
+    private String selectedImagePath;
     private PostProvider postProvider;
+    private UserProvider userProvider;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -74,14 +84,47 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == 1) {
             final int resultOk = -1;
             if (resultCode == resultOk) {
                 Toast.makeText(getActivity(), "Image saved.",
                         Toast.LENGTH_LONG).show();
-                //image should be accessed here using filename imagePath
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = false;
+                options.inSampleSize = 4;
+                Bitmap image = BitmapFactory.decodeFile(takePicPath
+                        .getAbsolutePath(), options);
+
+
+                new FirebaseImageProvider().addImageAsync(image);
+
             }
+        } else if (requestCode == SELECT_PICTURE && (resultCode == -1) &&
+                data != null) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            // Get the cursor
+            Cursor cursor = getContext().getContentResolver().query
+                    (selectedImage,
+                            filePathColumn, null, null, null);
+            // Move to first row
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String imgDecodableString = cursor.getString(columnIndex);
+            cursor.close();
+
+            Bitmap galleryPic = BitmapFactory.decodeFile(imgDecodableString);
+            new FirebaseImageProvider().addImageAsync(galleryPic);
+
+        } else {
+            Toast.makeText(getContext(), "You haven't picked Image",
+                    Toast.LENGTH_LONG).show();
         }
+
+
     }
 
     @Override
@@ -127,9 +170,18 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
         picFromGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(photoOp);
+                //startActivity(photoOp);
+
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                //intent.setType("image/*");
+                //intent.setAction(Intent.ACTION_GET_CONTENT);
+                //startActivityForResult(Intent.createChooser(intent,
+                //        "Select Picture"), SELECT_PICTURE);
+                startActivityForResult(galleryIntent, SELECT_PICTURE);
             }
         });
+
 
         textPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,18 +190,10 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
             }
         });
 
-        // TODO change to FireBase
-        postProvider = new MockPostProvider(this.getContext());
-        List<Post> postList = Arrays.asList(postProvider.getPosts(Integer
-                .MAX_VALUE));
-
-        SortedPostFragment sortedPostsFragment = SortedPostFragment
-                .newInstance(new SortedPostFragment.FeedPostComparator(),
-                        postList);
-        FragmentTransaction transaction = getChildFragmentManager()
-                .beginTransaction();
-        transaction.add(R.id.fragment_feed_sorted_posts_frame,
-                sortedPostsFragment).commit();
+        postProvider = new FirebasePostProvider();
+        userProvider = new FirebaseUserProvider();
+        GetPostsAsyncTask task = new GetPostsAsyncTask();
+        task.execute(50);
 
         return view;
     }
@@ -178,23 +222,68 @@ public class FeedFragment extends Fragment implements AuthorPostDialogFragment
         takePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                if (intent.resolveActivity(getContext().getPackageManager())
+//                        != null) {
+//                    File file;
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
                 if (intent.resolveActivity(getContext().getPackageManager())
                         != null) {
-                    File file;
                     try {
-                        file = createFile();
+                        takePicPath = createFile();
                     } catch (IOException e) {
-                        file = null;
+                        takePicPath = null;
                     }
-                    if (file != null) {
+                    if (takePicPath != null) {
                         intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                Uri.fromFile(file));
+                                Uri.fromFile(takePicPath));
                         final int IMAGE_REQUEST_CODE = 1;
+
                         startActivityForResult(intent, IMAGE_REQUEST_CODE);
                     }
                 }
             }
         });
+    }
+
+    private class GetPostsAsyncTask extends AsyncTask<Integer, Void, Post[]> {
+
+        String[] authorNames;
+
+        @Override
+        protected Post[] doInBackground(Integer... params) {
+            int numPostsToRetrieve = params[0];
+            Post[] posts = postProvider.getPosts(numPostsToRetrieve);
+
+            authorNames = new String[numPostsToRetrieve];
+
+            for (int i = 0; i < posts.length; i++) {
+                authorNames[i] = userProvider.getAuthorOfPost(posts[i])
+                        .getName();
+            }
+
+            return posts;
+        }
+
+        @Override
+        protected void onPostExecute(Post[] posts) {
+            super.onPostExecute(posts);
+            final List<Post> postList = Arrays.asList(posts);
+            final List<String> authorNamesList = Arrays.asList(authorNames);
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    SortedPostFragment sortedPostsFragment = SortedPostFragment
+                            .newInstance(new SortedPostFragment
+                                    .FeedPostComparator(), postList);
+                    FragmentTransaction transaction = getChildFragmentManager()
+                            .beginTransaction();
+                    transaction.add(R.id.fragment_feed_sorted_posts_frame,
+                            sortedPostsFragment).commit();
+                }
+            });
+        }
     }
 }

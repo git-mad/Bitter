@@ -1,17 +1,7 @@
 package gitmad.bitter;
 
 import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-
-import java.util.concurrent.CountDownLatch;
-
-import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
-import gitmad.bitter.model.User;
 
 /**
  * Application singleton that initializes the Firebase backend,
@@ -24,10 +14,10 @@ public class BitterApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-            // Necessary for firebase to work in all Activities //
-            Firebase.setAndroidContext(this);
+        // Necessary for firebase to work in all Activities //
+        Firebase.setAndroidContext(this);
 
-            // store data locally until it can be pushed //
+        // store data locally until it can be pushed //
 //            Firebase.getDefaultConfig().setPersistenceEnabled(true);
 
     }

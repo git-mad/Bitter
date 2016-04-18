@@ -2,13 +2,7 @@ package gitmad.bitter;
 
 import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
-
 import com.firebase.client.Firebase;
-
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-
 import gitmad.bitter.data.CategoryProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
@@ -20,10 +14,15 @@ import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * Created by brian on 2/28/16.
  */
-public class TestFirebaseCategories extends ApplicationTestCase<BitterApplication> {
+public class TestFirebaseCategories extends
+        ApplicationTestCase<BitterApplication> {
 
     CategoryProvider categoriesProvider;
     UserProvider userProvider;
@@ -36,36 +35,37 @@ public class TestFirebaseCategories extends ApplicationTestCase<BitterApplicatio
         super(BitterApplication.class);
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        createApplication();
-
-        authenticateFirebase();
-
-        initProviders();
-    }
-
     @SmallTest
     public void testGetCategories() {
 
         assertTrue(authManager.isAuthed());
 
-        Firebase categoriesRef = new Firebase(FirebaseCategoryProvider.FIREBASE_CATEGORIES_URL);
+        Firebase categoriesRef = new Firebase(FirebaseCategoryProvider
+                .FIREBASE_CATEGORIES_URL);
 
-        FirebaseSyncRequester<Map> categoriesRequester = new FirebaseSyncRequester<>(categoriesRef, Map.class);
+        FirebaseSyncRequester<Map> categoriesRequester = new
+                FirebaseSyncRequester<>(categoriesRef, Map.class);
 
         Map<String, Boolean> categoriesMap = categoriesRequester.get();
 
         String[] categoriesFromProvider = categoriesProvider.getCategories();
 
-        assertEquals("should be same length", categoriesMap.size(), categoriesFromProvider.length);
+        assertEquals("should be same length", categoriesMap.size(),
+                categoriesFromProvider.length);
 
         Iterator<String> categoryIterator = categoriesMap.keySet().iterator();
 
-        for (int i = 0; categoryIterator.hasNext() && i < categoriesFromProvider.length; i++) {
-            assertEquals("categories should be equal", categoryIterator.next(), categoriesFromProvider[i]);
+        for (int i = 0; categoryIterator.hasNext() && i <
+                categoriesFromProvider.length; i++) {
+            assertEquals("categories should be equal", categoryIterator.next
+                    (), categoriesFromProvider[i]);
+        }
+    }
+
+    private void authenticateFirebase() {
+        authManager = new FirebaseAuthManager(getApplication());
+        if (!authManager.isAuthed()) {
+            authManager.authenticate();
         }
     }
 
@@ -82,7 +82,8 @@ public class TestFirebaseCategories extends ApplicationTestCase<BitterApplicatio
 //            int randomIndex = (int) (Math.random() * categories.length);
 //            String randomCategory = categories[randomIndex];
 //
-//            Post postAdded = postProvider.addPostSync(newPostWithCategory(randomCategory));
+//            Post postAdded = postProvider.addPostSync(newPostWithCategory
+// (randomCategory));
 //
 //            postsAdded[i] = postAdded;
 //        }
@@ -90,21 +91,17 @@ public class TestFirebaseCategories extends ApplicationTestCase<BitterApplicatio
 //        //TODO record post categories and compare when returned
 //    }
 
-    private void removePastPosts() {
-        User loggedInUser = userProvider.getLoggedInUser();
-
-        Post[] previousPostsByUser = postProvider.getPostsByUser(loggedInUser.getId());
-
-        for (Post p : previousPostsByUser) {
-            postProvider.deletePost(p.getId());
-        }
+    private void initProviders() {
+        categoriesProvider = new FirebaseCategoryProvider();
+        userProvider = new FirebaseUserProvider();
+        postProvider = new FirebasePostProvider();
     }
 
     private Post newPostWithCategory(String postCategory) {
         long timestamp = new Date().getTime();
         int zeroDownvotes = 0;
 
-        return  new Post(null, randomText(), timestamp, zeroDownvotes,
+        return new Post(null, randomText(), timestamp, zeroDownvotes,
                 userProvider.getLoggedInUser().getId(), postCategory);
     }
 
@@ -123,16 +120,25 @@ public class TestFirebaseCategories extends ApplicationTestCase<BitterApplicatio
         return randomText.toString();
     }
 
-    private void initProviders() {
-        categoriesProvider = new FirebaseCategoryProvider();
-        userProvider = new FirebaseUserProvider();
-        postProvider = new FirebasePostProvider();
+    private void removePastPosts() {
+        User loggedInUser = userProvider.getLoggedInUser();
+
+        Post[] previousPostsByUser = postProvider.getPostsByUser(loggedInUser
+                .getId());
+
+        for (Post p : previousPostsByUser) {
+            postProvider.deletePost(p.getId());
+        }
     }
 
-    private void authenticateFirebase() {
-        authManager = new FirebaseAuthManager(getApplication());
-        if (!authManager.isAuthed()) {
-            authManager.authenticate();
-        }
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        createApplication();
+
+        authenticateFirebase();
+
+        initProviders();
     }
 }

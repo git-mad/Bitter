@@ -45,6 +45,7 @@
                         android:layout_weight="1"
                         android:text="Enemies:\n123456"/>
             </LinearLayout>
+
             <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
@@ -55,12 +56,15 @@
                     android:layout_weight="4"
                     android:weightSum="5"
                     tools:context="gitmad.bitter.fragment.UserProfileFragment">
+                <!-- Note that the picture is changed in the Java file and will be circular -->
                 <ImageView
                         android:id="@+id/user_profile_pic"
                         android:layout_height="0dp"
                         android:src="@android:drawable/sym_def_app_icon"
                         android:layout_weight="4"
-                        android:layout_width="match_parent"/>
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -69,7 +73,7 @@
                         android:layout_weight="1"
                         android:text="Username"/>
             </LinearLayout>
-            <!-- Note that the picture is changed in the Java file and will be circular -->
+
             <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
@@ -162,5 +166,92 @@
             </LinearLayout>
         </android.support.v4.app.FragmentTabHost>
 
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                     android:id="@+id/tableLayout1"
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/user_profile_tabhost">
+
+            <TableRow
+                    android:id="@+id/tableRow1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip">
+
+                <TextView
+                        android:text="Total Posts"
+                        android:layout_column="0"
+                        android:layout_marginRight="70dp"/>
+
+                <TextView
+                        android:id="@+id/user_profile_posts"
+                        android:layout_column="1"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip">
+
+                <TextView
+                        android:text="Total Comments"
+                        android:layout_column="0"
+                        android:layout_marginRight="70dp"
+                />
+
+                <TextView
+                        android:id="@+id/user_profile_comments"
+                        android:layout_column="3"/>
+            </TableRow>
+            <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip">
+                <TextView
+                        android:text="Total Votes"
+                        android:layout_column="0"
+                        android:layout_marginRight="70dp"/>
+
+                <TextView
+                        android:id="@+id/user_profile_votes"
+                        android:text="fdsa"
+                        android:layout_column="4"/>
+            </TableRow>
+
+
+        </TableLayout>
+
+        <!--<TextView-->
+        <!--android:layout_width="3dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_toLeftOf="@id/user_profile_votes"-->
+        <!--android:background="@color/black"-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:id="@+id/user_detail_divider" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_toRightOf="@id/user_detail_divider"-->
+        <!--android:text="Total Posts"-->
+        <!--android:id="@+id/user_profile_posts" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Total Comments"-->
+        <!--android:layout_below="@id/user_profile_posts"-->
+        <!--android:layout_toRightOf="@id/user_detail_divider"-->
+        <!--android:id="@+id/user_profile_comments" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/user_profile_comments"-->
+        <!--android:layout_toRightOf="@id/user_detail_divider"-->
+        <!--android:text="Total Votes"-->
+        <!--android:id="@+id/user_profile_votes" />-->
     </RelativeLayout>
 </ScrollView>

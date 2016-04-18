@@ -1,15 +1,16 @@
 package gitmad.bitter.data.mock;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import gitmad.bitter.data.UserProvider;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * A UserProvider implementation that returns fake users, for testing and development purposes.
+ * A UserProvider implementation that returns fake users, for testing and
+ * development purposes.
  * It will consistently return the same fake user for given input.
  */
 public class MockUserProvider implements UserProvider {
@@ -26,8 +27,8 @@ public class MockUserProvider implements UserProvider {
     };
 
     @Override
-    public User getUser(String userId) {
-        return fakeUsers[userIndexFromIdHash(userId)];
+    public User getAuthorOfComment(Comment comment) {
+        return fakeUsers[userIndexFromIdHash(comment.getAuthorId())];
     }
 
     @Override
@@ -36,27 +37,22 @@ public class MockUserProvider implements UserProvider {
     }
 
     @Override
-    public Map<Post, User> getAuthorsOfPosts(Post... posts) {
-        Map<Post, User> authorsMap = new HashMap<>();
+    public Map<Comment, User> getAuthorsOfComments(Comment... comments) {
+        Map<Comment, User> authorsMap = new HashMap<>();
 
-        for (Post post : posts) {
-            authorsMap.put(post, getAuthorOfPost(post));
+        for (Comment comment : comments) {
+            authorsMap.put(comment, getAuthorOfComment(comment));
         }
 
         return authorsMap;
     }
 
     @Override
-    public User getAuthorOfComment(Comment comment) {
-        return fakeUsers[userIndexFromIdHash(comment.getAuthorId())];
-    }
+    public Map<Post, User> getAuthorsOfPosts(Post... posts) {
+        Map<Post, User> authorsMap = new HashMap<>();
 
-    @Override
-    public Map<Comment, User> getAuthorsOfComments(Comment... comments) {
-        Map<Comment, User> authorsMap = new HashMap<>();
-
-        for (Comment comment : comments) {
-            authorsMap.put(comment, getAuthorOfComment(comment));
+        for (Post post : posts) {
+            authorsMap.put(post, getAuthorOfPost(post));
         }
 
         return authorsMap;
@@ -72,10 +68,19 @@ public class MockUserProvider implements UserProvider {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public User getUser(String userId) {
+        return fakeUsers[userIndexFromIdHash(userId)];
+    }
+
     /**
-     * gets the index of a consistent user from the fakeUsers array, by taking a hash of a user id.
-     * This way, one will always be able to retrieve the same fake user using a given fake id.
-     * @param userId a non-null String. Does not actually have to match a user id.
+     * gets the index of a consistent user from the fakeUsers array, by
+     * taking a hash of a user id.
+     * This way, one will always be able to retrieve the same fake user using
+     * a given fake id.
+     *
+     * @param userId a non-null String. Does not actually have to match a
+     *               user id.
      * @return the index of a user in the fakeUsers array.
      */
     private int userIndexFromIdHash(String userId) {

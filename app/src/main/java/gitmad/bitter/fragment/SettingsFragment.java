@@ -37,14 +37,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     EditTextPreference newUserName = (EditTextPreference)findPreference(key);
                     String nameChange = newUserName.getText();
                     //TODO: Add Firebase call to set the UserName change
-                    Toast.makeText(getContext(), nameChange, Toast.LENGTH_SHORT).show();
                     //Clear after text is received
                     newUserName.setText("");
                 }else if(key.equals("pref_change_password")){
                     EditTextPreference newPasswordPref = (EditTextPreference)findPreference(key);
                     String newPassword = newPasswordPref.getText();
                     //TODO: Add Firebase call to set the UserName change
-                    Toast.makeText(getContext(),newPassword , Toast.LENGTH_SHORT).show();
                     //Clear after text is received
                     newPasswordPref.setText("");
                 }
