@@ -109,6 +109,26 @@ public class UserProfileFragment extends Fragment {
             postProvider = new FirebasePostProvider();
             userProvider = new FirebaseUserProvider();
             userData = userProvider.getUser(params[0]);
+
+            Post[][] posts = userData.topCategories(userData.getId(),
+                    userProvider, postProvider);
+
+            if (posts[0][1] != null) {
+                tabHostPosts.add(posts[0][0]);
+            } else {
+                System.out.println("0 is null!");
+            }
+            if (posts[0][1] != null) {
+                tabHostPosts.add(posts[1][1]);
+            } else {
+                System.out.println("1 is null!");
+            }
+            if (posts[0][1] != null) {
+                tabHostPosts.add(posts[0][2]);
+            } else {
+                System.out.println("2 is null!");
+            }
+
             return userData;
         }
 
@@ -181,12 +201,6 @@ public class UserProfileFragment extends Fragment {
             TextView userSinceDate = (TextView) view.findViewById(R.id
                     .user_profile_start_date);
             userSinceDate.setText("User Since: " + myUser.getUserSince());
-
-            Post[][] posts = myUser.topCategories(myUser.getId(),
-                    userProvider, postProvider);
-            tabHostPosts.add(posts[0][0]);
-            tabHostPosts.add(posts[0][1]);
-            tabHostPosts.add(posts[0][2]);
         }
     }
 
