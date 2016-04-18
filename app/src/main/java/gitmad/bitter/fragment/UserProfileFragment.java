@@ -14,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import gitmad.bitter.R;
+import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
+import gitmad.bitter.data.firebase.FirebasePostProvider;
 import gitmad.bitter.data.firebase.FirebaseUserProvider;
 import gitmad.bitter.data.firebase.auth.FirebaseAuthManager;
 import gitmad.bitter.model.FirebaseImage;
@@ -27,6 +29,8 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class UserProfileFragment extends Fragment {
+    ArrayList<Post> tabHostPosts = new ArrayList<>();
+
     public UserProfileFragment() {
         // Mandatory empty constructor for the UserProfile Fragment Manager
     }
@@ -72,8 +76,7 @@ public class UserProfileFragment extends Fragment {
                 // FIXME pass in actual category-post array
                 SortedPostFragment sortedPostsFragment = SortedPostFragment
                         .newInstance(new SortedPostFragment
-                                        .FeedPostComparator(),
-                                new ArrayList<Post>());
+                                        .FeedPostComparator(), tabHostPosts);
                 FragmentTransaction transaction = getChildFragmentManager()
                         .beginTransaction();
                 transaction.add(R.id.realTabContent,
@@ -94,14 +97,18 @@ public class UserProfileFragment extends Fragment {
         private User userData;
         private View view;
 
+        private PostProvider postProvider;
+        private UserProvider userProvider;
+
         public GetUserFirebaseTask(View view) {
             this.view = view;
         }
 
         @Override
         protected User doInBackground(String... params) {
-            UserProvider provider = new FirebaseUserProvider();
-            userData = provider.getUser(params[0]);
+            postProvider = new FirebasePostProvider();
+            userProvider = new FirebaseUserProvider();
+            userData = userProvider.getUser(params[0]);
             return userData;
         }
 
@@ -174,6 +181,12 @@ public class UserProfileFragment extends Fragment {
             TextView userSinceDate = (TextView) view.findViewById(R.id
                     .user_profile_start_date);
             userSinceDate.setText("User Since: " + myUser.getUserSince());
+
+            Post[][] posts = myUser.topCategories(myUser.getId(),
+                    userProvider, postProvider);
+            tabHostPosts.add(posts[0][0]);
+            tabHostPosts.add(posts[0][1]);
+            tabHostPosts.add(posts[0][2]);
         }
     }
 
