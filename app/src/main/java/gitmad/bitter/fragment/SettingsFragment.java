@@ -3,9 +3,12 @@ package gitmad.bitter.fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.EditTextPreference;
+import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.widget.Toast;
+
+import java.util.List;
 
 import gitmad.bitter.R;
 
@@ -39,6 +42,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     //TODO: Add Firebase call to set the UserName change
                     //Clear after text is received
                     newUserName.setText("");
+                }else if (key.equals("pref_text_size")){
+                    ListPreference textSize = (ListPreference) findPreference(key);
+                    String choice = textSize.getValue();
+                    //Returns Small, Medium, Large
+
                 }
             }
         };
