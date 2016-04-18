@@ -8,10 +8,6 @@
             android:key="pref_change_username"
             android:title="Change Username"
             />
-        <EditTextPreference
-            android:key = "pref_change_password"
-            android:title="Change Password"
-            />
         <SwitchPreferenceCompat
             android:key = "pref_remember_me"
             android:title="Remember Me"
@@ -72,17 +68,5 @@
             android:entryValues="@array/donate"
             />
 
-    <PreferenceScreen
-        android:key="button_voicemail_category_key"
-        android:title="Test"
-        >
-        <ListPreference
-            android:key="pref_syncConnectionType"
-            android:title="List"
-            android:dialogTitle="List Choices"
-            android:entries="@array/mock_comments"
-            android:entryValues="@array/mock_comments"
-            />
-    </PreferenceScreen>
 
 </PreferenceScreen>

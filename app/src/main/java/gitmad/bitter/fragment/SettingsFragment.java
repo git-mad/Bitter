@@ -34,17 +34,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if (key.equals("pref_change_username")) {
-                    EditTextPreference newUserName = (EditTextPreference)findPreference(key);
+                    EditTextPreference newUserName = (EditTextPreference) findPreference(key);
                     String nameChange = newUserName.getText();
                     //TODO: Add Firebase call to set the UserName change
                     //Clear after text is received
                     newUserName.setText("");
-                }else if(key.equals("pref_change_password")){
-                    EditTextPreference newPasswordPref = (EditTextPreference)findPreference(key);
-                    String newPassword = newPasswordPref.getText();
-                    //TODO: Add Firebase call to set the UserName change
-                    //Clear after text is received
-                    newPasswordPref.setText("");
                 }
             }
         };
