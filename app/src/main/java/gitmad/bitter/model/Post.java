@@ -56,6 +56,10 @@ public class Post {
         return downvotes;
     }
 
+    public void downvotePost() {
+        downvotes++;
+    }
+
     public String getId() {
         return id;
     }
