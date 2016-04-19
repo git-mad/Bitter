@@ -1,6 +1,13 @@
 package gitmad.bitter;
 
 import android.test.InstrumentationTestCase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+
 import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
@@ -10,13 +17,6 @@ import gitmad.bitter.data.mock.MockUserProvider;
 import gitmad.bitter.model.Comment;
 import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
-import org.junit.Before;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Testing the MockUserProvider, MockPostProvider, and MockCommentProvider.
  */
@@ -25,7 +25,7 @@ public class TestMockDataProvider extends InstrumentationTestCase {
     private PostProvider postProvider;
     private CommentProvider commentProvider;
 
-    @Before
+//    @Before
     public void setUp() {
         userProvider = new MockUserProvider();
         postProvider = new MockPostProvider(getInstrumentation()

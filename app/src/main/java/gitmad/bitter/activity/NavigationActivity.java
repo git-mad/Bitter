@@ -1,5 +1,6 @@
 package gitmad.bitter.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,11 +21,12 @@ import android.widget.Toast;
 import gitmad.bitter.R;
 import gitmad.bitter.fragment.AuthorPostDialogFragment;
 import gitmad.bitter.fragment.FeedFragment;
+import gitmad.bitter.fragment.SettingsFragment;
 import gitmad.bitter.fragment.UserFragment;
 
 public class NavigationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        AuthorPostDialogFragment.OnPostCreatedListener {
+        AuthorPostDialogFragment.OnPostCreatedListener{
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -54,7 +57,7 @@ public class NavigationActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_friends) {
             // TODO
         } else if (id == R.id.nav_settings) {
-            // TODO
+            fragmentClass = SettingsFragment.class;
         } else if (id == R.id.nav_about) {
             // TODO
         }
