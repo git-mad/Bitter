@@ -3,6 +3,12 @@ package gitmad.bitter;
 import android.support.annotation.NonNull;
 import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
+
 import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.data.PostProvider;
 import gitmad.bitter.data.UserProvider;
@@ -15,10 +21,6 @@ import gitmad.bitter.model.Post;
 import gitmad.bitter.model.User;
 import org.junit.After;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
 
 /**
  * Created by brian on 12/29/15.

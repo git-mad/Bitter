@@ -1,5 +1,7 @@
 package gitmad.bitter.ui;
 
+import android.content.SharedPreferences;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +68,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
+
         viewHolder.postText.setText(posts.get(i).getText());
         viewHolder.userText.setText(userProvider.getAuthorOfPost(posts.get(i)
         ).getName());
