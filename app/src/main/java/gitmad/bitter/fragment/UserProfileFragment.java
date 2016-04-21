@@ -73,10 +73,9 @@ public class UserProfileFragment extends Fragment {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                // FIXME pass in actual category-post array
                 SortedPostFragment sortedPostsFragment = SortedPostFragment
                         .newInstance(new SortedPostFragment
-                                        .FeedPostComparator(), tabHostPosts);
+                                .FeedPostComparator(), tabHostPosts);
                 FragmentTransaction transaction = getChildFragmentManager()
                         .beginTransaction();
                 transaction.add(R.id.realTabContent,
@@ -183,21 +182,11 @@ public class UserProfileFragment extends Fragment {
                     R.id.user_profile_salt_text);
             userSalt.setText("Salt: " + String.valueOf(myUser.getSalt()));
 
-//        TextView countPosts = (TextView) view.findViewById(R.id
-//                .user_profile_posts);
-//        countPosts.setText("Total Posts: " + String.valueOf(myUser.getPosts
-// ()));
-//
             TextView totalEnemies = (TextView) view.findViewById(R.id
                     .user_profile_skull_text);
             totalEnemies.setText("Enemies: " + String.valueOf(myUser
                     .getTotalVotes()));
-//
-//        TextView totalComments = (TextView) view.findViewById(R.id
-//                .user_profile_comments);
-//        totalComments.setText("Total Comments: " + String.valueOf(myUser
-//                .getTotalComments()));
-//
+
             TextView userSinceDate = (TextView) view.findViewById(R.id
                     .user_profile_start_date);
             userSinceDate.setText("User Since: " + myUser.getUserSince());

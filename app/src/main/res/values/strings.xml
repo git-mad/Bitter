@@ -4,39 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <array name="mock_posts">
-        <item>Once, just once, I\'d like the community to give back to me.
-        </item>
-        <item>I was going to work out today, but luckily it rained.</item>
-        <item>I may have multiple personality disorder, but at least I have
-            each other
-        </item>
-        <item>Wait, so you are telling me that the movie Pompeii DOESN\'T
-            feature a montage of the city being distroyed as Bastille\'s hit
-            single "Pompeii" plays in the background?
-        </item>
-        <item>My favorite part is when you think you are getting to the end of
-            the chapter, but the decimals keep going up: 4.8, 4.9, 4.10?,
-            4.11?!?
-        </item>
-        <item>Why can\'t alcohol make me super smooth like movie people instead
-            of make me say dolphin facts slightly louder than usual?
-        </item>
-        <item>What idiot named them "female identified gargoils" instead of
-            gargirls?
-        </item>
-        <item>When Walter White pronounced Aqueous like "Ah-queous" it really
-            broke the immersion.
-        </item>
-        <item>When a broken vending machine eats your money and then lights up
-            the "thank you" sign.
-        </item>
-        <item>When people tweet dependent clauses.</item>
-        <item>I hate how twitter only does C syntax highlighting for
-            preprocessor instructions.
-        </item>
-    </array>
-
     <array name="mock_comments">
         <item>This makes me really angry!</item>
         <item>Grrr!!! I know exactly what you mean!</item>
@@ -69,11 +36,11 @@
         <item>Every 3 Hours</item>
     </array>
 
-    <array name="donate">
+    <string-array name="donate">
         <item>$1.00 You are too kind!</item>
         <item>$5.00 Please, stop! We are blushing!</item>
         <item>$10.00 Omg, you\'ve made us the happiest team ever!</item>
-    </array>
+    </string-array>
 
     <string name="title_activity_view_post">View Post Activity</string>
     <string name="title_activity_test">User Information</string>
@@ -81,7 +48,4 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

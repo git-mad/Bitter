@@ -1,7 +1,5 @@
 package gitmad.bitter.ui;
 
-import android.content.SharedPreferences;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;

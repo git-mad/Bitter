@@ -10,11 +10,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Provides synchronous method calls for Firebase data being updated by asynchronous
+ * Provides synchronous method calls for Firebase data being updated by
+ * asynchronous
  * callbacks.
- *
  */
-public class FirebaseSyncRequester <T> {
+public class FirebaseSyncRequester<T> {
 
     private Firebase firebaseRef;
     private RequesterValueEventListener firebaseListener;
@@ -39,7 +39,9 @@ public class FirebaseSyncRequester <T> {
     }
 
     /**
-     * Waits for firebase, and then returns whether the data at that URL exists or not.
+     * Waits for firebase, and then returns whether the data at that URL
+     * exists or not.
+     *
      * @return true if data exists at the URL, false otherwise.
      */
     public boolean exists() {
@@ -49,9 +51,12 @@ public class FirebaseSyncRequester <T> {
     }
 
     /**
-     * A synchronous get() for the firebase url contained by this FirebaseSyncRequester.
+     * A synchronous get() for the firebase url contained by this
+     * FirebaseSyncRequester.
      * Waits until data is present, and then returns
-     * @return the data contained by at the firebase url contained by this FirebaseSyncRequester
+     *
+     * @return the data contained by at the firebase url contained by this
+     * FirebaseSyncRequester
      */
     public T get() {
         whenReady();
@@ -60,8 +65,18 @@ public class FirebaseSyncRequester <T> {
     }
 
     /**
+     * determines whether firebase has responded or not.
+     *
+     * @return true if data is ready for #get() and #exists(), false otherwise.
+     */
+    public boolean isReady() {
+        return countDownLatch.getCount() < 1;
+    }
+
+    /**
      * Waits until this requester has data, and then returns a reference to this
      * requester
+     *
      * @return a reference to this requester.
      */
     public FirebaseSyncRequester whenReady() {
@@ -74,25 +89,17 @@ public class FirebaseSyncRequester <T> {
     }
 
     /**
-     * determines whether firebase has responded or not.
-     * @return true if data is ready for #get() and #exists(), false otherwise.
+     * initialize the latch so that CountDownLatch#await() blocks until
+     * CountDownLatch#countDown() is called once.
      */
-    public boolean isReady() {
-        return countDownLatch.getCount() < 1;
+    private void initializeLatch() {
+        countDownLatch = new CountDownLatch(1);
     }
 
     private void registerFirebaseCallback() {
         firebaseListener = new RequesterValueEventListener();
 
         firebaseRef.addValueEventListener(firebaseListener);
-    }
-
-    /**
-     * initialize the latch so that CountDownLatch#await() blocks until
-     * CountDownLatch#countDown() is called once.
-     */
-    private void initializeLatch() {
-        countDownLatch = new CountDownLatch(1);
     }
 
     private class RequesterValueEventListener implements ValueEventListener {

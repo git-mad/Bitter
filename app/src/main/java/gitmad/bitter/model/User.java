@@ -152,7 +152,8 @@ public class User {
                 if (userPosts[j].getCategory().equals(firstCategory)
                         && userPosts[j].getDownvotes() < topPost1
                         .getDownvotes()) {
-                    if (userPosts[j].getDownvotes() > ((secondPost1 == null) ? -1 : secondPost1.getDownvotes())) {
+                    if (userPosts[j].getDownvotes() > ((secondPost1 == null)
+                            ? -1 : secondPost1.getDownvotes())) {
                         secondPost1 = userPosts[j];
                     }
                 }
@@ -179,7 +180,8 @@ public class User {
                 if (userPosts[j].getCategory().equals(secondCategory)
                         && userPosts[j].getDownvotes() < topPost2
                         .getDownvotes()) {
-                    if (userPosts[j].getDownvotes() > ((secondPost2 == null) ? -1 : secondPost2.getDownvotes())) {
+                    if (userPosts[j].getDownvotes() > ((secondPost2 == null)
+                            ? -1 : secondPost2.getDownvotes())) {
                         secondPost2 = userPosts[j];
                     }
                 }
@@ -206,7 +208,8 @@ public class User {
                 if (userPosts[j].getCategory().equals(thirdCategory)
                         && userPosts[j].getDownvotes() < topPost3
                         .getDownvotes()) {
-                    if (userPosts[j].getDownvotes() > ((secondPost3 == null) ? -1 : secondPost3.getDownvotes())) {
+                    if (userPosts[j].getDownvotes() > ((secondPost3 == null)
+                            ? -1 : secondPost3.getDownvotes())) {
                         secondPost3 = userPosts[j];
                     }
                 }

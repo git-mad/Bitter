@@ -2,7 +2,6 @@ package gitmad.bitter.data.firebase;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -21,6 +20,14 @@ public class CountDownLatchListener implements Firebase.CompletionListener {
         latch = new CountDownLatch(1);
     }
 
+    public void awaitLatch() {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
         if (firebaseError != null) {
@@ -28,13 +35,5 @@ public class CountDownLatchListener implements Firebase.CompletionListener {
         }
 
         latch.countDown();
-    }
-
-    public void awaitLatch() {
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

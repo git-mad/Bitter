@@ -29,7 +29,6 @@ public class UserFragment extends Fragment {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
-    private PostProvider postProvider;
     private List<Post> postList;
 
     /**
@@ -153,8 +152,7 @@ public class UserFragment extends Fragment {
         }
 
         protected List<Post> doInBackground(String... params) {
-            FirebasePostProvider firebasePostProvider = new
-                    FirebasePostProvider();
+            PostProvider firebasePostProvider = new FirebasePostProvider();
             postList = Arrays.asList(firebasePostProvider.getPostsByUser
                     (params[0]));
             return postList;

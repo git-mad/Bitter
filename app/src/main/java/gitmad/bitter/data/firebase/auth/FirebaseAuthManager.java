@@ -30,7 +30,8 @@ public class FirebaseAuthManager {
 
     public FirebaseAuthManager(Context context) {
         prefs = context.getSharedPreferences(AUTH_PREFS, Context.MODE_PRIVATE);
-        firebaseUsersRef = new Firebase(FirebaseUserProvider.FIREBASE_USERS_URL);
+        firebaseUsersRef = new Firebase(FirebaseUserProvider
+                .FIREBASE_USERS_URL);
 
         assureAccountCreated();
     }
@@ -39,7 +40,8 @@ public class FirebaseAuthManager {
         final CountDownLatch latch = new CountDownLatch(1);
 
         if (!isAuthed()) {
-            firebaseUsersRef.authWithPassword(getEmail(), getPassword(), new Firebase.AuthResultHandler() {
+            firebaseUsersRef.authWithPassword(getEmail(), getPassword(), new
+                    Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {
                     latch.countDown();
@@ -69,19 +71,17 @@ public class FirebaseAuthManager {
         return firebaseUsersRef.getAuth() != null;
     }
 
-    public void unauth() {
-        firebaseUsersRef.unauth();
-    }
-
-
     /**
      * THIS WILL DELETE THE ACCOUNT YOU ARE LOGGED IN WITH IRRECOVERABLY.
      * FOR DEVELOPMENT PURPOSES ONLY
+     *
      * @param confirmation
      */
     public void resetAuth(String confirmation) {
         if (!confirmation.equals("I know what I'm doing")) {
-            throw new IllegalArgumentException("You didn't put in the confirmation correctly. Make sure you really want to do this,");
+            throw new IllegalArgumentException("You didn't put in the " +
+                    "confirmation correctly. Make sure you really want to do " +
+                    "this,");
         }
 
         unauth();
@@ -95,73 +95,21 @@ public class FirebaseAuthManager {
         assureAccountCreated();
     }
 
+    public void unauth() {
+        firebaseUsersRef.unauth();
+    }
+
     private void assureAccountCreated() {
         getEmail();
         getPassword();
     }
 
-    private String getEmail() {
-        if (!prefs.contains(KEY_EMAIL)) {
-            makeLogin();
+    private void awaitLatch(CountDownLatch latch) {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
-        return prefs.getString(KEY_EMAIL, "");
-    }
-
-    private String getPassword() {
-        if (!prefs.contains(KEY_PASS)) {
-            makeLogin();
-        }
-
-        return prefs.getString(KEY_PASS, "");
-    }
-
-    private void makeLogin() {
-        generateRandomCredentials();
-
-        registerWithFirebase();
-
-        pushUserData();
-
-        unauth();
-    }
-
-    private void pushUserData() {
-        authenticate();
-
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        firebaseUsersRef.updateChildren(initUserData(getUid()), new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                if (firebaseError != null) {
-                    throw firebaseError.toException();
-                }
-                latch.countDown();
-            }
-        });
-
-        awaitLatch(latch);
-    }
-
-    private void registerWithFirebase() {
-        firebaseUsersRef = new Firebase(FirebaseUserProvider.FIREBASE_USERS_URL);
-
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        firebaseUsersRef.createUser(getEmail(), getPassword(), new Firebase.ResultHandler() {
-            @Override
-            public void onSuccess() {
-                latch.countDown();
-            }
-
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                throw firebaseError.toException();
-            }
-        });
-
-        awaitLatch(latch);
     }
 
     private void generateRandomCredentials() {
@@ -186,6 +134,22 @@ public class FirebaseAuthManager {
         return builder.toString();
     }
 
+    private String getEmail() {
+        if (!prefs.contains(KEY_EMAIL)) {
+            makeLogin();
+        }
+
+        return prefs.getString(KEY_EMAIL, "");
+    }
+
+    private String getPassword() {
+        if (!prefs.contains(KEY_PASS)) {
+            makeLogin();
+        }
+
+        return prefs.getString(KEY_PASS, "");
+    }
+
     private Map<String, Object> initUserData(String userUid) {
         Map<String, Object> updateMap = new HashMap<>();
 
@@ -197,11 +161,55 @@ public class FirebaseAuthManager {
         return updateMap;
     }
 
-    private void awaitLatch(CountDownLatch latch) {
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private void makeLogin() {
+        generateRandomCredentials();
+
+        registerWithFirebase();
+
+        pushUserData();
+
+        unauth();
+    }
+
+    private void pushUserData() {
+        authenticate();
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        firebaseUsersRef.updateChildren(initUserData(getUid()), new Firebase
+                .CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase
+                    firebase) {
+                if (firebaseError != null) {
+                    throw firebaseError.toException();
+                }
+                latch.countDown();
+            }
+        });
+
+        awaitLatch(latch);
+    }
+
+    private void registerWithFirebase() {
+        firebaseUsersRef = new Firebase(FirebaseUserProvider
+                .FIREBASE_USERS_URL);
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        firebaseUsersRef.createUser(getEmail(), getPassword(), new Firebase
+                .ResultHandler() {
+            @Override
+            public void onSuccess() {
+                latch.countDown();
+            }
+
+            @Override
+            public void onError(FirebaseError firebaseError) {
+                throw firebaseError.toException();
+            }
+        });
+
+        awaitLatch(latch);
     }
 }

@@ -24,6 +24,10 @@ public class Post {
     public Post() {
     }
 
+    public void downvotePost() {
+        downvotes++;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Post)) {
@@ -54,10 +58,6 @@ public class Post {
 
     public int getDownvotes() {
         return downvotes;
-    }
-
-    public void downvotePost() {
-        downvotes++;
     }
 
     public String getId() {

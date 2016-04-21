@@ -1,13 +1,12 @@
 package gitmad.bitter.data.mock;
 
 import android.content.Context;
-
-import java.util.Date;
-import java.util.UUID;
-
 import gitmad.bitter.R;
 import gitmad.bitter.data.CommentProvider;
 import gitmad.bitter.model.Comment;
+
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * A CommentProvider that returns mock data
